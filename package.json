@@ -6,16 +6,23 @@
   "scripts": {
     "dev": "node --import=tsx --watch ./src/index.ts",
     "build": "tsc",
-    "start": "node ./dist/src/index.js"
+    "start": "node ./dist/src/index.js",
+    "db:generate": "drizzle-kit generate --config ./config/drizzle.config.ts",
+    "db:drop": "drizzle-kit drop --config ./config/drizzle.config.ts",
+    "db:push": "drizzle-kit push --config ./config/drizzle.config.ts",
+    "db:studio": "npx drizzle-kit studio --port 8081 --verbose --config ./config/drizzle.config.ts"
   },
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "express": "4.19.2"
+    "drizzle-orm": "0.31.4",
+    "express": "4.19.2",
+    "mysql2": "3.10.2"
   },
   "devDependencies": {
     "@types/express": "4.17.21",
+    "drizzle-kit": "0.22.8",
     "tsx": "4.16.2"
   }
 }

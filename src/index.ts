@@ -1,11 +1,27 @@
-import express from 'express'
+import { Database } from '@core/database.core'
+import { Server } from '@core/server.core'
+import { DepencyInjection } from '@core/di.core'
 
-const app = express()
+import { EventsRepository } from '@repositories/events.repositories'
+import { EventsService } from '@services/events.service'
 
-app.get('/', (req, res) => {
-  res.send('Hello World! Carlos')
-})
+import { EventsRouter } from '@routes/events.routes'
 
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000')
-})
+const di = DepencyInjection.getInstance()
+
+// Register the Database
+di.register(() => new Database())
+
+// Register Repositories
+di.register(() => new EventsRepository(di.resolve(Database).db))
+
+// Register Services
+di.register(() => new EventsService(di.resolve(EventsRepository)))
+
+const server = new Server()
+
+server.routes([
+    new EventsRouter(di)
+])
+
+server.listen(3000)
