@@ -1,0 +1,19 @@
+{
+	"name": "Node.js & TypeScript",
+	"dockerComposeFile": [
+		"../docker-compose.yml",
+		"docker-compose.yml"
+	],
+	"service": "api",
+	"workspaceFolder": "/workspace",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"GitHub.copilot",
+				"dbaeumer.vscode-eslint",
+				"whizkydee.material-palenight-theme",
+				"vscodevim.vim"
+			]
+		}
+	}
+}

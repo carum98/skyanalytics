@@ -1,0 +1,8 @@
+services:
+  api:
+    build: 
+      context: .
+      dockerfile: .devcontainer/Dockerfile
+    command: npm run dev
+    volumes:
+      - .:/workspace:cached
