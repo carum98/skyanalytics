@@ -1,17 +1,18 @@
-import mysql from 'mysql2/promise'
 import databaseConfig from 'config/database.config'
-import { MySql2Database, drizzle } from 'drizzle-orm/mysql2'
+
+import { NodePgDatabase, drizzle } from 'drizzle-orm/node-postgres'
+import pg from 'pg'
 
 export class Database {
-    private readonly _db: MySql2Database
+    private readonly _db: NodePgDatabase
 
     constructor () {
-        const poolConnection = mysql.createPool(databaseConfig)
+        const poolConnection = new pg.Pool(databaseConfig)
 
         this._db = drizzle(poolConnection)
     }
 
-    public get db (): MySql2Database {
+    public get db (): NodePgDatabase {
         return this._db
     }
 }

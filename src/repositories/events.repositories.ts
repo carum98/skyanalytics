@@ -1,8 +1,8 @@
-import { MySql2Database } from 'drizzle-orm/mysql2'
+import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { events } from 'src/schemas/events.schemas'
 
 export class EventsRepository {
-    constructor (private db: MySql2Database) {}
+    constructor (private db: NodePgDatabase) {}
 
     public async getAll(): Promise<any> {
         const data = await this.db.select().from(events)
@@ -12,9 +12,7 @@ export class EventsRepository {
         return data
     }
 
-    public async create(params: any): Promise<void> {
-        const data = await this.db.insert(events).values(params)
-
-        console.log(data)
+    public async create(params: any): Promise<any> {
+        return await this.db.insert(events).values(params).returning()
     }
 }

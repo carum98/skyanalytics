@@ -16,19 +16,18 @@ services:
       - DB_USER=${DB_USER}
   
   db:
-    image: mysql:9.0.0
+    image: postgres:16-alpine
     container_name: skyanalytics-db
     ports:
-      - 4462:3306
+      - 5432:5432
     volumes:
-      - ./.db:/var/lib/mysql
+      - ./.db:/var/lib/postgresql/data
     networks:
       - skyanalytics-network
     environment:
-      - MYSQL_DATABASE=${DB_DATABASE}
-      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
-      - MYSQL_USER=${DB_USER}
-      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
 
 networks:
   skyanalytics-network:

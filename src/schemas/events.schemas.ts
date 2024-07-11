@@ -1,6 +1,6 @@
-import { mysqlTable, serial, varchar } from 'drizzle-orm/mysql-core'
+import { pgTable, serial, varchar } from 'drizzle-orm/pg-core'
 
-export const events = mysqlTable('events', {
+export const events = pgTable('events', {
     id: serial('id').primaryKey(),
     name: varchar('name', { length: 100 })
 })

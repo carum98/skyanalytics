@@ -8,8 +8,6 @@ export class EventsService {
     }
 
     public async create(params: any): Promise<Object> {
-        await this.eventsRepository.create(params)
-
-        return params
+        return this.eventsRepository.create(params)
     }
 }
