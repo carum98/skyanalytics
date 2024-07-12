@@ -8,6 +8,9 @@ import { EventsService } from '@services/events.service'
 import { EventsRouter } from '@routes/events.routes'
 import { SendRouter } from '@routes/send.routes'
 import { errorMiddleware } from '@middlewares/error.middleware'
+import { SourcesRouter } from '@routes/sources.routes'
+import { SourcesRepository } from '@repositories/sources.repository'
+import { SourcesService } from '@services/sources.service'
 
 const di = DepencyInjection.getInstance()
 
@@ -16,15 +19,18 @@ di.register(() => new Database())
 
 // Register Repositories
 di.register(() => new EventsRepository(di.resolve(Database).db))
+di.register(() => new SourcesRepository(di.resolve(Database).db))
 
 // Register Services
 di.register(() => new EventsService(di.resolve(EventsRepository)))
+di.register(() => new SourcesService(di.resolve(SourcesRepository)))
 
 const server = new Server()
 
 server.routes([
     new EventsRouter(di),
-    new SendRouter(di)
+    new SendRouter(di),
+    new SourcesRouter(di)
 ])
 
 server.middleware(errorMiddleware)
