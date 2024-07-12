@@ -7,8 +7,6 @@ export class EventsRepository {
     public async getAll(): Promise<any> {
         const data = await this.db.select().from(events)
 
-        console.log(data)
-
         return data
     }
 
