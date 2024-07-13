@@ -3,6 +3,7 @@ import { and, asc, desc, isNull, like, or, sql, SQL } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { getTableConfig, PgColumn, PgSelect, PgTable } from 'drizzle-orm/pg-core'
 import { Filter, queryFiltersSQL } from './query-filters.core'
+import { DatabaseError } from '@utils/errors'
 
 interface RepositoryCoreParams {
     db: NodePgDatabase
@@ -81,8 +82,10 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
             )
         }
 
-        const data = await this.query({ where, per_page, offset, sort_by, sort_order, filters })
-        const total = await this.count({ where, filters })
+        const [data, total] = await Promise.all([
+            await this.query({ where, per_page, offset, sort_by, sort_order, filters }),
+            await this.count({ where, filters })
+        ])
 
         return {
             data,
@@ -99,43 +102,81 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
      * Get one data from the database based on the given [Where] clause 
      */
     protected async getOneCore ({ where }: { where: Where }): Promise<TSelect> {
-        const data = await this.query({ where, per_page: 1 })
+        try {
+            const data = await this.query({ where })
 
-        if (data.length === 0) {
-            throw new Error(`${this.table_name} not found`)
+            if (data.length === 0) {
+                throw DatabaseError.fromMessage('Not Found', 404)
+            }
+
+            return data.at(0) as TSelect
+        } catch (error) {
+            throw (error instanceof Error)
+                ? new DatabaseError(error)
+                : error   
         }
-
-        return data.at(0) as TSelect
     }
 
     /**
      * Update the data from the database based on the given [UpdateParams] 
      */
     protected async updateCore ({ where, params }: UpdateParams<TUpdate>): Promise<TSelect> {
-        const data = await this.db.update(this.table)
-            .set(params)
-            .where(and(where, isNull(this.deleted_column)))
-            .returning()
+        try {
+            const data = await this.db.update(this.table)
+                .set(params)
+                .where(and(where, isNull(this.deleted_column)))
+                .returning()
 
-        return data[0] as TSelect
+            if (data.length === 0) {
+                throw DatabaseError.fromMessage('Not Updated', 404)
+            }
+
+            return data.at(0) as TSelect
+        } catch (error) {
+            throw (error instanceof Error)
+                ? new DatabaseError(error)
+                : error
+        }
     }
 
     /**
      * Insert into the database based on the given [InsertParams]
      */
     protected async insertCore ({ params }: InsertParams<TInsert>): Promise<TSelect> {
-        const data = await this.db.insert(this.table).values([params]).returning()
+        try {
+            const data = await this.db.insert(this.table)
+                .values([params])
+                .returning()
 
-        return data[0] as TSelect
+            if (data.length === 0) {
+                throw DatabaseError.fromMessage('Not Created', 404)
+            }
+    
+            return data.at(0) as TSelect
+        } catch (error) {
+            throw (error instanceof Error)
+                ? new DatabaseError(error)
+                : error
+        }
     }
 
     protected async deleteCore (where: Where): Promise<TSelect> {
-        const data = await this.db.update(this.table)
-            .set({ deleted_at: sql`CURRENT_TIMESTAMP` })
-            .where(and(where, isNull(this.deleted_column)))
-            .returning()
+        try {
+            const data = await this.db.update(this.table)
+                .set({ deleted_at: sql`CURRENT_TIMESTAMP` })
+                .where(and(where, isNull(this.deleted_column)))
+                .returning()
 
-        return data[0] as TSelect
+            if (data.length === 0) {
+                throw DatabaseError.fromMessage('Not Deleted', 404)
+            }
+
+            return data.at(0) as TSelect
+        } catch (error) {
+            throw (error instanceof Error)
+                ? new DatabaseError(error)
+                : error 
+        }
     }
 
     /**
@@ -196,7 +237,7 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
         delete config.where
 
         // Return the data
-        return data as unknown as TSelect[]
+        return data as TSelect[]
     }
 
     /**

@@ -12,3 +12,9 @@
 ## Status: `500 Internal Server Error`
 - `{"error": "Internal Server Error."}`
 
+## Status: `404 Not Found`
+- `{"error": "Not Found."}`
+- `{"error": "Not Updated."}`
+- `{"error": "Not Deleted."}`
+- `{"error": "Not Created."}`
+

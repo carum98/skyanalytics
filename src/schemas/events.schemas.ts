@@ -17,7 +17,7 @@ export const events = pgTable('events', {
 
 // Schemas
 export const insertEventsSchema = createInsertSchema(events)
-    .pick({ name: true })
+    .pick({ name: true, source_id: true })
     .required()
 
 export const selectEventsSchema = createSelectSchema(events)

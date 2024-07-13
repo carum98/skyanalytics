@@ -46,9 +46,35 @@ export class NotImplementedError extends HttpError {
   }
 }
 
+interface DrizzleDatabaseError extends Error {
+  code: string
+  detail: string
+  table: string
+}
+
 // Database
-export class DatabaseError extends Error {
-  constructor(public message: string) {
-    super(message);
+export class DatabaseError {
+  public readonly error: DrizzleDatabaseError
+
+  constructor(error: Error, public readonly status: number = 500) {
+    this.error = error as DrizzleDatabaseError
+  }
+
+  static fromMessage(message: string, status: number) {
+    return new DatabaseError(new Error(message), status)
+  }
+
+  get message() {
+    switch (this.error.code) {
+      case '23503': // Foreign key violation
+        const match = this.error.detail.match(/Key \((.*?)\)=.*? is not present in table "(.*?)"\./)
+        if (match) {
+          return `${match[1]} not found`
+        } else {
+          return 'Foreign key violation'
+        }
+      default:
+        return this.error.message || 'Database error'
+    }
   }
 }
