@@ -6,15 +6,15 @@ import { z } from 'zod'
 export const sources = pgTable('sources', {
     id: serial('id').primaryKey(),
     name: varchar('name', { length: 100 }),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at").notNull().$onUpdate(() => new Date()),
+    created_at: timestamp("created_at").notNull().defaultNow(),
+    updated_at: timestamp("updated_at").notNull().$onUpdate(() => new Date()),
+    deleted_at: timestamp("deleted_at"),
 })
 
 // Schemas
 export const insertSourcesSchema = createInsertSchema(sources)
-    .omit({ id: true, createdAt: true, updatedAt: true })
+    .pick({ name: true })
     .required()
-
 
 export const selectSourcesSchema = createSelectSchema(sources)
 

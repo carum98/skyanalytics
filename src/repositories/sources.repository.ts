@@ -1,29 +1,49 @@
+import { RepositoryCore } from '@core/repository.core'
 import { eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { sources, SelectSourcesSchema, InsertSourcesSchema } from 'src/schemas/sources.schemas'
 
-export class SourcesRepository {
-    constructor (private db: NodePgDatabase) {}
+export class SourcesRepository extends RepositoryCore<SelectSourcesSchema, InsertSourcesSchema, InsertSourcesSchema> {
+    constructor (public readonly db: NodePgDatabase) {
+        const table = sources
 
-    public async getAll(): Promise<SelectSourcesSchema[]> {
-        const data = await this.db.select().from(sources)
+        const select = db.select().from(table)
 
-        return data
+        super({ db, table, select })
     }
 
-    public async create(params: InsertSourcesSchema): Promise<SelectSourcesSchema | undefined> {
-        const data = await this.db.insert(sources).values(params).returning()
-
-        return data.at(0)
+    public async getAll() {
+        return this.getAllCore({
+            query: {
+                page: 1,
+                per_page: 10,
+                sort_by: 'id',
+                sort_order: 'asc'
+            },
+            where: undefined
+        })
     }
 
-    public async update(id: number, params: InsertSourcesSchema): Promise<SelectSourcesSchema | undefined> {
-        const data = await this.db.update(sources).set(params).where(eq(sources.id, id)).returning()
+    public async get(id: number) {
+        return this.getOneCore({
+            where: eq(sources.id, id)
+        })
+    }
 
-        return data.at(0)
+    public async create(params: InsertSourcesSchema) {
+        return this.insertCore({
+            params
+        })
+    }
+
+    public async update(id: number, params: InsertSourcesSchema) {
+        return this.updateCore({
+            where: eq(sources.id, id),
+            params
+        })
     }
 
     public async delete(id: number): Promise<void> {
-        await this.db.delete(sources).where(eq(sources.id, id))
+        await this.deleteCore(eq(sources.id, id))
     }
 }

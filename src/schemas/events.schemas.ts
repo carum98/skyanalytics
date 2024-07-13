@@ -7,16 +7,17 @@ import { sources } from './sources.schemas'
 export const events = pgTable('events', {
     id: serial('id').primaryKey(),
     name: varchar('name', { length: 100 }),
-    sourceId: integer('source_id').references(() => sources.id),
-    createdAt: timestamp("created_at").notNull().defaultNow(),
-    updatedAt: timestamp("updated_at").notNull().$onUpdate(() => new Date()),
+    source_id: integer('source_id').references(() => sources.id),
+    created_at: timestamp("created_at").notNull().defaultNow(),
+    updated_at: timestamp("updated_at").notNull().$onUpdate(() => new Date()),
+    deleted_at: timestamp("deleted_at"),
 }, (table) => ({
-    source_id: index('source_id').on(table.sourceId),
+    source_id: index('source_id').on(table.source_id),
 }))
 
 // Schemas
 export const insertEventsSchema = createInsertSchema(events)
-    .omit({ id: true, createdAt: true, updatedAt: true })
+    .pick({ name: true })
     .required()
 
 export const selectEventsSchema = createSelectSchema(events)
