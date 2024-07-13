@@ -4,7 +4,7 @@ import { RouterCore } from '@core/router.core'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { sessionMiddleware } from '@middlewares/session.middleware'
 import { EventsService } from '@services/events.service'
-import { insertEventsSchema } from 'src/schemas/events.schemas'
+import { insertEventsSchema } from '@schemas/events.schemas'
 
 export class SendRouter extends RouterCore {
     constructor(di: DepencyInjection) {

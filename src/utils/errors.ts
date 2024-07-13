@@ -45,3 +45,10 @@ export class NotImplementedError extends HttpError {
     super(501, message);
   }
 }
+
+// Database
+export class DatabaseError extends Error {
+  constructor(public message: string) {
+    super(message);
+  }
+}

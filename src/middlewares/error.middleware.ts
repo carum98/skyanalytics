@@ -8,6 +8,7 @@ export function errorMiddleware (err: Error, _req: Request, res: Response, next:
     } else if (err instanceof HttpError) {
         res.status(err.status).json({ message: err.message })
     } else {
+        console.log(typeof err)
         res.status(500).json({ message: 'Internal server error' })
     }
 }
