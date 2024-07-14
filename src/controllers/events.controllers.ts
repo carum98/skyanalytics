@@ -39,10 +39,10 @@ export class EventsController {
     }
 
     public delete = async (req: Request, res: Response) => {
-        const id = req.params.id
+        const data = await this.service.delete(parseInt(req.params.id))
 
-        const data = await this.service.delete(parseInt(id))
-
-        res.json(data)
+        if (data) {
+            res.status(204).json()
+        }
     }
 }

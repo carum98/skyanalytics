@@ -168,20 +168,19 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
         }
     }
 
-    protected async deleteCore (where: Where): Promise<TSelect> {
+    protected async deleteCore (where: Where): Promise<boolean> {
         try {
             const data = await this.db.update(this.table)
                 .set({ deleted_at: sql`CURRENT_TIMESTAMP` })
                 .where(and(where, isNull(this.deleted_column)))
-                .returning({ id: this.id_column })
 
-            if (data.length === 0) {
+            console.log(data.rowCount)
+
+            if (data.rowCount === 0) {
                 throw DatabaseError.fromMessage('Not Deleted', 404)
             }
 
-            return this.getOneCore({ 
-                where: eq(this.id_column, data.at(0)?.id) 
-            })
+            return true
         } catch (error) {
             throw (error instanceof Error)
                 ? new DatabaseError(error)

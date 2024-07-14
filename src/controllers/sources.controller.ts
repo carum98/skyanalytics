@@ -29,7 +29,10 @@ export class SourcesController {
     }
 
     delete = async (req: Request, res: Response): Promise<void> => {
-        await this.service.delete(parseInt(req.params.id))
-        res.json({ message: 'Source deleted' })
+        const data = await this.service.delete(parseInt(req.params.id))
+
+        if (data) {
+            res.status(204).json()
+        }
     }
 }

@@ -58,8 +58,6 @@ export class EventsRepository extends RepositoryCore<SelectEventsSchema, InsertE
     }
 
     public async delete(id: number) {
-        const data = await this.deleteCore(eq(events.id, id))
-
-        return selectEventsSchema.parse(data)
+        return this.deleteCore(eq(events.id, id))
     }
 }

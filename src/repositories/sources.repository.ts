@@ -51,8 +51,6 @@ export class SourcesRepository extends RepositoryCore<SelectSourcesSchema, Inser
     }
 
     public async delete(id: number) {
-        const data = await this.deleteCore(eq(sources.id, id))
-
-        return selectSourcesSchema.parse(data)
+        return this.deleteCore(eq(sources.id, id))
     }
 }
