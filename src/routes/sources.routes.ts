@@ -3,6 +3,7 @@ import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { SourcesService } from '@services/sources.service'
+import { PaginationSchema } from '@utils/pagination'
 import { insertSourcesSchema } from 'src/schemas/sources.schemas'
 
 export class SourcesRouter extends RouterCore {
@@ -16,7 +17,12 @@ export class SourcesRouter extends RouterCore {
 
         this.get({
             name: '/',
-            handler: controller.getAll
+            handler: controller.getAll,
+            middlewares: [
+                requestMiddleware({
+                    query: PaginationSchema
+                })
+            ]
         })
 
         this.post({
@@ -27,6 +33,11 @@ export class SourcesRouter extends RouterCore {
                     body: insertSourcesSchema
                 })
             ]
+        })
+
+        this.get({
+            name: '/:id',
+            handler: controller.get
         })
 
         this.put({

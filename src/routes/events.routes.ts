@@ -4,6 +4,7 @@ import { RouterCore } from '@core/router.core'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { insertEventsSchema } from '@schemas/events.schemas'
 import { EventsService } from '@services/events.service'
+import { PaginationSchema } from '@utils/pagination'
 
 export class EventsRouter extends RouterCore {
     constructor(di: DepencyInjection) {
@@ -16,7 +17,12 @@ export class EventsRouter extends RouterCore {
 
         this.get({
             name: '/',
-            handler: controller.getAll
+            handler: controller.getAll,
+            middlewares: [
+                requestMiddleware({
+                    query: PaginationSchema
+                })
+            ]
         })
 
         this.post({

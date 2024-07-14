@@ -3,6 +3,7 @@ import { DatabaseError, HttpError } from '@utils/errors'
 import { ZodError } from 'zod'
 
 export function errorMiddleware (err: Error, _req: Request, res: Response, next: NextFunction): void {
+    console.log(err)
     if (err instanceof ZodError) {
         res.status(500).json({ message: 'Internal typed error' })
     } else if (err instanceof HttpError) {

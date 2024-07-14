@@ -1,10 +1,15 @@
 import { SourcesRepository } from '@repositories/sources.repository'
+import { PaginationSchemaType } from '@utils/pagination'
 
 export class SourcesService {
     constructor(private eventsRepository: SourcesRepository) {}
 
-    public async getAll() {
-        return this.eventsRepository.getAll()
+    public async getAll(query: PaginationSchemaType) {
+        return this.eventsRepository.getAll(query)
+    }
+
+    public async get(id: number) {
+        return this.eventsRepository.get(id)
     }
 
     public async create(data: any) {

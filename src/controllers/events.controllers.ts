@@ -1,11 +1,14 @@
 import { Request, Response } from 'express'
 import { EventsService } from '@services/events.service'
+import { PaginationSchemaType } from '@utils/pagination'
 
 export class EventsController {
     constructor(private service: EventsService) {}
 
     public getAll = async (req: Request, res: Response) => {
-        const data = await this.service.getAll()
+        const query = req.query as unknown as PaginationSchemaType
+        
+        const data = await this.service.getAll(query)
 
         res.json(data)
     }

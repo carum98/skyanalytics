@@ -1,5 +1,5 @@
 import { PaginationSchemaType, ResponsePaginationSchemaType } from '@utils/pagination'
-import { and, asc, desc, isNull, like, or, sql, SQL } from 'drizzle-orm'
+import { and, asc, desc, eq, isNull, like, or, sql, SQL } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { getTableConfig, PgColumn, PgSelect, PgTable } from 'drizzle-orm/pg-core'
 import { Filter, queryFiltersSQL } from './query-filters.core'
@@ -45,7 +45,9 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
     protected readonly select: PgSelect
     protected readonly search_columns?: PgColumn[]
     protected readonly table_name: string
+
     protected readonly deleted_column: PgColumn
+    protected readonly id_column: PgColumn
 
     constructor (data: RepositoryCoreParams) {
         this.db = data.db
@@ -55,12 +57,14 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
 
         const { columns, name } = getTableConfig(this.table)
 
+        this.table_name = name
         this.columns = columns
 
         const deleted_column = this.columns.find((column) => column.name === 'deleted_at')
+        const id_column = this.columns.find((column) => column.name === 'id')
 
         this.deleted_column = deleted_column as PgColumn 
-        this.table_name = name
+        this.id_column = id_column as PgColumn
     }
 
     /**
@@ -125,13 +129,15 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
             const data = await this.db.update(this.table)
                 .set(params)
                 .where(and(where, isNull(this.deleted_column)))
-                .returning()
+                .returning({ id: this.id_column })
 
             if (data.length === 0) {
                 throw DatabaseError.fromMessage('Not Updated', 404)
             }
 
-            return data.at(0) as TSelect
+            return this.getOneCore({ 
+                where: eq(this.id_column, data.at(0)?.id) 
+            })
         } catch (error) {
             throw (error instanceof Error)
                 ? new DatabaseError(error)
@@ -146,13 +152,15 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
         try {
             const data = await this.db.insert(this.table)
                 .values([params])
-                .returning()
+                .returning({ id: this.id_column })
 
             if (data.length === 0) {
                 throw DatabaseError.fromMessage('Not Created', 404)
             }
     
-            return data.at(0) as TSelect
+            return this.getOneCore({ 
+                where: eq(this.id_column, data.at(0)?.id) 
+            })
         } catch (error) {
             throw (error instanceof Error)
                 ? new DatabaseError(error)
@@ -165,13 +173,15 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
             const data = await this.db.update(this.table)
                 .set({ deleted_at: sql`CURRENT_TIMESTAMP` })
                 .where(and(where, isNull(this.deleted_column)))
-                .returning()
+                .returning({ id: this.id_column })
 
             if (data.length === 0) {
                 throw DatabaseError.fromMessage('Not Deleted', 404)
             }
 
-            return data.at(0) as TSelect
+            return this.getOneCore({ 
+                where: eq(this.id_column, data.at(0)?.id) 
+            })
         } catch (error) {
             throw (error instanceof Error)
                 ? new DatabaseError(error)

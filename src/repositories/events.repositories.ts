@@ -1,49 +1,65 @@
 import { RepositoryCore } from '@core/repository.core'
 import { eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
-import { events, InsertEventsSchema, SelectEventsSchema } from '@schemas/events.schemas'
+import { events, InsertEventsSchema, paginatedEventsSchema, selectEventsSchema, SelectEventsSchema } from '@schemas/events.schemas'
+import { PaginationSchemaType } from '@utils/pagination'
+import { sources } from '@schemas/sources.schemas'
 
 export class EventsRepository extends RepositoryCore<SelectEventsSchema, InsertEventsSchema, InsertEventsSchema>{
     constructor (public readonly db: NodePgDatabase) {
         const table = events
 
-        const select = db.select().from(table)
+        const select = db.select({
+            id: events.id,
+            name: events.name,
+            source: {
+                id: sources.id,
+                name: sources.name
+            }
+        })
+        .from(table)
+        .leftJoin(sources, eq(events.source_id, sources.id))
 
         super({ db, table, select })
     }
 
-    public async getAll() {
-        return this.getAllCore({
-            query: {
-                page: 1,
-                per_page: 10,
-                sort_by: 'id',
-                sort_order: 'asc'
-            },
+    public async getAll(query: PaginationSchemaType) {
+        const data = await this.getAllCore({
+            query: query,
             where: undefined
         })
+
+        return paginatedEventsSchema.parse(data)
     }
 
     public async get(id: number) {
-        return this.getOneCore({
+        const data = await this.getOneCore({
             where: eq(events.id, id)
         })
+
+        return selectEventsSchema.parse(data)
     }
 
     public async create(params: any) {
-        return this.insertCore({
+        const data = await this.insertCore({
             params
         })
+
+        return selectEventsSchema.parse(data)
     }
 
     public async update(id: number, params: any) {
-        return this.updateCore({
+        const data = await this.updateCore({
             where: eq(events.id, id),
             params
         })
+
+        return selectEventsSchema.parse(data)
     }
 
     public async delete(id: number) {
-        await this.deleteCore(eq(events.id, id))
+        const data = await this.deleteCore(eq(events.id, id))
+
+        return selectEventsSchema.parse(data)
     }
 }
