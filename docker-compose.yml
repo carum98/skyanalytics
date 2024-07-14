@@ -6,8 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: skyanalytics-api
-    ports:
-      - 3000:3000
+    # ports:
+    #   - 3000:3000
     networks:
       - skyanalytics-network
     depends_on:
@@ -30,6 +30,19 @@ services:
       - POSTGRES_DB=${DB_DATABASE}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
+  
+  nginx:
+    image: nginx:alpine
+    container_name: skyanalytics-nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - skyanalytics-network
+    depends_on:
+      - api
+      - db
 
 networks:
   skyanalytics-network:

@@ -8,6 +8,7 @@ export class Server {
         this.app = express()
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: true }))
+        this.app.set('trust proxy', true)
 
         console.log('Server initialized')
     }
