@@ -2,10 +2,9 @@
   "name": "skyanalytics",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "dev": "node --import=tsx --watch ./src/index.ts",
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "start": "node ./dist/src/index.js",
     "db:generate": "drizzle-kit generate --config ./config/drizzle.config.ts",
     "db:drop": "drizzle-kit drop --config ./config/drizzle.config.ts",
@@ -26,6 +25,7 @@
     "@types/express": "4.17.21",
     "@types/pg": "8.11.6",
     "drizzle-kit": "0.22.8",
+    "tsc-alias": "1.8.10",
     "tsx": "4.16.2"
   }
 }

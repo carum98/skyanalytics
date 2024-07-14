@@ -6,3 +6,4 @@ services:
     command: npm run dev
     volumes:
       - .:/workspace:cached
+      - /workspace/node_modules
