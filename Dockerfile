@@ -4,6 +4,7 @@ FROM node:22.2.0-alpine3.20 as builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install -D typescript
+RUN npm run download-geo-db
 RUN npm install && npm cache clean --force
 
 COPY . .

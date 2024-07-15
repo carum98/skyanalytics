@@ -15,10 +15,14 @@ export class EventsController {
 
     public create = async (req: Request, res: Response) => {
         const params = req.body
+        const session = (req as any).session
 
-        const data = await this.service.create(params)
+        // const data = await this.service.create(params)
 
-        res.json(data)
+        res.json({
+            params,
+            session
+        })
     }
 
     public get = async (req: Request, res: Response) => {

@@ -5,12 +5,13 @@ import { requestMiddleware } from '@middlewares/request.middleware'
 import { sessionMiddleware } from '@middlewares/session.middleware'
 import { EventsService } from '@services/events.service'
 import { insertEventsSchema } from '@schemas/events.schemas'
+import { Database } from '@core/database.core'
 
 export class SendRouter extends RouterCore {
     constructor(di: DepencyInjection) {
         super({
             path: '/send',
-            middlewares: [sessionMiddleware]
+            middlewares: [sessionMiddleware(di.resolve(Database).db)]
         })
 
         const service = di.resolve(EventsService)
@@ -20,9 +21,9 @@ export class SendRouter extends RouterCore {
             name: '/',
             handler: controller.create,
             middlewares: [
-                requestMiddleware({
-                    body: insertEventsSchema
-                })
+                // requestMiddleware({
+                //     body: insertEventsSchema
+                // })
             ]
         })
     }

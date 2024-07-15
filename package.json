@@ -9,7 +9,8 @@
     "db:generate": "drizzle-kit generate --config ./config/drizzle.config.ts",
     "db:drop": "drizzle-kit drop --config ./config/drizzle.config.ts",
     "db:push": "drizzle-kit push --config ./config/drizzle.config.ts",
-    "db:studio": "npx drizzle-kit studio --port 8081 --verbose --config ./config/drizzle.config.ts"
+    "db:studio": "npx drizzle-kit studio --port 8081 --verbose --config ./config/drizzle.config.ts",
+    "download-geo-db": "tsx ./scripts/download-geo-db.ts"
   },
   "author": "",
   "license": "ISC",
@@ -18,13 +19,16 @@
     "drizzle-orm": "0.31.4",
     "drizzle-zod": "0.5.1",
     "express": "4.19.2",
+    "maxmind": "4.3.20",
     "pg": "8.12.0",
     "zod": "3.23.8"
   },
   "devDependencies": {
     "@types/express": "4.17.21",
     "@types/pg": "8.11.6",
+    "@types/tar": "6.1.13",
     "drizzle-kit": "0.22.8",
+    "tar": "7.4.0",
     "tsc-alias": "1.8.10",
     "tsx": "4.16.2"
   }
