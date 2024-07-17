@@ -25,7 +25,7 @@ export function sessionMiddleware(db: NodePgDatabase) {
 
         const ip = req.ip as string
 
-        const result = lookup.get('190.171.102.94')
+        const result = lookup.get(ip)
 
         const session: SessionData = {
           ip,
