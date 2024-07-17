@@ -40,7 +40,7 @@ export class EventsRepository extends RepositoryCore<SelectEventsSchema, InsertE
         return selectEventsSchema.parse(data)
     }
 
-    public async create(params: any) {
+    public async create(params: InsertEventsSchema) {
         const data = await this.insertCore({
             params
         })

@@ -1,0 +1,126 @@
+name: Deploy to Production
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    environment: Production
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v4
+
+    - name: Docker Login
+      uses: docker/login-action@v3.0.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.TOKEN_DEPLOY }}
+        logout: true
+    
+    - name: Build the Docker image
+      run: docker build . --tag ghcr.io/${{ GITHUB_ACTOR }}/skyanalytics-api:${{ github.ref_name }}
+
+    - name: Send to registry
+      run: docker push ghcr.io/${{ GITHUB_ACTOR }}/skyanalytics-api:${{ github.ref_name }}
+
+  pull-image:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    environment: Production
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v4
+
+    - name: Pull the image
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.TOKEN_DEPLOY }} &&
+          docker pull ghcr.io/${{ GITHUB_ACTOR }}/skyanalytics-api:${{ github.ref_name }}
+
+  docker-compose-files:
+    runs-on: ubuntu-latest
+    environment: Production
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v4
+
+    - name: Create folder
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          mkdir -p ~/analytics
+
+    - name: Copy docker-compose.yml
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        source: "docker-compose.yml"
+        target: "~/analytics"
+
+    - name: Create docker-compose override
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          echo -e "services:\n  api:\n    image: ghcr.io/${{ GITHUB_ACTOR }}/skyanalytics-api:${{ github.ref_name }}" > ~/analytics/docker-compose.override.yml
+
+  docker-compose-up:
+    runs-on: ubuntu-latest
+    needs: [pull-image, docker-compose-files]
+    environment: Production
+
+    steps:
+    - name: Start the containers
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          cd ~/analytics &&
+          # Check if the container is running
+          if [ "$(docker ps -q -f name=skyanalytics-api)" ]; then
+            # Stop the container
+            docker compose down
+          fi &&
+          # Start the container
+          docker compose -f docker-compose.yml -f docker-compose.override.yml --env-file .env up -d
+
+  database-migration:
+    runs-on: ubuntu-latest
+    needs: docker-compose-up
+    environment: Production
+
+    steps:
+    - name: Run database migration
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          docker exec skyanalytics-api sh -c 'cd dist && node -e "require(\"./scripts/database-migrations.js\").init()"'

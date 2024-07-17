@@ -1,4 +1,5 @@
 import { EventsRepository } from '@repositories/events.repositories'
+import { InsertEventsSchema } from '@schemas/events.schemas'
 import { PaginationSchemaType } from '@utils/pagination'
 
 export class EventsService {
@@ -8,7 +9,7 @@ export class EventsService {
         return this.eventsRepository.getAll(query)
     }
 
-    public async create(params: any) {
+    public async create(params: InsertEventsSchema) {
         return this.eventsRepository.create(params)
     }
 

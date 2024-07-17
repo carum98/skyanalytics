@@ -1,9 +1,12 @@
 import { Request, Response } from 'express'
 import { EventsService } from '@services/events.service'
 import { PaginationSchemaType } from '@utils/pagination'
+import { SessionData } from '@middlewares/session.middleware'
+import { InsertEventsSchema } from '@schemas/events.schemas'
+import { SessionService } from '@services/sessions.service'
 
 export class EventsController {
-    constructor(private service: EventsService) {}
+    constructor(private service: EventsService, private serviceSession?: SessionService) {}
 
     public getAll = async (req: Request, res: Response) => {
         const query = req.query as unknown as PaginationSchemaType
@@ -14,13 +17,20 @@ export class EventsController {
     }
 
     public create = async (req: Request, res: Response) => {
-        const params = req.body
-        const session = (req as any).session
+        const params = req.body as InsertEventsSchema
+        const sessionData = (req as any).session as SessionData
 
-        // const data = await this.service.create(params)
+        const event = await this.service.create(params)
+        const session = await this.serviceSession?.create({
+            ip: sessionData.ip,
+            city: sessionData.city,
+            country: sessionData.country,
+            lat: sessionData.lat,
+            lon: sessionData.lon,
+        })
 
         res.json({
-            params,
+            event,
             session
         })
     }

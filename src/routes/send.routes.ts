@@ -6,6 +6,7 @@ import { sessionMiddleware } from '@middlewares/session.middleware'
 import { EventsService } from '@services/events.service'
 import { insertEventsSchema } from '@schemas/events.schemas'
 import { Database } from '@core/database.core'
+import { SessionService } from '@services/sessions.service'
 
 export class SendRouter extends RouterCore {
     constructor(di: DepencyInjection) {
@@ -14,16 +15,17 @@ export class SendRouter extends RouterCore {
             middlewares: [sessionMiddleware(di.resolve(Database).db)]
         })
 
-        const service = di.resolve(EventsService)
-        const controller = new EventsController(service)
+        const events = di.resolve(EventsService)
+        const session = di.resolve(SessionService)
+        const controller = new EventsController(events, session)
 
         this.post({
             name: '/',
             handler: controller.create,
             middlewares: [
-                // requestMiddleware({
-                //     body: insertEventsSchema
-                // })
+                requestMiddleware({
+                    body: insertEventsSchema
+                })
             ]
         })
     }

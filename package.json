@@ -10,6 +10,7 @@
     "db:drop": "drizzle-kit drop --config ./config/drizzle.config.ts",
     "db:push": "drizzle-kit push --config ./config/drizzle.config.ts",
     "db:studio": "npx drizzle-kit studio --port 8081 --verbose --config ./config/drizzle.config.ts",
+    "db:migrate": "tsx -e \"require('./scripts/database-migrations.ts').init()\"",
     "download-geo-db": "tsx ./scripts/download-geo-db.ts"
   },
   "author": "",
