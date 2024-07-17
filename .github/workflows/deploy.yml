@@ -107,7 +107,7 @@ jobs:
             docker compose down
           fi &&
           # Start the container
-          docker compose -f docker-compose.yml -f docker-compose.override.yml --env-file .env up -d
+          docker compose -f docker-compose.yml -f docker-compose.override.yml -e DB_DATABASE=$DB_DATABASE -e DB_USER=$DB_USER -e DB_PASSWORD=$DB_PASSWORD up -d
 
   database-migration:
     runs-on: ubuntu-latest
