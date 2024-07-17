@@ -23,10 +23,10 @@ jobs:
         logout: true
     
     - name: Build the Docker image
-      run: docker build . --tag ghcr.io/${{ GITHUB_ACTOR }}/skyanalytics-api:${{ github.ref_name }}
+      run: docker build . --tag ghcr.io/${{ github.actor }}/skyanalytics-api:${{ github.ref_name }}
 
     - name: Send to registry
-      run: docker push ghcr.io/${{ GITHUB_ACTOR }}/skyanalytics-api:${{ github.ref_name }}
+      run: docker push ghcr.io/${{ github.actor }}/skyanalytics-api:${{ github.ref_name }}
 
   pull-image:
     runs-on: ubuntu-latest
@@ -46,7 +46,7 @@ jobs:
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
           docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.TOKEN_DEPLOY }} &&
-          docker pull ghcr.io/${{ GITHUB_ACTOR }}/skyanalytics-api:${{ github.ref_name }}
+          docker pull ghcr.io/${{ github.actor }}/skyanalytics-api:${{ github.ref_name }}
 
   docker-compose-files:
     runs-on: ubuntu-latest
@@ -84,7 +84,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
-          echo -e "services:\n  api:\n    image: ghcr.io/${{ GITHUB_ACTOR }}/skyanalytics-api:${{ github.ref_name }}" > ~/analytics/docker-compose.override.yml
+          echo -e "services:\n  api:\n    image: ghcr.io/${{ github.actor }}/skyanalytics-api:${{ github.ref_name }}" > ~/analytics/docker-compose.override.yml
 
   docker-compose-up:
     runs-on: ubuntu-latest
