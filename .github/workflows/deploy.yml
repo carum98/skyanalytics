@@ -66,14 +66,14 @@ jobs:
         script: |
           mkdir -p ~/analytics
 
-    - name: Copy docker-compose.yml
+    - name: Copy docker-compose.yml and nginx.conf
       uses: appleboy/scp-action@master
       with:
         host: ${{ secrets.SSH_HOST }}
         port: ${{ secrets.SSH_PORT }}
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
-        source: "docker-compose.yml"
+        source: "docker-compose.yml,nginx.conf"
         target: "~/analytics"
 
     - name: Create docker-compose override
