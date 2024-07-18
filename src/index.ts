@@ -13,6 +13,9 @@ import { SourcesRepository } from '@repositories/sources.repository'
 import { SourcesService } from '@services/sources.service'
 import { SessionService } from '@services/sessions.service'
 import { SessionRepository } from '@repositories/sessions.repository'
+import { NavigationRepository } from '@repositories/navigations.repository'
+import { NavigationsService } from '@services/navigations.service'
+import { NavigationsRouter } from '@routes/navigations.routes'
 
 const di = DepencyInjection.getInstance()
 
@@ -23,18 +26,21 @@ di.register(() => new Database())
 di.register(() => new EventsRepository(di.resolve(Database).db))
 di.register(() => new SourcesRepository(di.resolve(Database).db))
 di.register(() => new SessionRepository(di.resolve(Database).db))
+di.register(() => new NavigationRepository(di.resolve(Database).db))
 
 // Register Services
 di.register(() => new EventsService(di.resolve(EventsRepository)))
 di.register(() => new SourcesService(di.resolve(SourcesRepository)))
 di.register(() => new SessionService(di.resolve(SessionRepository)))
+di.register(() => new NavigationsService(di.resolve(NavigationRepository)))
 
 const server = new Server()
 
 server.routes([
     new EventsRouter(di),
     new SendRouter(di),
-    new SourcesRouter(di)
+    new SourcesRouter(di),
+    new NavigationsRouter(di)
 ])
 
 server.middleware(errorMiddleware)

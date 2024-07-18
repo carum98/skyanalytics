@@ -3,7 +3,6 @@ import { eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { events, InsertEventsSchema, paginatedEventsSchema, selectEventsSchema, SelectEventsSchema } from '@schemas/events.schemas'
 import { PaginationSchemaType } from '@utils/pagination'
-import { sources } from '@schemas/sources.schemas'
 
 export class EventsRepository extends RepositoryCore<SelectEventsSchema, InsertEventsSchema, InsertEventsSchema>{
     constructor (public readonly db: NodePgDatabase) {
@@ -12,13 +11,8 @@ export class EventsRepository extends RepositoryCore<SelectEventsSchema, InsertE
         const select = db.select({
             id: events.id,
             name: events.name,
-            source: {
-                id: sources.id,
-                name: sources.name
-            }
         })
         .from(table)
-        .leftJoin(sources, eq(events.source_id, sources.id))
 
         super({ db, table, select })
     }

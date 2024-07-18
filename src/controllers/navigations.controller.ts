@@ -1,15 +1,23 @@
 import { Request, Response } from 'express'
-import { EventsService } from '@services/events.service'
+import { NavigationsService } from '@services/navigations.service'
 import { PaginationSchemaType } from '@utils/pagination'
-import { InsertEventsSchema } from '@schemas/events.schemas'
+import { InsertNavigationsSchema } from '@schemas/navigations.schemas'
 
-export class EventsController {
-    constructor(private service: EventsService) {}
+export class NavigationController {
+    constructor(private service: NavigationsService) {}
 
     public getAll = async (req: Request, res: Response) => {
         const query = req.query as unknown as PaginationSchemaType
         
         const data = await this.service.getAll(query)
+
+        res.json(data)
+    }
+
+    public get = async (req: Request, res: Response) => {
+        const id = req.params.id
+
+        const data = await this.service.get(parseInt(id))
 
         res.json(data)
     }
@@ -20,19 +28,11 @@ export class EventsController {
         const params = { 
             ...req.body,
             session_id
-         } as InsertEventsSchema
+         } as InsertNavigationsSchema
 
         const event = await this.service.create(params)
 
         res.json({ event })
-    }
-
-    public get = async (req: Request, res: Response) => {
-        const id = req.params.id
-
-        const data = await this.service.get(parseInt(id))
-
-        res.json(data)
     }
 
     public update = async (req: Request, res: Response) => {

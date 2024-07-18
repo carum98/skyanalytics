@@ -1,22 +1,22 @@
-import { EventsController } from '@controllers/events.controllers'
+import { NavigationController } from '@controllers/navigations.controller'
 import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { sessionMiddleware } from '@middlewares/session.middleware'
 import { headersSourceSchema, headerXRealIPSchema } from '@schemas/_headers'
-import { insertEventsSchema } from '@schemas/events.schemas'
-import { EventsService } from '@services/events.service'
+import { insertNavigationsSchema } from '@schemas/navigations.schemas'
+import { NavigationsService } from '@services/navigations.service'
 import { SessionService } from '@services/sessions.service'
 import { PaginationSchema } from '@utils/pagination'
 
-export class EventsRouter extends RouterCore {
+export class NavigationsRouter extends RouterCore {
     constructor(di: DepencyInjection) {
         super({
-            path: '/events'
+            path: '/navigations',
         })
 
-        const service = di.resolve(EventsService)
-        const controller = new EventsController(service)
+        const service = di.resolve(NavigationsService)
+        const controller = new NavigationController(service)
 
         this.get({
             name: '/',
@@ -34,7 +34,7 @@ export class EventsRouter extends RouterCore {
             middlewares: [
                 requestMiddleware({
                     headers: headerXRealIPSchema.merge(headersSourceSchema),
-                    body: insertEventsSchema.pick({ name: true })
+                    body: insertNavigationsSchema.pick({ name: true })
                 }),
                 sessionMiddleware(di.resolve(SessionService)),
             ]
@@ -50,7 +50,7 @@ export class EventsRouter extends RouterCore {
             handler: controller.update,
             middlewares: [
                 requestMiddleware({
-                    body: insertEventsSchema.partial()
+                    body: insertNavigationsSchema.partial()
                 })
             ]
         })

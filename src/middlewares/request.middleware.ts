@@ -5,6 +5,7 @@ interface IRequest {
     body?: AnyZodObject
     query?: AnyZodObject
     params?: AnyZodObject
+    headers?: AnyZodObject
 }
 
 interface IError {
@@ -14,9 +15,11 @@ interface IError {
     }>
 }
 
-export function requestMiddleware ({ body, query, params }: IRequest) {
+export function requestMiddleware ({ headers, body, query, params }: IRequest) {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
         try {
+            if (headers != null) req.headers = headers.parse(req.headers)
+            
             if (params != null) req.params = params.parse(req.params)
             if (body != null) req.body = body.parse(req.body)
             if (query != null) req.query = query.passthrough().parse(req.query)
