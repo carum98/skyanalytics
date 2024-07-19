@@ -7,4 +7,8 @@ export class SessionService {
     public async create(params: InsertSessionsSchema) {
         return this.sessionRepository.create(params)
     }
+
+    public async find(uuid: string) {
+        return this.sessionRepository.find(uuid)
+    }
 }

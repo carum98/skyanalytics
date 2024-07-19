@@ -6,6 +6,7 @@ import { sources } from './sources.schemas'
 // Database Schema
 export const sessions = pgTable('sessions', {
     id: serial('id').primaryKey(),
+    uuid: varchar('uuid', { length: 100 }).notNull().unique(),
     country: varchar('country', { length: 100 }),
     city: varchar('city', { length: 100 }),
     lat: varchar('lat', { length: 100 }),
