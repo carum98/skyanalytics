@@ -1,4 +1,5 @@
 import { SourcesRepository } from '@repositories/sources.repository'
+import { MetricsFilter } from '@schemas/_query'
 import { PaginationSchemaType } from '@utils/pagination'
 
 export class SourcesService {
@@ -22,5 +23,9 @@ export class SourcesService {
 
     public async delete(id: number) {
         return this.eventsRepository.delete(id)
+    }
+
+    public async getMetrics(id: number, filters: MetricsFilter) {
+        return this.eventsRepository.getMetrics(id, filters)
     }
 }

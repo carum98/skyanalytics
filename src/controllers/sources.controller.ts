@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { SourcesService } from '@services/sources.service'
 import { PaginationSchemaType } from '@utils/pagination'
+import { MetricsFilter } from '@schemas/_query'
 
 export class SourcesController {
     constructor(private service: SourcesService) {}
@@ -34,5 +35,12 @@ export class SourcesController {
         if (data) {
             res.status(204).json()
         }
+    }
+
+    getMetrics = async (req: Request, res: Response): Promise<void> => {
+        const query = req.query as unknown as MetricsFilter
+
+        const metrics = await this.service.getMetrics(parseInt(req.params.id), query)
+        res.json(metrics)
     }
 }
