@@ -10,12 +10,21 @@ import path from 'node:path'
 
 let lookup: Reader<CityResponse> | null = null
 
+declare module 'express-session' {
+    interface SessionData {
+      session_id: number
+    }
+}
+
 export function sessionMiddleware(service: SessionService) {
-    return async (req: Request, res: Response, next: NextFunction) => {
-        // Init Database lookup
-        if (lookup === null) {
-          const dir = path.join(process.cwd(), 'geo');
-          lookup = await maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
+    return async (req: Request, _res: Response, next: NextFunction) => {
+        // Get the session_id from the session
+        const session_id = req.session.session_id
+
+        if (session_id !== undefined) {
+          (req as any).session_id = session_id
+          next()
+          return
         }
 
         // Get information from Request
@@ -31,6 +40,12 @@ export function sessionMiddleware(service: SessionService) {
 
         // Create the session if it doesn't exist
         if (session === undefined) {
+          // Init Database lookup
+          if (lookup === null) {
+            const dir = path.join(process.cwd(), 'geo');
+            lookup = await maxmind.open(path.resolve(dir, 'GeoLite2-City.mmdb'));
+          }
+
           // Get the IP information
           const result = lookup.get(ip)
 
@@ -56,6 +71,7 @@ export function sessionMiddleware(service: SessionService) {
         };
 
         (req as any).session_id = session?.id
+        req.session.session_id = session?.id
     
         next()
     }

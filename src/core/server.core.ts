@@ -1,14 +1,21 @@
 import express, { ErrorRequestHandler, Express, RequestHandler } from 'express'
+
 import { RouterCore } from '@core/router.core'
+import { sessionConfig } from 'config/session.config'
+
+import session from 'express-session'
 
 export class Server {
     public readonly app: Express
 
     constructor () {
         this.app = express()
+
+        this.app.set('trust proxy', true)
+        this.app.use(session(sessionConfig))
+
         this.app.use(express.json())
         this.app.use(express.urlencoded({ extended: true }))
-        this.app.set('trust proxy', true)
 
         console.log('Server initialized')
     }
