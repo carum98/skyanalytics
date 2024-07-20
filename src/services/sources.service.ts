@@ -1,31 +1,68 @@
+import { EventsRepository } from '@repositories/events.repositories'
+import { NavigationRepository } from '@repositories/navigations.repository'
+import { SessionRepository } from '@repositories/sessions.repository'
 import { SourcesRepository } from '@repositories/sources.repository'
-import { MetricsFilter } from '@schemas/_query'
+import { MetricsFilter, StatsFilter } from '@schemas/_query'
 import { PaginationSchemaType } from '@utils/pagination'
 
 export class SourcesService {
-    constructor(private eventsRepository: SourcesRepository) {}
+    constructor(
+        private sourceRepository: SourcesRepository,
+        private sessionsRepository: SessionRepository,
+        private navigationsRepository: NavigationRepository,
+        private eventsRepository: EventsRepository
+    ) {}
 
     public async getAll(query: PaginationSchemaType) {
-        return this.eventsRepository.getAll(query)
+        return this.sourceRepository.getAll(query)
     }
 
     public async get(id: number) {
-        return this.eventsRepository.get(id)
+        return this.sourceRepository.get(id)
     }
 
     public async create(data: any) {
-        return this.eventsRepository.create(data)
+        return this.sourceRepository.create(data)
     }
 
     public async update(id: number, data: any) {
-        return this.eventsRepository.update(id, data)
+        return this.sourceRepository.update(id, data)
     }
 
     public async delete(id: number) {
-        return this.eventsRepository.delete(id)
+        return this.sourceRepository.delete(id)
     }
 
     public async getMetrics(id: number, filters: MetricsFilter) {
-        return this.eventsRepository.getMetrics(id, filters)
+        return this.navigationsRepository.getMetrics(id, filters)
+    }
+
+    public async getStats(id: number, filters: StatsFilter) {
+        let promises = []
+
+        if (filters.stats.some((stat) => ['os', 'software', 'country', 'location'].includes(stat))) {
+            promises.push(
+                this.sessionsRepository.getStats(id, filters)
+            )
+        }
+
+        if (filters.stats.includes('navigations')) {
+            promises.push(
+                this.navigationsRepository.getStats(id, filters)
+            )
+        }
+
+        if (filters.stats.includes('events')) {
+            promises.push(
+                this.eventsRepository.getStat(id, filters)
+            )
+        }
+
+        const data = await Promise.all(promises)
+
+        return data.reduce((acc, item) => ({
+            ...acc,
+            ...item
+        }), {})
     }
 }

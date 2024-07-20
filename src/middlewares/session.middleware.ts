@@ -46,9 +46,11 @@ export function sessionMiddleware(service: SessionService) {
             os,
             software,
             country: result?.country?.iso_code || null,
-            city: result?.city?.names?.en || null,
-            lat: result?.location?.latitude?.toString() || null,
-            lon: result?.location?.longitude?.toString() || null,
+            location: result?.location ? {
+              latitude: result.location.latitude,
+              longitude: result.location.longitude,
+              city: result.city?.names?.en || null
+            } : null,
             source_id: parseInt(source_id)
           })
         };
