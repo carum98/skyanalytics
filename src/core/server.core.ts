@@ -4,6 +4,7 @@ import { RouterCore } from '@core/router.core'
 import { sessionConfig } from 'config/session.config'
 
 import session from 'express-session'
+import cors from 'cors'
 
 export class Server {
     public readonly app: Express
@@ -12,6 +13,7 @@ export class Server {
         this.app = express()
 
         this.app.set('trust proxy', true)
+        this.app.use(cors())
         this.app.use(session(sessionConfig))
 
         this.app.use(express.json())
