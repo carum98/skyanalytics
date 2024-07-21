@@ -2,6 +2,7 @@ import { RepositoryCore } from '@core/repository.core'
 import { MetricsFilter, StatsFilter } from '@schemas/_query'
 import { InsertNavigationsSchema, navigations, paginatedNavigationsSchema, selectNavigationsSchema, SelectNavigationsSchema } from '@schemas/navigations.schemas'
 import { sessions } from '@schemas/sessions.schemas'
+import { sources } from '@schemas/sources.schemas'
 import { PaginationSchemaType } from '@utils/pagination'
 import { and, between, count, countDistinct, eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
@@ -57,31 +58,33 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
         return this.deleteCore(eq(navigations.id, id))
     }
 
-    public async getMetrics(id: number, filters: MetricsFilter) {
+    public async getMetrics(code: string, filters: MetricsFilter) {
         const data = await this.db.select({
             views: count(),
             visitors: countDistinct(sessions.uuid),
         })
         .from(navigations)
         .leftJoin(sessions, eq(navigations.session_id, sessions.id))
+        .leftJoin(sources, eq(sessions.source_id, sources.id))
         .where(and(
-            eq(sessions.source_id, id),
+            eq(sources.code, code),
             between(navigations.created_at, new Date(filters.start), new Date(filters.end))
         ))
 
         return data.at(0)
     }
 
-    public async getStats(id: number, filters: StatsFilter) {
+    public async getStats(code: string, filters: StatsFilter) {
         const data = await this.db.select({
             name: navigations.name,
             count: count(navigations.name)
         })
         .from(navigations)
         .leftJoin(sessions, eq(navigations.session_id, sessions.id))
+        .leftJoin(sources, eq(sessions.source_id, sources.id))
         .where(
             and(
-                eq(sessions.source_id, id),
+                eq(sources.code, code),
                 between(navigations.created_at, new Date(filters.start), new Date(filters.end))
             )
         )

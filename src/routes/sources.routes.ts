@@ -2,6 +2,7 @@ import { SourcesController } from '@controllers/sources.controller'
 import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
 import { requestMiddleware } from '@middlewares/request.middleware'
+import { paramsCode } from '@schemas/_params'
 import { metricsFilter, statsFilter } from '@schemas/_query'
 import { SourcesService } from '@services/sources.service'
 import { PaginationSchema } from '@utils/pagination'
@@ -37,41 +38,54 @@ export class SourcesRouter extends RouterCore {
         })
 
         this.get({
-            name: '/:id',
-            handler: controller.get
+            name: '/:code',
+            handler: controller.get,
+            middlewares: [
+                requestMiddleware({
+                    params: paramsCode
+                })
+            ]
         })
 
         this.put({
-            name: '/:id',
+            name: '/:code',
             handler: controller.update,
             middlewares: [
                 requestMiddleware({
-                    body: insertSourcesSchema.partial()
+                    body: insertSourcesSchema.partial(),
+                    params: paramsCode
                 })
             ]
         })
 
         this.delete({
-            name: '/:id',
-            handler: controller.delete
+            name: '/:code',
+            handler: controller.delete,
+            middlewares: [
+                requestMiddleware({
+                    params: paramsCode
+                })
+            ]
         })
         
         this.get({
-            name: '/:id/metrics',
+            name: '/:code/metrics',
             handler: controller.getMetrics,
             middlewares: [
                 requestMiddleware({
-                    query: metricsFilter
+                    query: metricsFilter,
+                    params: paramsCode
                 })
             ]
         })
 
         this.get({
-            name: '/:id/stats',
+            name: '/:code/stats',
             handler: controller.getStats,
             middlewares: [
                 requestMiddleware({
-                    query: statsFilter
+                    query: statsFilter,
+                    params: paramsCode
                 })
             ]
         })

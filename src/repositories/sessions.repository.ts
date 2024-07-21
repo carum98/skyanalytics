@@ -1,6 +1,7 @@
 import { StatsFilter } from '@schemas/_query'
 import { InsertSessionsSchema, sessions } from '@schemas/sessions.schemas'
-import { and, between, countDistinct, eq } from 'drizzle-orm'
+import { sources } from '@schemas/sources.schemas'
+import { and, between, eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
 export class SessionRepository {
@@ -22,7 +23,7 @@ export class SessionRepository {
         return data.at(0)
     }
 
-public async getStats(id: number, filters: StatsFilter) {
+public async getStats(code: string, filters: StatsFilter) {
         const data = await this.db.select({
             os: sessions.os,
             country: sessions.country,
@@ -30,10 +31,13 @@ public async getStats(id: number, filters: StatsFilter) {
             location: sessions.location,
         })
         .from(sessions)
-        .where(and(
-            eq(sessions.source_id, id),
-            between(sessions.created_at, new Date(filters.start), new Date(filters.end))
-        ))
+        .leftJoin(sources, eq(sessions.source_id, sources.id))
+        .where(
+            and(
+                eq(sources.code, code),
+                between(sessions.created_at, new Date(filters.start), new Date(filters.end))
+            )
+        )
 
         return {
             os: filters.stats.includes('os') 

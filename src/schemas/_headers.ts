@@ -5,5 +5,7 @@ export const headerXRealIPSchema = z.object({
 })
 
 export const headersSourceSchema = z.object({
-    'source-id': z.string()
+    'x-skyanalytics-key': z.string({
+        required_error: 'Header X-SkyAnalytics-Key is required'
+    })
 })

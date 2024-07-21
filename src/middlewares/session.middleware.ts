@@ -1,6 +1,6 @@
 import { SessionService } from '@services/sessions.service'
 import { detectOS, detectSoftware } from '@utils/origin-detect'
-import { generateUUIDv5 } from '@utils/uuid'
+import { uuidGenerator } from '@utils/uuid'
 import { Request, Response, NextFunction } from 'express'
 import maxmind, { CityResponse, Reader } from 'maxmind'
 
@@ -29,11 +29,11 @@ export function sessionMiddleware(service: SessionService) {
 
         // Get information from Request
         const user_agent = req.headers['user-agent'] as string
-        const source_id = req.headers['source-id'] as string
+        const source_key = req.headers['x-skyanalytics-key'] as string
         const ip = req.ip as string
 
         // Generate the UUID
-        const uuid = generateUUIDv5([ip, source_id], NAMESPACE)
+        const uuid = uuidGenerator([ip, source_key], NAMESPACE)
 
         // Check if the session exists
         let session = await service.find(uuid)
@@ -56,6 +56,7 @@ export function sessionMiddleware(service: SessionService) {
           const software = detectSoftware(user_agent)
 
           session = await service.create({
+            source_key,
             ip,
             uuid,
             os,
@@ -66,7 +67,6 @@ export function sessionMiddleware(service: SessionService) {
               longitude: result.location.longitude,
               city: result.city?.names?.en || null
             } : null,
-            source_id: parseInt(source_id)
           })
         };
 

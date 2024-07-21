@@ -3,14 +3,18 @@ import { PaginationSchemaType } from '@utils/pagination'
 import { eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { sources, SelectSourcesSchema, InsertSourcesSchema, paginateSourcesSchema, selectSourcesSchema } from '@schemas/sources.schemas'
+import { uuidGenerator } from '@utils/uuid'
+import { DatabaseError } from '@utils/errors'
+import { generateCode } from '@utils/code'
 
-export class SourcesRepository extends RepositoryCore<SelectSourcesSchema, InsertSourcesSchema, InsertSourcesSchema> {
+export class SourcesRepository extends RepositoryCore<SelectSourcesSchema, InsertSourcesSchema & { key: string, code: string }, InsertSourcesSchema> {
     constructor (public readonly db: NodePgDatabase) {
         const table = sources
 
         const select = db.select({
-            id: sources.id,
-            name: sources.name
+            code: sources.code,
+            name: sources.name,
+            key: sources.key
         }).from(table)
 
         super({ db, table, select })
@@ -25,32 +29,51 @@ export class SourcesRepository extends RepositoryCore<SelectSourcesSchema, Inser
         return paginateSourcesSchema.parse(data)
     }
 
-    public async get(id: number) {
+    public async get(code: string) {
         const data = await this.getOneCore({
-            where: eq(sources.id, id)
+            where: eq(sources.code, code)
         })
 
         return selectSourcesSchema.parse(data)
     }
 
     public async create(params: InsertSourcesSchema) {
+        const key = uuidGenerator()
+        const code = generateCode()
+
         const data = await this.insertCore({
-            params
+            params: {
+                ...params,
+                key,
+                code,
+            }
         })
 
         return selectSourcesSchema.parse(data)
     }
 
-    public async update(id: number, params: InsertSourcesSchema) {
+    public async update(code: string, params: InsertSourcesSchema) {
         const data = await this.updateCore({
-            where: eq(sources.id, id),
+            where: eq(sources.code, code),
             params
         })
 
         return selectSourcesSchema.parse(data)
     }
 
-    public async delete(id: number) {
-        return this.deleteCore(eq(sources.id, id))
+    public async delete(code: string) {
+        return this.deleteCore(eq(sources.code, code))
+    }
+
+    public async find(key: string) {
+        const data = await this.db.select()
+            .from(sources)
+            .where(eq(sources.key, key))
+
+        if (!data.length) {
+            throw DatabaseError.fromMessage('Not Found', 404)
+        }
+
+        return data.at(0)!
     }
 }

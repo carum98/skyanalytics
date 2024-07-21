@@ -5,6 +5,7 @@ import { events, InsertEventsSchema, paginatedEventsSchema, selectEventsSchema, 
 import { PaginationSchemaType } from '@utils/pagination'
 import { StatsFilter } from '@schemas/_query'
 import { sessions } from '@schemas/sessions.schemas'
+import { sources } from '@schemas/sources.schemas'
 
 export class EventsRepository extends RepositoryCore<SelectEventsSchema, InsertEventsSchema, InsertEventsSchema>{
     constructor (public readonly db: NodePgDatabase) {
@@ -57,16 +58,17 @@ export class EventsRepository extends RepositoryCore<SelectEventsSchema, InsertE
         return this.deleteCore(eq(events.id, id))
     }
 
-    public async getStat(id: number, filters: StatsFilter) {
+    public async getStat(code: string, filters: StatsFilter) {
         const data = await this.db.select({
             name: events.name,
             count: count(events.name)
         })
         .from(events)
         .leftJoin(sessions, eq(events.session_id, sessions.id))
+        .leftJoin(sources, eq(sessions.source_id, sources.id))
         .where(
             and(
-                eq(sessions.source_id, id),
+                eq(sources.code, code),
                 between(events.created_at, new Date(filters.start), new Date(filters.end))
             )
         )

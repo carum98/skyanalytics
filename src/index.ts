@@ -30,7 +30,10 @@ di.register(() => new NavigationRepository(di.resolve(Database).db))
 
 // Register Services
 di.register(() => new EventsService(di.resolve(EventsRepository)))
-di.register(() => new SessionService(di.resolve(SessionRepository)))
+di.register(() => new SessionService(
+    di.resolve(SessionRepository),
+    di.resolve(SourcesRepository)
+))
 di.register(() => new NavigationsService(di.resolve(NavigationRepository)))
 
 di.register(() => new SourcesService(
