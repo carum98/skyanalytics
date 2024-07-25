@@ -3,9 +3,7 @@ Create a new source.
 
 ## Request
 - Method: `POST`
-- URL: `/api/sources`
-- Headers:
-  - Authorization: Bearer
+- URL: `/sources`
 
 ## Request Body
 | Field | Type | Required |
@@ -13,14 +11,9 @@ Create a new source.
 | name | string | true |
 
 ## Response
-- Status: `201 Created`
-- Body:
-  ```json
-  {
-    "id": 1,
-    "name": "source name"
-  }
-  ```
+Status: `200 OK`
+
+[Sources](../../response/sources.md)
 
 ## Errors
 [See here](../../response/error.md)

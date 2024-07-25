@@ -6,8 +6,8 @@ const operatingSystemRules: [OS_ENUM, RegExp][] = [
     ['Windows', /(Windows)/],
     ['MacOS', /(Mac_PowerPC)|(Macintosh)/],
     ['Linux', /(Linux)|(X11)/],
-    ['iOS', /iP(hone|od|ad)/],
-    ['Android', /Android/],
+    ['iOS', /iP(hone|od|ad)|ios/],
+    ['Android', /Android|android/],
 ]
 
 export function detectOS(userAgent: string) {
@@ -29,6 +29,7 @@ const softwareRules: [string, RegExp][] = [
     ['android', /Android\s([0-9\.]+)/],
     ['ios', /Version\/([0-9\._]+).*Mobile.*Safari.*/],
     ['safari', /Version\/([0-9\._]+).*Safari/],
+    ['dart', /Dart\/([0-9\.]+)/],
 ]
 
 export function detectSoftware(userAgent: string) {

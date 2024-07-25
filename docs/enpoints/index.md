@@ -3,5 +3,5 @@
 ## Sources
 - [[GET /sources] - Get Sources](sources/getAll.md)
 - [[POST /sources] - Create Source](sources/create.md)
-- [[PUT /sources/:id] - Update Source](sources/update.md)
-- [[DELETE /sources/:id] - Remove Source](sources/remove.md)
+- [[PUT /sources/:code] - Update Source](sources/update.md)
+- [[DELETE /sources/:code] - Remove Source](sources/remove.md)

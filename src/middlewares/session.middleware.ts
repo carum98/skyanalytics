@@ -17,7 +17,7 @@ declare module 'express-session' {
 }
 
 export function sessionMiddleware(service: SessionService) {
-    return async (req: Request, _res: Response, next: NextFunction) => {
+    return async (req: Request, res: Response, next: NextFunction) => {
         // Get the session_id from the session
         const session_id = req.session.session_id
 
@@ -33,7 +33,7 @@ export function sessionMiddleware(service: SessionService) {
         const ip = req.ip as string
 
         // Generate the UUID
-        const uuid = uuidGenerator([ip, source_key], NAMESPACE)
+        const uuid = uuidGenerator([ip, source_key, user_agent], NAMESPACE)
 
         // Check if the session exists
         let session = await service.find(uuid)
@@ -69,6 +69,8 @@ export function sessionMiddleware(service: SessionService) {
             } : null,
           })
         };
+
+        // return res.status(400).json({ message: 'Invalid session' });
 
         (req as any).session_id = session?.id
         req.session.session_id = session?.id

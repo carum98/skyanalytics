@@ -3,21 +3,15 @@ This endpoint returns all sources in the database.
 
 ## Request
 - Method: `GET`
-- URL: `/api/sources`
-- Headers:
-  - Authorization: Bearer
+- URL: `/sources`
 
-## Response
-- Status: `200 OK`
-- Body:
-  ```json
-  [
-    {
-      "id": 1,
-      "name": "source name"
-    }
-  ]
-  ```
+## Success Response
+Status: `200 OK`
+
+| Name | Type | Description |
+| --- | --- | --- |
+| data | array | Array of [sources](../../response/sources.md) |
+| pagination | object | Pagination data ([pagination](../../response/pagination.md)) |
 
 ## Errors
 [See here](../../response/error.md)

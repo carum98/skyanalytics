@@ -3,9 +3,7 @@ Remove an existing source.
 
 ## Request
 - Method: `DELETE`
-- URL: `/api/sources/:id`
-- Headers:
-  - Authorization: Bearer
+- URL: `/sources/:code`
 
 ## Response
 - Status: `204 No Content`
