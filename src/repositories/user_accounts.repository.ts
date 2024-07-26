@@ -65,4 +65,18 @@ export class UserAccountsRepository extends RepositoryCore<SelectUserAccountsSch
     public async delete(code: string) {
         return this.deleteCore(eq(userAccounts.code, code))
     }
+
+    public async getPassword(email: string) {
+        const data = await this.db.select({
+            id: userAccounts.id,
+            code: userAccounts.code,
+            name: userAccounts.name,
+            email: userAccounts.email,
+            password: userAccounts.password
+        })
+        .from(userAccounts)
+        .where(eq(userAccounts.email, email))
+
+        return data.at(0)
+    }
 }

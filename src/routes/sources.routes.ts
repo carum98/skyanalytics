@@ -1,6 +1,7 @@
 import { SourcesController } from '@controllers/sources.controller'
 import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
+import { authMiddleware } from '@middlewares/auth.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { paramsCode } from '@schemas/_params'
 import { metricsFilter, statsFilter } from '@schemas/_query'
@@ -12,6 +13,7 @@ export class SourcesRouter extends RouterCore {
     constructor(di: DepencyInjection) {
         super({
             path: '/sources',
+            middlewares: [authMiddleware]
         })
 
         const service = di.resolve(SourcesService)

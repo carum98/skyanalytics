@@ -1,6 +1,7 @@
 import { NavigationController } from '@controllers/navigations.controller'
 import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
+import { authMiddleware } from '@middlewares/auth.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { sessionMiddleware } from '@middlewares/session.middleware'
 import { headersSourceSchema, headerXRealIPSchema } from '@schemas/_headers'
@@ -13,6 +14,7 @@ export class NavigationsRouter extends RouterCore {
     constructor(di: DepencyInjection) {
         super({
             path: '/navigations',
+            middlewares: [authMiddleware]
         })
 
         const service = di.resolve(NavigationsService)

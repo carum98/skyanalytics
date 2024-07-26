@@ -1,6 +1,7 @@
 import { UserAccountsController } from '@controllers/user_accounts.controller'
 import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
+import { authMiddleware } from '@middlewares/auth.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { paramsCode } from '@schemas/_params'
 import { insertUserAccountsSchema } from '@schemas/user_accounts.schemas'
@@ -11,6 +12,7 @@ export class UserAccountsRouter extends RouterCore {
     constructor(di: DepencyInjection) {
         super({
             path: '/user-accounts',
+            middlewares: [authMiddleware]
         })
 
         const controller = new UserAccountsController(

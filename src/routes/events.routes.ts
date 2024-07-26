@@ -1,6 +1,7 @@
 import { EventsController } from '@controllers/events.controllers'
 import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
+import { authMiddleware } from '@middlewares/auth.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { sessionMiddleware } from '@middlewares/session.middleware'
 import { headersSourceSchema, headerXRealIPSchema } from '@schemas/_headers'
@@ -12,7 +13,8 @@ import { PaginationSchema } from '@utils/pagination'
 export class EventsRouter extends RouterCore {
     constructor(di: DepencyInjection) {
         super({
-            path: '/events'
+            path: '/events',
+            middlewares: [authMiddleware]
         })
 
         const service = di.resolve(EventsService)
