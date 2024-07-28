@@ -5,6 +5,9 @@
       "path": "./tsconfig.node.json"
     },
     {
+      "path": "./tsconfig.nitro.json"
+    },
+    {
       "path": "./tsconfig.app.json"
     }
   ]
