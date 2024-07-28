@@ -2,8 +2,10 @@ version: '3.7'
 
 services:
   api:
+    profiles: 
+      - prod
     build: 
-      context: .
+      context: ./packages/backend
       dockerfile: Dockerfile
     container_name: skyanalytics-api
     networks:
@@ -14,6 +16,18 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_DATABASE=${DB_DATABASE}
       - DB_USER=${DB_USER}
+
+  web:
+    profiles: 
+      - prod
+    build:
+      context: ./packages/frontend
+      dockerfile: Dockerfile
+    container_name: skyanalytics-web
+    networks:
+      - skyanalytics-network
+    depends_on:
+      - api
   
   db:
     image: postgres:16-alpine
@@ -28,6 +42,7 @@ services:
       - POSTGRES_DB=${DB_DATABASE}
       - POSTGRES_USER=${DB_USER}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
+
   nginx:
     image: nginx:alpine
     container_name: skyanalytics-nginx
@@ -38,7 +53,6 @@ services:
     networks:
       - skyanalytics-network
     depends_on:
-      - api
       - db
 
 networks:
