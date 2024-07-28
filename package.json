@@ -1,42 +1,11 @@
 {
   "name": "skyanalytics",
-  "version": "1.0.0",
-  "main": "index.js",
+  "description": "SkyAnalytics is a service that allows you to track the behavior of your users.",
+  "workspaces": [
+    "packages/backend",
+    "packages/frontend"
+  ],
   "scripts": {
-    "dev": "node --import=tsx --watch ./src/index.ts",
-    "build": "tsc && tsc-alias",
-    "start": "node ./dist/src/index.js",
-    "db:generate": "drizzle-kit generate --config ./config/drizzle.config.ts",
-    "db:drop": "drizzle-kit drop --config ./config/drizzle.config.ts",
-    "db:push": "drizzle-kit push --config ./config/drizzle.config.ts",
-    "db:studio": "npx drizzle-kit studio --port 8081 --verbose --config ./config/drizzle.config.ts",
-    "db:migrate": "tsx -e \"require('./scripts/database-migrations.ts').init()\"",
-    "download-geo-db": "tsx ./scripts/download-geo-db.ts"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "cors": "2.8.5",
-    "drizzle-orm": "0.31.4",
-    "drizzle-zod": "0.5.1",
-    "express": "4.19.2",
-    "express-session": "1.18.0",
-    "jsonwebtoken": "9.0.2",
-    "maxmind": "4.3.20",
-    "pg": "8.12.0",
-    "zod": "3.23.8"
-  },
-  "devDependencies": {
-    "@types/cors": "2.8.17",
-    "@types/express": "4.17.21",
-    "@types/express-session": "1.18.0",
-    "@types/jsonwebtoken": "9.0.6",
-    "@types/pg": "8.11.6",
-    "@types/tar": "6.1.13",
-    "drizzle-kit": "0.22.8",
-    "tar": "7.4.0",
-    "tsc-alias": "1.8.10",
-    "tsx": "4.16.2"
+    "dev": "npm run dev --workspace=@skyanalytics/frontend & npm run dev --workspace=@skyanalytics/backend"
   }
 }
