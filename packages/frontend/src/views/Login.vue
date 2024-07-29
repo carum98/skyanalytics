@@ -21,9 +21,29 @@ async function onSubmit(event: Event) {
 </script>
 
 <template>
-    <form @submit.prevent="onSubmit">
-        <input type="email" name="email" />
-        <input type="password" name="password" />
-        <button>Login</button>
+    <form class="sk-form" @submit.prevent="onSubmit">
+        <label>
+            Correo
+        </label>
+        <input 
+            class="sk-input"
+            type="email" 
+            name="email"
+            placeholder="Correo" 
+        />
+
+        <label>
+            Contraseña
+        </label>
+        <input 
+            class="sk-input"
+            :type="passwordVisible ? 'text' : 'password'"
+            name="password"
+            placeholder="Contraseña" 
+        />
+        
+        <button type="submit" class="sk-button block">
+            Iniciar sesión
+        </button>
     </form>
 </template>

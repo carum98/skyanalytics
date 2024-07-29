@@ -15,7 +15,7 @@ const routes: RouteRecordRaw[] = [
         path: '/',
         component: () => import('@views/Home.vue'),
         meta: {
-            title: 'Home'
+            title: 'Analytics'
         }
     },
     {

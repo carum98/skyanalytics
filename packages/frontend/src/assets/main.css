@@ -1,1 +1,27 @@
-@import './base.css';
+@import './_variables.css';
+@import './_base.css';
+@import './_form.css';
+@import './_layout.css';
+
+.sk-button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 15px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease-in-out;
+
+    &:hover {
+        box-shadow: var(--shadow);
+    }
+
+    &.block {
+        width: 100%;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}

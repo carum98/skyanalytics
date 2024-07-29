@@ -1,0 +1,39 @@
+[data-layout="login"] {
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-flow: column;
+}
+
+[data-layout="default"] {
+    --header-height: 75px;
+
+    height: 100vh;
+
+    > header {
+        position: fixed;
+        top: 0;
+        right: 10px;
+        left: 0;
+        height: var(--header-height);
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        padding: 0 20px;
+        backdrop-filter: blur(7px);
+        z-index: 5;
+
+        > h1 {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+
+    > main {
+        padding: var(--header-height) 30px 30px 30px;
+        overflow: scroll;
+        height: 100%;
+    }
+}

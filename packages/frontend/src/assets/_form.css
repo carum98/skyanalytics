@@ -1,0 +1,39 @@
+.sk-form {
+    > input, > .sk-select, > fieldset {
+        margin-bottom: 15px;
+    }
+
+    > label {
+        display: block;
+        margin-bottom: 5px;
+        margin-left: 5px;
+
+        &[required]::after {
+            content: "*";
+            color: red;
+            margin-left: 5px;
+        }
+    }
+
+    > button[type="submit"] {
+        margin-top: 15px;
+        float: right;
+    }
+}
+
+.sk-input {
+    border: 2px solid rgba(177, 177, 177, 0.301);
+    width: 100%;
+    background-color: var(--table-color);
+    border-radius: 15px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+
+    &:focus {
+        border-color: var(--primary-color);
+        box-shadow: var(--shadow);
+    }
+}

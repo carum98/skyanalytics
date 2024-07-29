@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { $fetch } from '@/utils/fetch'
 
@@ -15,6 +15,11 @@ async function logOut() {
     await $fetch('/api/logout', { method: 'POST' })
     router.push({ name: 'login' })
 }
+
+onMounted(() => {
+    const app = document.querySelector('#app')
+    app.setAttribute('data-layout', 'default')
+})
 </script>
 
 <template>
@@ -25,12 +30,6 @@ async function logOut() {
             Log Out
         </button>
     </header>
-    <aside>
-        <nav>
-            <RouterLink :to="{ name: 'home' }">Home</RouterLink>
-            <RouterLink :to="{ name: 'events' }">Events</RouterLink>
-        </nav>
-    </aside>
     <main>
         <slot></slot>
     </main>

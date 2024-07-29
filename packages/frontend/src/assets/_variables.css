@@ -1,0 +1,30 @@
+/* Global */
+:root {
+    --drop-shadow: drop-shadow(0 0 0.75rem rgba(0, 73, 163, 0.5));
+}
+
+/* Light */
+:root.light {
+    --table-color-rgb: 255, 255, 255;
+    --table-color: rgb(var(--table-color-rgb));
+
+    --text-color-rgb: 0, 0, 0;
+    --text-color: rgb(var(--text-color-rgb));
+
+    --primary-color: #0160be;
+    --background-color: #f2f5fc;
+    --shadow: 0px 10px 15px -3px rgba(0,0,0,0.1);
+}
+
+/* Dark */
+:root.dark {
+    --table-color-rgb: 18, 18, 18;
+    --table-color: rgb(var(--table-color-rgb));
+
+    --text-color-rgb: 255, 255, 255;
+    --text-color: rgb(var(--text-color-rgb));
+
+    --primary-color: #014b9b;
+    --background-color: #1e2023;
+    --shadow: 0px 10px 15px -3px rgba(0, 73, 163, 0.2);
+}
