@@ -1,5 +1,4 @@
-import { setSession } from '../core/session'
-import type { SessionData } from '../core/types'
+import { setSession, SessionData } from '~/utils/session'
 
 export default defineEventHandler(async (event) => {
     const formData = await readFormData(event)

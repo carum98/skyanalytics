@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { $fetch } from '@/utils/fetch'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 async function onSubmit(event: Event) {
     try {
@@ -9,6 +12,8 @@ async function onSubmit(event: Event) {
             method: 'POST',
             body: formData,
         })
+
+        router.push({ name: 'home' })
     } catch (error) {
         console.error(error)
     }

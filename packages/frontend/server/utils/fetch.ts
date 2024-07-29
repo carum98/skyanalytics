@@ -1,6 +1,6 @@
 import { ofetch, type FetchOptions } from 'ofetch'
 import { H3Event, createError } from 'h3'
-import { getSession, clearSession } from '../core/session'
+import { getSession, clearSession } from '~/utils/session'
 
 const apiFetch = ofetch.create({ 
     baseURL: 'http://localhost:3000', 

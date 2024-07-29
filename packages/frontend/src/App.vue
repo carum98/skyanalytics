@@ -1,22 +1,25 @@
 <script setup lang="ts">
-import { $fetch } from '@/utils/fetch'
+import { shallowRef, defineAsyncComponent } from 'vue'
+import { useRouter } from 'vue-router'
 
-async function getData() {
-	try {
-		const response = await $fetch('/api/sources')
-		console.log(response)
-	} catch (error) {
-		console.error(error)
-	}
+const router = useRouter()
+
+const layouts = {
+	default: defineAsyncComponent(() => import('@/layouts/DefaultLayout.vue')),
+	login: defineAsyncComponent(() => import('@/layouts/LoginLayout.vue')),
 }
+
+router.beforeEach((to, from, next) => {
+	const layoutName = to.meta.layout || 'default'
+	layout.value = layouts[layoutName]
+	next()
+})
+
+const layout = shallowRef(layouts.default)
 </script>
 
 <template>
-  	<main>
+  	<component :is="layout">
 		<RouterView />
-
-		<button @click="getData">
-			Sources
-		</button>
-  	</main>
+  	</component>
 </template>
