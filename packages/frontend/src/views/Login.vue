@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { $fetch } from '@/utils/fetch'
+
 async function onSubmit(event: Event) {
     try {
         const formData = new FormData(event.target as HTMLFormElement)
 
-        await fetch('http://localhost:3001/api/login', {
+        await $fetch('/api/login', {
             method: 'POST',
             body: formData,
         })

@@ -1,9 +1,22 @@
+<script setup lang="ts">
+import { $fetch } from '@/utils/fetch'
+
+async function getData() {
+	try {
+		const response = await $fetch('/api/sources')
+		console.log(response)
+	} catch (error) {
+		console.error(error)
+	}
+}
+</script>
+
 <template>
-	<nav>
-		<RouterLink :to="{ name: 'home' }">Go to Home</RouterLink>
-		<RouterLink :to="{ name: 'login' }">Go to Login</RouterLink>
-  	</nav>
   	<main>
 		<RouterView />
+
+		<button @click="getData">
+			Sources
+		</button>
   	</main>
 </template>

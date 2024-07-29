@@ -1,4 +1,4 @@
-import { createMemoryHistory, createRouter, type RouteRecordRaw } from 'vue-router'
+import { createWebHistory, createRouter, type RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
     {
@@ -14,7 +14,7 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-    history: createMemoryHistory(),
+    history: createWebHistory(),
     routes,
 })
 

@@ -14,5 +14,7 @@ export default defineEventHandler(async (event) => {
 
     await setSession(event, data)
 
-    return data
+    return {
+        isLogged: true,
+    }
 })
