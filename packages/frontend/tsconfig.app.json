@@ -11,6 +11,7 @@
       "@components/*": ["components/*"],
       "@views/*": ["views/*"],
       "@assets/*": ["assets/*"],
+      "@composables/*": ["composables/*"],
     }
   }
 }

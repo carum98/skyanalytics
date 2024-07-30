@@ -19,11 +19,11 @@ const routes: RouteRecordRaw[] = [
         }
     },
     {
-        name: 'events',
-        path: '/events',
-        component: () => import('@views/Events.vue'),
+        name: 'sources',
+        path: '/sources/:code',
+        component: () => import('@views/Sources.vue'),
         meta: {
-            title: 'Events'
+            title: 'Sources'
         }
     }
 ]

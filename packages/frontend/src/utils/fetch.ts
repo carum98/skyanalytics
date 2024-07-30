@@ -1,4 +1,4 @@
-export async function $fetch(url: string, options: RequestInit) {
+export async function $fetch(url: string, options?: RequestInit) {
     const uri = new URL(url, 'http://localhost:3001')
 
     const response = await fetch(uri, {
