@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2024 by original authors @ fontello.com</metadata>
+<defs>
+<font id="sk-icons" horiz-adv-x="1000" >
+<font-face font-family="sk-icons" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="caret-down" unicode="&#xe800;" d="M268 118c25-24 64-24 89 0l250 250c18 18 23 45 13 69s-32 38-57 38l-500 0c-26 0-48-15-58-39s-5-50 13-68l250-250z" horiz-adv-x="625" />
+
+<glyph glyph-name="ellipsis-vertical" unicode="&#xe801;" d="M125 147a109 109 0 1 1 0-219 109 109 0 1 1 0 219z m0 312a109 109 0 1 1 0-218 109 109 0 1 1 0 218z m109 204a109 109 0 1 1-218 0 109 109 0 1 1 218 0z" horiz-adv-x="250" />
+</font>
+</defs>
+</svg>

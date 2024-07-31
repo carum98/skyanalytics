@@ -31,7 +31,7 @@ onMounted(() => {
         <SkPopover position="bottom">
             <template #target="{ props }">
                 <button v-bind="props">
-                    V
+                    <i class="icon-caret-down"></i>
                 </button>
             </template>
             <template #popover="{ props }">

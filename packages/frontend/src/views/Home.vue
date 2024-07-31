@@ -18,7 +18,7 @@ const { data, loading } = useFetch<ISourcesPagination>("/api/sources")
 			<SkPopover position="bottom">
             	<template #target="{ props }">
             		<button v-bind="props">
-                    	V
+                    	<i class="icon-ellipsis-vertical"></i>
                 	</button>
             	</template>
             	<template #popover="{ props }">
