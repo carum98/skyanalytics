@@ -24,7 +24,7 @@
         backdrop-filter: blur(7px);
         z-index: 5;
 
-        > h1 {
+        > div {
             position: absolute;
             left: 50%;
             transform: translateX(-50%);

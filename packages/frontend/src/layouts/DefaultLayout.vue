@@ -20,7 +20,10 @@ onMounted(() => {
 
 <template>
     <header>
-        <h1>SkyAnalytics</h1>
+        <div class="flex align-center ga-1">
+            <img src="/img/logo.avif" width="30" height="30" alt="SkyAnalytics" />
+            <h1>SkyAnalytics</h1>
+        </div>
 
         <SkPopover position="bottom span-left">
             <template #target="{ props }">
