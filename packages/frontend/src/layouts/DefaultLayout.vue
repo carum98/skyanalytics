@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { $fetch } from '@/utils/fetch'
 
 import SkPopover from '@components/SkPopover.vue'
 
-const title = ref('')
-const route = useRoute()
 const router = useRouter()
-
-watch(() => route.fullPath, () => {
-    title.value = (route.meta.title || 'Default Title') as string
-}, { immediate: true })
 
 async function logOut() {
     await $fetch('/api/logout', { method: 'POST' })
@@ -26,18 +20,19 @@ onMounted(() => {
 
 <template>
     <header>
-        <h1>{{ title }}</h1>
+        <h1>SkyAnalytics</h1>
 
-        <SkPopover position="bottom">
+        <SkPopover position="bottom span-left">
             <template #target="{ props }">
-                <button v-bind="props">
+                <button class="dropdown_actions" v-bind="props">
                     <i class="icon-caret-down"></i>
                 </button>
             </template>
             <template #popover="{ props }">
-                <div v-bind="props">
+                <div class="sk-dropdown__options" v-bind="props">
                     <button @click="logOut">
-                        Log Out
+                        <i class="icon-right-from-bracket"></i>
+                        Cerrar sesión
                     </button>
                 </div>
             </template>

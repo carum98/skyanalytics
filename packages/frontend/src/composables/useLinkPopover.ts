@@ -1,5 +1,5 @@
 
-export type Position = 'top' | 'right' | 'bottom' | 'left'
+export type Position = 'top' | 'right' | 'bottom' | 'left' | 'bottom span-left'
 export type PopoverMode = 'auto' | 'manual'
 
 export function useLinkPopover({ position, popoverMode = 'auto' }: { position: Position, popoverMode?: PopoverMode }) {

@@ -37,7 +37,7 @@ async function onSubmit(event: Event) {
         </label>
         <input 
             class="sk-input"
-            :type="passwordVisible ? 'text' : 'password'"
+            type="password"
             name="password"
             placeholder="Contraseña" 
         />

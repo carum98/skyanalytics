@@ -1,0 +1,30 @@
+/* Flex */
+.flex {
+    display: flex;
+}
+
+.justify-space-between {
+    justify-content: space-between;
+}
+
+.align-center {
+    align-items: center;
+}
+
+/* Gap */
+.ga-1 {
+    gap: 1rem;
+}
+
+.ga-2 {
+    gap: 2rem;
+}
+
+/* Margin */
+.mb-1 {
+    margin-bottom: 1rem;
+}
+
+.mb-2 {
+    margin-bottom: 2rem;
+}

@@ -56,3 +56,9 @@
 
 .icon-caret-down:before { content: '\e800'; } /* '' */
 .icon-ellipsis-vertical:before { content: '\e801'; } /* '' */
+.icon-right-from-bracket:before { content: '\e802'; } /* '' */
+.icon-pen-to-square:before { content: '\e803'; } /* '' */
+.icon-trash:before { content: '\e804'; } /* '' */
+.icon-plus:before { content: '\e805'; } /* '' */
+.icon-chevron-left:before { content: '\e806'; } /* '' */
+.icon-chevron-right:before { content: '\e807'; } /* '' */

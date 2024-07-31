@@ -32,3 +32,12 @@ h1 {
 h2 {
   font-weight: 300;
 }
+
+[popover] {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--table-color);
+  padding: 10px;
+  border: 1px solid var(--background-color);
+}

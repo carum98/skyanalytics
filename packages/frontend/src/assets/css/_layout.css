@@ -31,6 +31,16 @@
         }
     }
 
+    > header {
+        .dropdown_actions {
+            height: 45px;
+            padding: 7px 5px;
+            width: 45px;
+            background-color: var(--table-color);
+            border-radius: 15px;
+        }
+    }
+
     > main {
         padding: var(--header-height) 30px 30px 30px;
         overflow: scroll;

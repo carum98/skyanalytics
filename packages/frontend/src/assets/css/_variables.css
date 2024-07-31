@@ -1,6 +1,7 @@
 /* Global */
 :root {
     --drop-shadow: drop-shadow(0 0 0.75rem rgba(0, 73, 163, 0.5));
+    --border-radius: 15px;
 }
 
 /* Light */

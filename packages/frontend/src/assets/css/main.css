@@ -1,8 +1,12 @@
 @import './_variables.css';
+@import './_utilities.css';
 @import './_base.css';
 @import './_form.css';
 @import './_layout.css';
 @import './_icons.css';
+@import './_dropdown.css';
+@import './_transition.css';
+
 
 .sk-button {
     background-color: var(--primary-color);
@@ -25,4 +29,18 @@
         opacity: 0.5;
         cursor: not-allowed;
     }
+}
+
+/* Temporal */
+.placeholder {
+    border-radius: var(--border-radius);
+    background-color: var(--table-color);
+}
+
+.avatar-source {
+    display: inline-flex;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background-color: var(--table-color);
 }
