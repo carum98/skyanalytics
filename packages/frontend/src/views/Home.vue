@@ -4,7 +4,7 @@ import { type ISources, type ISourcesPagination } from '@/types'
 import { useRouter } from 'vue-router'
 
 import SkPopover from '@components/SkPopover.vue'
-import ViewsChart from '@components/ViewsChart.vue'
+import CompactViewsChart from '@/components/CompactViewsChart.vue'
 
 const router = useRouter()
 
@@ -49,7 +49,7 @@ function openSource(item: ISources) {
 				</SkPopover>
 			</header>
 
-			<ViewsChart :item="item"/>
+			<CompactViewsChart :item="item"/>
 		</article>
 	</section>
 </template>

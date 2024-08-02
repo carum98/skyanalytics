@@ -33,6 +33,10 @@ h2 {
   font-weight: 300;
 }
 
+ul {
+  list-style: none;
+}
+
 [popover] {
   border: none;
   border-radius: 15px;
