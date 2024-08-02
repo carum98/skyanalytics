@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { SourcesService } from '@services/sources.service'
 import { PaginationSchemaType } from '@utils/pagination'
-import { MetricsFilter, StatsFilter } from '@schemas/_query'
+import { DateFilter, MetricsFilter, StatsFilter } from '@schemas/_query'
 import { InsertSourcesSchema } from '@schemas/sources.schemas'
 import { ParamsCode } from '@schemas/_params'
 
@@ -61,5 +61,13 @@ export class SourcesController {
 
         const stats = await this.service.getStats(params.code, query)
         res.json(stats)
+    }
+
+    getViews = async (req: Request, res: Response): Promise<void> => {
+        const params = req.params as unknown as ParamsCode
+        const query = req.query as unknown as DateFilter
+
+        const views = await this.service.getViews(params.code, query)
+        res.json(views)
     }
 }

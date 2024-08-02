@@ -3,9 +3,12 @@ import { MetricsFilter, StatsFilter } from '@schemas/_query'
 import { InsertNavigationsSchema, navigations, paginatedNavigationsSchema, selectNavigationsSchema, SelectNavigationsSchema } from '@schemas/navigations.schemas'
 import { sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
+import { groupByRangeDates } from '@utils/group-by-range-dates'
 import { PaginationSchemaType } from '@utils/pagination'
+import { DateRange } from '@utils/range-dates'
 import { and, between, count, countDistinct, eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
+import { name } from 'tar/dist/commonjs/types'
 
 export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema, InsertNavigationsSchema, InsertNavigationsSchema>{
     constructor(public readonly db: NodePgDatabase) {
@@ -93,5 +96,21 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
         return {
             navigations: Object.fromEntries(data.map(item => [item.name, item.count]))
         }
+    }
+
+    public async getViews(code: string, dateRange: DateRange, filters: MetricsFilter) {
+        const data = await this.db.select({
+            id: navigations.id,
+            created_at: navigations.created_at,
+        })
+        .from(navigations)
+        .leftJoin(sessions, eq(navigations.session_id, sessions.id))
+        .leftJoin(sources, eq(sessions.source_id, sources.id))
+        .where(and(
+            eq(sources.code, code),
+            between(navigations.created_at, new Date(filters.start), new Date(filters.end))
+        ))
+
+        return groupByRangeDates(data, dateRange, filters)
     }
 }

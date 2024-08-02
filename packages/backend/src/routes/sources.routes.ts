@@ -4,7 +4,7 @@ import { RouterCore } from '@core/router.core'
 import { authMiddleware } from '@middlewares/auth.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { paramsCode } from '@schemas/_params'
-import { metricsFilter, statsFilter } from '@schemas/_query'
+import { dateFilter, metricsFilter, statsFilter } from '@schemas/_query'
 import { SourcesService } from '@services/sources.service'
 import { PaginationSchema } from '@utils/pagination'
 import { insertSourcesSchema } from 'src/schemas/sources.schemas'
@@ -87,6 +87,17 @@ export class SourcesRouter extends RouterCore {
             middlewares: [
                 requestMiddleware({
                     query: statsFilter,
+                    params: paramsCode
+                })
+            ]
+        })
+
+        this.get({
+            name: '/:code/views',
+            handler: controller.getViews,
+            middlewares: [
+                requestMiddleware({
+                    query: dateFilter,
                     params: paramsCode
                 })
             ]

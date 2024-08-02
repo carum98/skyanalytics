@@ -2,9 +2,10 @@ import { EventsRepository } from '@repositories/events.repositories'
 import { NavigationRepository } from '@repositories/navigations.repository'
 import { SessionRepository } from '@repositories/sessions.repository'
 import { SourcesRepository } from '@repositories/sources.repository'
-import { MetricsFilter, StatsFilter } from '@schemas/_query'
+import { DateFilter, MetricsFilter, StatsFilter } from '@schemas/_query'
 import { InsertSourcesSchema } from '@schemas/sources.schemas'
 import { PaginationSchemaType } from '@utils/pagination'
+import { rangeDates } from '@utils/range-dates'
 
 export class SourcesService {
     constructor(
@@ -65,5 +66,11 @@ export class SourcesService {
             ...acc,
             ...item
         }), {})
+    }
+
+    public async getViews(code: string, filters: DateFilter) {
+        const { start, end } = rangeDates(filters.date_range)
+
+        return this.navigationsRepository.getViews(code, filters.date_range, { start, end })
     }
 }
