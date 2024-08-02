@@ -15,3 +15,7 @@ export interface IPagination {
     per_page: number
     total_pages: number
 }
+
+export interface IViewsStats {
+    [key: string]: number
+}

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { type ISources } from '@/types'
+import { type ISources, type IViewsStats } from '@/types'
+import { $fetch } from '@/utils/fetch'
 import { Chart, LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, type ChartArea } from 'chart.js'
 import { onMounted, onUnmounted, ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
     item: ISources
 }>()
 
@@ -13,14 +14,14 @@ const canvas = ref<HTMLCanvasElement | null>(null)
 
 // methods
 async function getData() {
-    await new Promise(resolve => setTimeout(resolve, 1000))
-
-    const data = Array.from({ length: 7 }, () => Math.floor(Math.random() * 100))
-    const labels = Array.from({ length: 7 }, (_, i) => {
-        const date = new Date()
-        date.setDate(date.getDate() - i)
-        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+    const response = await $fetch<IViewsStats>(`/api/sources/${props.item.code}/views`, {
+        query: {
+            date_range: 'last_7_days'
+        }
     })
+
+    const labels = Object.keys(response)
+    const data = Object.values(response)
 
     chart?.data.labels?.push(...labels)
     chart?.data.datasets[0].data?.push(...data)
