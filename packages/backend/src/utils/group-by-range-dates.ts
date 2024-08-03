@@ -13,7 +13,7 @@ export function groupByRangeDates(data: Array<{ created_at: Date }>, date_range:
     const start = new Date(filters.start)
     const end = new Date(filters.end)
 
-    for (let date = start; date <= end; date.setDate(date.getDate() + 1)) {
+    for (let date = start; date <= end; dateIncrement(date, date_range)) {
         const key = trimDate(date.toISOString(), date_range)
 
         if (!groupByDay[key]) {
@@ -33,5 +33,21 @@ function trimDate(date: string, date_range: DateRange) {
         return new Date(date).toISOString().split('T')[0].slice(0, 7)
     }
 
+    if (date_range.includes('hours')) {
+        return new Date(date).toISOString().split('T')[1].slice(0, 3)
+    }
+
     return new Date(date).toISOString().split('T')[0]
+}
+
+function dateIncrement(date: Date, date_range: DateRange) {
+    if (date_range.includes('month')) {
+        return date.setMonth(date.getMonth() + 1)
+    }
+
+    if (date_range.includes('hours')) {
+        return date.setHours(date.getHours() + 1)
+    }
+
+    return date.setDate(date.getDate() + 1)
 }
