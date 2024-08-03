@@ -45,5 +45,10 @@
         padding: var(--header-height) 30px 30px 30px;
         overflow: scroll;
         height: 100%;
+
+        /* First child */
+        > *:first-child {
+            height: 100%;
+        }
     }
 }

@@ -1,18 +1,11 @@
 <script setup lang="ts">
 import { useFetch } from '@composables/useFetch'
-import { type ISources, type ISourcesPagination } from '@/types'
-import { useRouter } from 'vue-router'
+import { type ISourcesPagination } from '@/types'
 
-import SkPopover from '@components/SkPopover.vue'
-import CompactViewsChart from '@/components/CompactViewsChart.vue'
+import SkPopover from '@ui/SkPopover.vue'
+import CompactViewsChart from '@components/CompactViewsChart.vue'
 
-const router = useRouter()
-
-const { data } = useFetch<ISourcesPagination>("/api/sources")
-
-function openSource(item: ISources) {
-	router.push({ name: 'sources', params: { code: item.code } })
-}
+const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources")
 </script>
 
 <template>
@@ -20,7 +13,7 @@ function openSource(item: ISources) {
 		<article
 			v-for="item in data?.data"
 			:key="item.code"
-			@click="openSource(item)"
+			@click="$router.push({ name: 'sources', params: { code: item.code } })"
 		>
 			<header class="flex justify-space-between mb-1">
 				<div class="flex ga-1">
@@ -36,13 +29,17 @@ function openSource(item: ISources) {
 					</template>
 					<template #popover="{ props }">
 						<div class="sk-dropdown__options" v-bind="props">
-							<button>
-								<i class="icon-trash"></i>
-								Delete
+							<button v-dialog="{ name: 'sources.key', props: { item } }">
+								<i class="icon-key"></i>
+								Key
 							</button>
-							<button>
+							<button v-dialog="{ name: 'sources.form', props: { item }, listeners: { onRefresh } }">
 								<i class="icon-pen-to-square"></i>
 								Edit
+							</button>
+							<button v-dialog="{ name: 'sources.delete', props: { item }, listeners: { onRefresh } }">
+								<i class="icon-trash"></i>
+								Delete
 							</button>
 						</div>
 					</template>
@@ -51,6 +48,10 @@ function openSource(item: ISources) {
 
 			<CompactViewsChart :item="item"/>
 		</article>
+
+		<button class="sk-button-fab" v-dialog="{ name: 'sources.form', listeners: { onRefresh } }">
+			<i class="icon-plus"></i>
+		</button>
 	</section>
 </template>
 
@@ -59,6 +60,7 @@ section {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 	grid-template-rows: minmax(150px, auto);
+	align-items: start;
 
 	article {
 		padding: 1rem;

@@ -17,5 +17,9 @@ export async function $fetch<T>(url: string, options?: RequestInit & { query?: R
         throw new Error(response.statusText)
     }
 
+    if (response.status === 204) {
+        return
+    }
+
     return await response.json() as T
 }

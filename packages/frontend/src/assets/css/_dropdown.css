@@ -18,9 +18,19 @@
         border-radius: 10px;
         color: rgba(var(--text-color-rgb), .9);
         display: flex;
-        font-size: 15px;
+        font-size: 14px;
         gap: 10px;
-        padding: 10px;
-        width: 100%;
+        padding: 8px 10px;
+        min-width: 100%;
+
+        background-color: #1a1c1eba;
+
+        &:hover {
+            background-color: #1a1c1e;
+        }
+
+        &:not(:last-of-type) {
+            margin-bottom: 0.5rem;
+        }
     }
 }

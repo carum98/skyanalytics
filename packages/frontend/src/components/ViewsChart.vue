@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { type ISources } from '@/types'
+import { type ISources, type IViewsStats } from '@/types'
+import { $fetch } from '@/utils/fetch'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip } from 'chart.js'
 import { onMounted, onUnmounted, ref } from 'vue'
 
-defineProps<{
+const props = defineProps<{
     item: ISources
 }>()
 
@@ -13,10 +14,14 @@ const canvas = ref<HTMLCanvasElement | null>(null)
 
 // methods
 async function getData() {
-    await new Promise(resolve => setTimeout(resolve, 1000))
+    const response = await $fetch<IViewsStats>(`/api/sources/${props.item.code}/views`, {
+        query: {
+            date_range: 'last_24_hours'
+        }
+    })
 
-    const data = Array.from({ length: 24 }, () => Math.floor(Math.random() * 100))
-    const labels = processDateLabels(Array.from({ length: 24 }, (_, i) => `i-${i.toString().padStart(2, '0')}`))
+    const labels = processDateLabels(Object.keys(response))
+    const data = Object.values(response)
 
     chart?.data.labels?.push(...labels)
     chart?.data.datasets[0].data?.push(...data)
@@ -78,9 +83,9 @@ onUnmounted(() => {
 
 function processDateLabels(values: string[]) {
     // Hours
-    if (values.at(0)?.length === 4) {
+    if (values.at(0)?.length === 3) {
         return values.map(item => {
-            const [_, value] = item.split('-')
+            const [value, _] = item.split(':')
             const hour = parseInt(value)
             // Return the hour in 12h format
             return hour > 12 ? `${hour - 12} pm` : `${hour === 0 ? 12 : hour} am`

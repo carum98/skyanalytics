@@ -1,0 +1,52 @@
+.sk-button {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 15px;
+    padding: 12px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease-in-out;
+
+    &:hover {
+        box-shadow: var(--shadow);
+    }
+
+    &.block {
+        width: 100%;
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.sk-button--icon {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sk-button--block {
+    width: 100%;
+}
+
+.sk-button--transparent {
+    background-color: transparent;
+    color: var(--text-color);
+    
+    &:hover {
+        box-shadow: none;
+    }
+}
+
+.sk-button-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--primary-color);
+    font-size: 30px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}

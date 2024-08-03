@@ -6,30 +6,8 @@
 @import './_icons.css';
 @import './_dropdown.css';
 @import './_transition.css';
+@import './_button.css';
 
-
-.sk-button {
-    background-color: var(--primary-color);
-    color: #fff;
-    border-radius: 15px;
-    padding: 12px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: box-shadow 0.2s ease-in-out;
-
-    &:hover {
-        box-shadow: var(--shadow);
-    }
-
-    &.block {
-        width: 100%;
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
-}
 
 /* Temporal */
 .placeholder {

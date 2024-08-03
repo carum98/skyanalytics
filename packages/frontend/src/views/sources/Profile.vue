@@ -4,8 +4,8 @@ import { useFetch } from '@composables/useFetch'
 import { useRoute } from 'vue-router'
 
 import DateSelector from '@components/DateSelector.vue'
-import ViewsChart from '@/components/ViewsChart.vue'
-import CountersList from '@/components/CountersList.vue'
+import ViewsChart from '@components/ViewsChart.vue'
+import CountersList from '@components/CountersList.vue'
 
 const route = useRoute()
 const { data } = useFetch<ISources>(`/api/sources/${route.params.code}`)
@@ -48,7 +48,7 @@ const softwares = {
 
 <template>
 <div>
-    <section class="flex justify-space-between mb-2">
+    <section class="flex justify-space-between mb-1">
         <div class="flex align-center ga-1">
             <div class="avatar-source"></div>
             <h2>{{ data?.name }}</h2>

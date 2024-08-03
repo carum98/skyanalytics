@@ -3,7 +3,7 @@ import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { $fetch } from '@/utils/fetch'
 
-import SkPopover from '@components/SkPopover.vue'
+import SkPopover from '@ui/SkPopover.vue'
 
 const router = useRouter()
 
