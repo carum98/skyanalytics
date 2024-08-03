@@ -3,7 +3,10 @@
   "description": "SkyAnalytics is a service that allows you to track the behavior of your users.",
   "workspaces": [
     "packages/backend",
-    "packages/frontend"
+    "packages/frontend",
+    "packages/adapters/js",
+    "packages/adapters/vue",
+    "packages/adapters/nuxt"
   ],
   "scripts": {
     "dev:backend": "npm run dev --workspace=@skyanalytics/backend",
