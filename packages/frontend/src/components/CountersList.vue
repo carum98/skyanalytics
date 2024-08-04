@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { IViewsStats } from '@/types'
+
 defineProps<{
-    items: Record<string, number>
+    items?: IViewsStats
 }>()
 </script>
 

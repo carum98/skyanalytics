@@ -1,32 +1,36 @@
 <script setup lang="ts">
-import { type ISources, type IViewsStats } from '@/types'
-import { $fetch } from '@/utils/fetch'
+import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
+
+import type { ISources, IViewsStats } from '@/types'
+import type { DateSelectorValue } from '@components/DateSelector.vue'
+
+import { useFetch } from '@composables/useFetch'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip } from 'chart.js'
-import { onMounted, onUnmounted, ref } from 'vue'
 
 const props = defineProps<{
     item: ISources
+    filters: DateSelectorValue | undefined
 }>()
 
 // data
 let chart: Chart | null = null
 const canvas = ref<HTMLCanvasElement | null>(null)
 
-// methods
-async function getData() {
-    const response = await $fetch<IViewsStats>(`/api/sources/${props.item.code}/views`, {
-        query: {
-            date_range: 'last_24_hours'
-        }
-    })
+const { data } = useFetch<IViewsStats>(`/api/sources/${props.item.code}/views`, {
+    query: computed(() => props.filters)
+})
 
-    const labels = processDateLabels(Object.keys(response))
-    const data = Object.values(response)
+watch(data, (value) => {
+    if (!value || !chart) return
 
-    chart?.data.labels?.push(...labels)
-    chart?.data.datasets[0].data?.push(...data)
-    chart?.update()
-}
+    const labels = processDateLabels(Object.keys(value))
+    const data = Object.values(value)
+
+    chart.data.labels! = labels
+    chart.data.datasets[0].data! = data
+
+    chart.update()
+})
 
 // lifecycle
 onMounted(() => {
@@ -73,8 +77,6 @@ onMounted(() => {
             }
         }
     })
-
-    getData()
 })
 
 onUnmounted(() => {

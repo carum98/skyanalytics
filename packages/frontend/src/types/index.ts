@@ -19,3 +19,12 @@ export interface IPagination {
 export interface IViewsStats {
     [key: string]: number
 }
+
+export interface IStats {
+    os: IViewsStats
+    software: IViewsStats
+    country: IViewsStats
+    location: IViewsStats
+    navigations: IViewsStats
+    events: IViewsStats
+}

@@ -1,49 +1,28 @@
 <script setup lang="ts">
-import type { ISources } from '@/types'
+import { ref, computed } from 'vue'
+import type { ISources, IStats } from '@/types'
+
 import { useFetch } from '@composables/useFetch'
 import { useRoute } from 'vue-router'
 
-import DateSelector from '@components/DateSelector.vue'
+import DateSelector, { type DateSelectorValue } from '@components/DateSelector.vue'
 import ViewsChart from '@components/ViewsChart.vue'
 import CountersList from '@components/CountersList.vue'
 
 const route = useRoute()
-const { data } = useFetch<ISources>(`/api/sources/${route.params.code}`)
 
-const os = {
-    "MacOS": 1,
-    "Windows": 2,
-    "Linux": 3,
-}
+// data
+const filters = ref<DateSelectorValue>()
 
-const country = {
-    "US": 1,
-    "BR": 2,
-    "CA": 3,
-    "DE": 4,
-    "FR": 5,
-    "IT": 6,
-    "JP": 7,
-    "MX": 8,
-    "RU": 9,
-    "ES": 10,
-}
-
-const navigations = {
-    "login": 1,
-    "register": 2,
-    "forgot-password": 3,
-    "reset-password": 4,
-}
-
-const softwares = {
-    "Chrome": 1,
-    "Firefox": 2,
-    "Safari": 3,
-    "Edge": 4,
-    "Opera": 5,
-    "IE": 6,
-}
+const { data: item } = useFetch<ISources>(`/api/sources/${route.params.code}`)
+const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats`, {
+    query: computed(() => {
+        return {
+            ...filters.value,
+            stats: 'os,software,country,location,events,navigations',
+        }
+    })
+})
 </script>
 
 <template>
@@ -51,27 +30,27 @@ const softwares = {
     <section class="flex justify-space-between mb-1">
         <div class="flex align-center ga-1">
             <div class="avatar-source"></div>
-            <h2>{{ data?.name }}</h2>
+            <h2>{{ item?.name }}</h2>
         </div>
 
-        <DateSelector />
+        <DateSelector v-model="filters" />
     </section>
     
-    <section class="grid-stats">
+    <section v-if="item" class="grid-stats">
         <div class="placeholder box-1">
-            <ViewsChart v-if="data" :item="data"/>
+            <ViewsChart :item="item" :filters="filters" />
         </div>
         <div class="placeholder box-2">
-            <CountersList :items="os"></CountersList>
+            <CountersList :items="stat?.os"></CountersList>
         </div>
         <div class="placeholder box-3">
-            <CountersList :items="country"></CountersList>
+            <CountersList :items="stat?.country"></CountersList>
         </div>
         <div class="placeholder box-4">
-            <CountersList :items="navigations"></CountersList>
+            <CountersList :items="stat?.navigations"></CountersList>
         </div>
         <div class="placeholder box-5">
-            <CountersList :items="softwares"></CountersList>
+            <CountersList :items="stat?.software"></CountersList>
         </div>
     </section>
 </div>
