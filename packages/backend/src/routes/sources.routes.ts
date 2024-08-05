@@ -86,7 +86,7 @@ export class SourcesRouter extends RouterCore {
             handler: controller.getStats,
             middlewares: [
                 requestMiddleware({
-                    query: statsFilter,
+                    query: statsFilter.partial(),
                     params: paramsCode
                 })
             ]

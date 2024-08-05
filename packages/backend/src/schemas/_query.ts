@@ -28,6 +28,8 @@ export const statsFilter = z.object({
         },
         z.array(z.enum(['os', 'software', 'country', 'location', 'events', 'navigations']))
     )
-}).merge(metricsFilter)
+})
+.merge(metricsFilter)
+.merge(dateFilter)
 
 export type StatsFilter = z.infer<typeof statsFilter>

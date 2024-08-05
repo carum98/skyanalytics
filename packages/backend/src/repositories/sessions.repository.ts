@@ -1,7 +1,8 @@
 import { StatsFilter } from '@schemas/_query'
+import { navigations } from '@schemas/navigations.schemas'
 import { InsertSessionsSchema, sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
-import { and, between, eq } from 'drizzle-orm'
+import { and, between, eq, sql } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
 export class SessionRepository {
@@ -24,18 +25,19 @@ export class SessionRepository {
     }
 
 public async getStats(code: string, filters: StatsFilter) {
-        const data = await this.db.select({
+        const data = await this.db.selectDistinct({
             os: sessions.os,
             country: sessions.country,
             software: sessions.software,
-            location: sessions.location,
+            location: sql`${sessions.location}::jsonb`,
         })
         .from(sessions)
         .leftJoin(sources, eq(sessions.source_id, sources.id))
+        .leftJoin(navigations, eq(sessions.id, navigations.session_id))
         .where(
             and(
                 eq(sources.code, code),
-                between(sessions.created_at, new Date(filters.start), new Date(filters.end))
+                between(navigations.created_at, new Date(filters.start), new Date(filters.end))
             )
         )
 

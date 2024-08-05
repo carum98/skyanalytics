@@ -42,6 +42,13 @@ export class SourcesService {
     public async getStats(code: string, filters: StatsFilter) {
         let promises = []
 
+        if (filters.date_range) {
+            const { start, end } = rangeDates(filters.date_range)
+
+            filters.start = start
+            filters.end = end
+        }
+
         if (filters.stats.some((stat) => ['os', 'software', 'country', 'location'].includes(stat))) {
             promises.push(
                 this.sessionsRepository.getStats(code, filters)
