@@ -1,0 +1,88 @@
+:root {
+    --sprite-size: 25px;
+}
+
+.sprites {
+    width: var(--sprite-size);
+    height: var(--sprite-size);
+    display: inline-block;
+    background-size: 200px;
+    background-image: url(../img/sprites.png);
+    background-repeat: no-repeat;
+    scale: 0.9;
+}
+
+/* OS */
+.sprites__Android {
+    background-position: calc(var(--sprite-size) * 0) 0;
+}
+
+.sprites__iOS {
+    background-position: calc(var(--sprite-size) * -1) 0;
+}
+
+.sprites__MacOS {
+    background-position: calc(var(--sprite-size) * -2) 0;
+}
+
+.sprites__Linux {
+    background-position: calc(var(--sprite-size) * -3) 0;
+}
+
+.sprites__Windows {
+    background-position: calc(var(--sprite-size) * -4) 0;
+}
+
+/* Flags */
+.sprites__CR {
+    background-position: calc(var(--sprite-size) * -0) calc(var(--sprite-size) * -2);
+}
+
+.sprites__PA {
+    background-position: calc(var(--sprite-size) * -1) calc(var(--sprite-size) * -2);
+}
+
+.sprites__GT {
+    background-position: calc(var(--sprite-size) * -2) calc(var(--sprite-size) * -2);
+}
+
+.sprites__HN {
+    background-position: calc(var(--sprite-size) * -3) calc(var(--sprite-size) * -2);
+}
+
+.sprites__NI {
+    background-position: calc(var(--sprite-size) * -4) calc(var(--sprite-size) * -2);
+}
+
+.sprites__SV {
+    background-position: calc(var(--sprite-size) * -5) calc(var(--sprite-size) * -2);
+}
+
+.sprites__MX {
+    background-position: calc(var(--sprite-size) * -6) calc(var(--sprite-size) * -2);
+}
+
+.sprites__US {
+    background-position: calc(var(--sprite-size) * -7) calc(var(--sprite-size) * -2);
+}
+
+/* Software */
+[class*="sprites__chrome_"] {
+    background-position: calc(var(--sprite-size) * -0) calc(var(--sprite-size) * -1);
+}
+
+[class*="sprites__safari_"] {
+    background-position: calc(var(--sprite-size) * -1) calc(var(--sprite-size) * -1);
+}
+
+[class*="sprites__edge_"] {
+    background-position: calc(var(--sprite-size) * -2) calc(var(--sprite-size) * -1);
+}
+
+[class*="sprites__firefox_"] {
+    background-position: calc(var(--sprite-size) * -3) calc(var(--sprite-size) * -1);
+}
+
+[class*="sprites__dart_"] {
+    background-position: calc(var(--sprite-size) * -4) calc(var(--sprite-size) * -1);
+}

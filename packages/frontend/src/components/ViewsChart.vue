@@ -97,7 +97,7 @@ function processDateLabels(values: string[]) {
     // Months
     if (values.at(0)?.length === 7) {
         return values.map(item => {
-            const [month, year] = item.split('-')
+            const [year, month] = item.split('-')
 
             // Create a date object (day is set to 1 to avoid issues with different month lengths)
             const date = new Date(`${year}-${month}-02`)
@@ -109,7 +109,7 @@ function processDateLabels(values: string[]) {
     // Days
     if (values.at(0)?.length === 10) {
         return values.map(item => {
-            const [day, month, year] = item.split('-')
+            const [year, month, day] = item.split('-')
 
             // Create a date object (hour is set to 13 to avoid issues with different timezones)
             const date = new Date(`${year}-${month}-${day}T13:00:00.000Z`)

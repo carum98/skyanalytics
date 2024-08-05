@@ -9,7 +9,8 @@ defineProps<{
 <template>
     <ul class="counter-list">
         <li v-for="(item, key) in items" :key="key">
-            <span>{{ key }}</span> <span>{{ item }}</span>
+            <i class="sprites" :class="`sprites__${key}`"></i>
+            {{ key }} <span>{{ item }}</span>
         </li>
     </ul>
 </template>
@@ -18,9 +19,13 @@ defineProps<{
 .counter-list {
     li {
         display: flex;
-        justify-content: space-between;
         padding: 0.5rem 1rem;
         color: #595959;
+        gap: 0.5rem;
+
+        span {
+            margin-left: auto;
+        }
     }
 
     li:not(:last-child) {

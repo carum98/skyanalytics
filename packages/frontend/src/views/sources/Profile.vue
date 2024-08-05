@@ -19,7 +19,7 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
     query: computed(() => {
         return {
             ...filters.value,
-            stats: 'os,software,country,location,events,navigations',
+            stats: 'os,software,country',
         }
     })
 })
@@ -47,9 +47,6 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
             <CountersList :items="stat?.country"></CountersList>
         </div>
         <div class="placeholder box-4">
-            <CountersList :items="stat?.navigations"></CountersList>
-        </div>
-        <div class="placeholder box-5">
             <CountersList :items="stat?.software"></CountersList>
         </div>
     </section>
@@ -60,7 +57,6 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
 .grid-stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(280px, 1fr));
-    /* grid-template-rows: repeat(4, minmax(380px, 1fr)); */
     gap: 1rem;
     width: 100%;
 
