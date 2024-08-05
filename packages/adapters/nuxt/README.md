@@ -1,6 +1,8 @@
 # SkyAnalytics Nuxt
 SkyAnalytics Nuxt is an adapter for [SkyAnalytics](https://github.com/carum98/skyanalytics) that allows you to track your website's traffic and user behavior.
 
+[![npm version](https://badge.fury.io/js/@skyanalytics%2Fnuxt.svg)](https://badge.fury.io/js/@skyanalytics%2Fnuxt)
+
 ## Installation
 ```bash
 npm install @skyanalytics/nuxt

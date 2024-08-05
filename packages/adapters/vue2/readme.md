@@ -1,6 +1,8 @@
 # SkyAnalytics Vue-2
 SkyAnalytics Vue-2 is an adapter for [SkyAnalytics](https://github.com/carum98/skyanalytics) that allows you to track your website's traffic and user behavior.
 
+[![npm version](https://badge.fury.io/js/@skyanalytics%2Fvue2.svg)](https://badge.fury.io/js/@skyanalytics%2Fvue2)
+
 ## Installation
 ```bash
 npm install @skyanalytics/vue2

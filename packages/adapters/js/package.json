@@ -1,6 +1,6 @@
 {
   "name": "@skyanalytics/js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Carlos Eduardo Umaña Acevedo <cumana3098@gmail.com>",
@@ -8,12 +8,13 @@
   "description": "SkyAnalytics JS is an adapter for [SkyAnalytics]",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/carum98/skyanalytics.git"
+    "url": "git+https://github.com/carum98/skyanalytics.git",
+    "directory": "packages/adapters/js"
   },
   "bugs": {
     "url": "https://github.com/carum98/skyanalytics.git/issues"
   },
-  "homepage": "https://github.com/carum98/skyanalytics.git#readme",
+  "homepage": "https://github.com/carum98/skyanalytics/tree/main/packages/adapters/js#readme",
   "scripts": {
     "build": "tsc",
     "publish": "npm publish --access public"
