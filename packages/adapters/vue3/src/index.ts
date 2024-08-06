@@ -1,4 +1,4 @@
-import type { DirectiveBinding, VueConstructor } from 'vue'
+import type { DirectiveBinding, App } from 'vue'
 import type { SkyAnalyticsOptions } from '@skyanalytics/js/dist/types'
 
 import skyanalytics from '@skyanalytics/js'
@@ -6,12 +6,15 @@ import skyanalytics from '@skyanalytics/js'
 type HTMLElementWithRemoveListener = HTMLElement & { $removeListener: Function }
 
 export default {
-    install(vue: VueConstructor, options: SkyAnalyticsOptions) {
+    install(app: App, options: SkyAnalyticsOptions) {
         skyanalytics.init(options)
 
-        vue.prototype.$skyAnalytics = skyanalytics
-        vue.directive('sk-analytics', {
-            bind: (el: HTMLElementWithRemoveListener, binding: DirectiveBinding<{ event: string, data?: object }>) => {
+        app.config.globalProperties.$skyAnalytics = skyanalytics
+
+        app.provide('skyAnalytics', skyanalytics)
+
+        app.directive('sk-analytics', {
+            created: (el: HTMLElementWithRemoveListener, binding: DirectiveBinding<{ event: string, data?: object }>) => {
                 async function send() {
                     await skyanalytics.event({
                         name: binding.value.event,
@@ -23,7 +26,7 @@ export default {
                     el.removeEventListener('click', send)
                 }
             },
-            unbind: (el: HTMLElementWithRemoveListener) => {
+            unmounted: (el: HTMLElementWithRemoveListener) => {
                 el.$removeListener()
             }
         })

@@ -1,6 +1,6 @@
 {
   "name": "@skyanalytics/nuxt",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "author": "Carlos Eduardo Umaña Acevedo <cumana3098@gmail.com>",
   "license": "MIT",
   "description": "SkyAnalytics NUXT is an adapter for [SkyAnalytics]",
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@nuxt/kit": "^3.11.2",
-    "@skyanalytics/js": "1.0.1"
+    "@skyanalytics/js": "1.0.2"
   },
   "devDependencies": {
     "@nuxt/module-builder": "^0.8.1",

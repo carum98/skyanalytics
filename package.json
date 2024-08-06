@@ -6,6 +6,7 @@
     "packages/frontend",
     "packages/adapters/js",
     "packages/adapters/vue2",
+    "packages/adapters/vue3",
     "packages/adapters/nuxt"
   ],
   "scripts": {

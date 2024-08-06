@@ -57,3 +57,4 @@ router.beforeEach((to, from, next) => {
     Vue.prototype.$skyAnalytics.navigation({ name: to.name })
     next()
 })
+```
