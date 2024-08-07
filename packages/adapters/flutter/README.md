@@ -1,18 +1,10 @@
 # SkyAnalytics Flutter
 SkyAnalytics Flutter is an adapter for [SkyAnalytics](https://github.com/carum98/skyanalytics) that allows you to track your website's traffic and user behavior.
 
-## Installation
-```yaml
-dependencies:
-  skyanalytics_flutter: 
-    git: 
-        url: 'https://github.com/carum98/skyanalytics.git'
-        ref: 'main'
-        path: 'packages/adapters/flutter'
-```
-
 ## Usage
 ```dart
+import 'package:skyanalytics_flutter/skyanalytics_flutter.dart';
+
 const skyAnalytics = SkyAnalytics(
     sourceKey: 'sourceKey',
     host: 'https://example.com',

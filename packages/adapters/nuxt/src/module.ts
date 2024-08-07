@@ -18,7 +18,7 @@ export default defineNuxtModule<ModuleOptions>({
 
     // Add module options to public runtime config
     nuxt.options.runtimeConfig.public.skyanalytics = {
-      ...nuxt.options.runtimeConfig.public.skyanalytics,
+      ...nuxt.options.runtimeConfig.public.skyanalytics as ModuleOptions,
       ...options,
     };
 

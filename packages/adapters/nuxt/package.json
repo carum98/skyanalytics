@@ -1,6 +1,6 @@
 {
   "name": "@skyanalytics/nuxt",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "author": "Carlos Eduardo Umaña Acevedo <cumana3098@gmail.com>",
   "license": "MIT",
   "description": "SkyAnalytics NUXT is an adapter for [SkyAnalytics]",
