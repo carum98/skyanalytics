@@ -19,7 +19,7 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
     query: computed(() => {
         return {
             ...filters.value,
-            stats: 'os,software,country',
+            stats: 'os,software,country,navigations,events',
         }
     })
 })
@@ -41,13 +41,24 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
             <ViewsChart :item="item" :filters="filters" />
         </div>
         <div class="placeholder box-2">
-            <CountersList :items="stat?.os"></CountersList>
+            <p>Operating Systems</p>
+            <CountersList :items="stat?.os" />
         </div>
         <div class="placeholder box-3">
-            <CountersList :items="stat?.country"></CountersList>
+            <p>Countries</p>
+            <CountersList :items="stat?.country" />
         </div>
         <div class="placeholder box-4">
-            <CountersList :items="stat?.software"></CountersList>
+            <p>Software</p>
+            <CountersList :items="stat?.software" />
+        </div>
+        <div class="placeholder box-5">
+            <p>Events</p>
+            <CountersList :items="stat?.events" disable-sprites></CountersList>
+        </div>
+        <div class="placeholder box-6">
+            <p>Navigations</p>
+            <CountersList :items="stat?.navigations" disable-sprites></CountersList>
         </div>
     </section>
 </div>
@@ -62,12 +73,12 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
 
     grid-template-areas:
         'box-1 box-1 box-1'
-        'box-2 box-3 box-4';
+        'box-2 box-3 box-4'
+        'box-5 box-6 .';
 
     /* Areas */
     .box-1 {
         grid-area: box-1;
-        height: 480px;
     }
 
     .box-2 {
@@ -82,8 +93,23 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
         grid-area: box-4;
     }
 
+    .box-5 {
+        grid-area: box-5;
+    }
+
+    .box-6 {
+        grid-area: box-6;
+    }
+
     > div {
         padding: 1rem;
+        height: 480px;
+
+        > p {
+            font-size: 1.25rem;
+            margin-left: 10px;
+            margin-bottom: 10px;
+        }
     }
 }
 </style>

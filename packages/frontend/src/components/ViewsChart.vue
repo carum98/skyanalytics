@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
 
-import type { ISources, IViewsStats } from '@/types'
+import type { ISources } from '@/types'
 import type { DateSelectorValue } from '@components/DateSelector.vue'
 
 import { useFetch } from '@composables/useFetch'
@@ -16,7 +16,7 @@ const props = defineProps<{
 let chart: Chart | null = null
 const canvas = ref<HTMLCanvasElement | null>(null)
 
-const { data } = useFetch<IViewsStats>(`/api/sources/${props.item.code}/views`, {
+const { data } = useFetch<{ [key: string]: { views: number, sessions: number } }>(`/api/sources/${props.item.code}/views`, {
     query: computed(() => props.filters)
 })
 
@@ -27,7 +27,8 @@ watch(data, (value) => {
     const data = Object.values(value)
 
     chart.data.labels! = labels
-    chart.data.datasets[0].data! = data
+    chart.data.datasets[0].data! = data.map(item => item.sessions)
+    chart.data.datasets[1].data! = data.map(item => item.views)
 
     chart.update()
 })
@@ -42,13 +43,22 @@ onMounted(() => {
         type: 'bar',
         data: {
             labels: [],
-            datasets: [{
-                label: '',
-                data: [],
-                borderColor: 'green',
-                backgroundColor: 'rgba(0, 128, 0, 0.5)',
-                borderRadius: 10
-            }]
+            datasets: [
+                {
+                    label: 'Sessions',
+                    data: [],
+                    borderColor: 'green',
+                    backgroundColor: 'rgba(0, 128, 0, 0.5)',
+                    borderRadius: 10
+                },
+                {
+                    label: 'Views',
+                    data: [],
+                    borderColor: 'green',
+                    backgroundColor: 'rgba(0, 128, 0, 0.3)',
+                    borderRadius: 10
+                }
+            ]
         },
         options: {
             responsive: true,
@@ -59,20 +69,24 @@ onMounted(() => {
             },
             scales: {
                 y: {
-                    min: 0
+                    stacked: true,
+                    min: 0,
+                    suggestedMax: 5,
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
                 },
+                x: {
+                    stacked: true,
+                }
             },
             plugins: {
                 legend: {
                     display: false
                 },
                 tooltip: {
-                    displayColors: false,
                     titleAlign: 'center',
-                    bodyAlign: 'center',
-                    callbacks: {
-                        label: ({ parsed }) => `${parsed.y}`
-                    }
                 }
             }
         }
@@ -85,10 +99,10 @@ onUnmounted(() => {
 
 function processDateLabels(values: string[]) {
     // Hours
-    if (values.at(0)?.length === 3) {
+    if (values.at(0)?.length === 13) {
         return values.map(item => {
-            const [value, _] = item.split(':')
-            const hour = parseInt(value)
+            const [_, hours] = item.split('T')
+            const hour = parseInt(hours)
             // Return the hour in 12h format
             return hour > 12 ? `${hour - 12} pm` : `${hour === 0 ? 12 : hour} am`
         })

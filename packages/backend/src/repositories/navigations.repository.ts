@@ -8,7 +8,6 @@ import { PaginationSchemaType } from '@utils/pagination'
 import { DateRange } from '@utils/range-dates'
 import { and, between, count, countDistinct, eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
-import { name } from 'tar/dist/commonjs/types'
 
 export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema, InsertNavigationsSchema, InsertNavigationsSchema>{
     constructor(public readonly db: NodePgDatabase) {
@@ -100,8 +99,9 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
 
     public async getViews(code: string, dateRange: DateRange, filters: MetricsFilter) {
         const data = await this.db.select({
-            id: navigations.id,
+            navigations_id: navigations.id,
             created_at: navigations.created_at,
+            session_id: sessions.id,
         })
         .from(navigations)
         .leftJoin(sessions, eq(navigations.session_id, sessions.id))

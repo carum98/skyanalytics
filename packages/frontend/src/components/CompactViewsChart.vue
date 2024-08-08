@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { type ISources, type IViewsStats } from '@/types'
+import { type ISources } from '@/types'
 import { $fetch } from '@/utils/fetch'
 import { Chart, LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, type ChartArea } from 'chart.js'
 import { onMounted, onUnmounted, ref } from 'vue'
@@ -14,14 +14,14 @@ const canvas = ref<HTMLCanvasElement | null>(null)
 
 // methods
 async function getData() {
-    const response = await $fetch<IViewsStats>(`/api/sources/${props.item.code}/views`, {
+    const response = await $fetch<{ [key: string]: { views: number, sessions: number } }>(`/api/sources/${props.item.code}/views`, {
         query: {
             date_range: 'last_7_days'
         }
     })
 
     const labels = Object.keys(response)
-    const data = Object.values(response)
+    const data = Object.values(response).map(item => item.sessions)
 
     chart?.data.labels?.push(...labels)
     chart?.data.datasets[0].data?.push(...data)
@@ -61,7 +61,9 @@ onMounted(() => {
             scales: {
                 y: {
                     display: false,
-                    min: 0
+                    min: 0,
+                    beginAtZero: true,
+                    suggestedMax: 5
                 },
                 x: {
                     display: false

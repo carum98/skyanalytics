@@ -24,4 +24,6 @@ export interface IStats {
     os: IViewsStats
     software: IViewsStats
     country: IViewsStats
+    navigations: IViewsStats
+    events: IViewsStats
 }

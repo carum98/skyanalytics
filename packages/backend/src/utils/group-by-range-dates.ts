@@ -1,13 +1,18 @@
 import { DateRange } from './range-dates'
 
-export function groupByRangeDates(data: Array<{ created_at: Date }>, date_range: DateRange, filters: { start: string, end: string }) {
+export function groupByRangeDates(data: Array<{ created_at: Date, session_id: number | null }>, date_range: DateRange, filters: { start: string, end: string }) {
     const groupByDay = Object.groupBy(data, (item) => {
         return trimDate(item.created_at.toISOString(), date_range)
     })
 
-    const dataEntries = Object.entries(groupByDay).map(([date, items]) => {
-        return [date, items?.length || 0]
-    })
+    const dataEntries = Object.entries(groupByDay)
+        .map(([date, items]) => ([
+            date, 
+            {
+                views : items?.length || 0,
+                sessions: new Set(data.map(item => item.session_id)).size
+            }
+        ]))
 
     // Fill days without data with 0
     const start = new Date(filters.start)
@@ -17,12 +22,15 @@ export function groupByRangeDates(data: Array<{ created_at: Date }>, date_range:
         const key = trimDate(date.toISOString(), date_range)
 
         if (!groupByDay[key]) {
-            dataEntries.push([key, 0])
+            dataEntries.push([key, { views: 0, sessions: 0 }])
         }
     }
 
     dataEntries.sort((a, b) => {
-        return new Date(a[0]).getTime() - new Date(b[0]).getTime()
+        const aDate = new Date(completeDate(a[0] as string, date_range))
+        const bDate = new Date(completeDate(b[0] as string, date_range))
+
+        return aDate.getTime() - bDate.getTime()
     })
 
     return Object.fromEntries(dataEntries)
@@ -34,10 +42,22 @@ function trimDate(date: string, date_range: DateRange) {
     }
 
     if (date_range.includes('hours')) {
-        return new Date(date).toISOString().split('T')[1].slice(0, 3)
+        return new Date(date).toISOString().slice(0, 13)
     }
 
     return new Date(date).toISOString().split('T')[0]
+}
+
+function completeDate(date: string, date_range: DateRange) {
+    if (date_range.includes('month')) {
+        return date + '-01'
+    }
+
+    if (date_range.includes('hours')) {
+        return date + ':00:00'
+    }
+
+    return date + 'T00:00:00'
 }
 
 function dateIncrement(date: Date, date_range: DateRange) {

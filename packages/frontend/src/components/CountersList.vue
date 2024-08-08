@@ -3,14 +3,15 @@ import type { IViewsStats } from '@/types'
 
 defineProps<{
     items?: IViewsStats
+    disableSprites?: boolean
 }>()
 </script>
 
 <template>
     <ul class="counter-list">
-        <li v-for="(item, key) in items" :key="key">
-            <i class="sprites" :class="`sprites__${key}`"></i>
-            {{ key }} <span>{{ item }}</span>
+        <li v-for="(value, key) in items" :key="key">
+            <i v-if="!disableSprites" class="sprites" :class="`sprites__${key}`"></i>
+            {{ key }} <span>{{ value }}</span>
         </li>
     </ul>
 </template>
@@ -20,11 +21,16 @@ defineProps<{
     li {
         display: flex;
         padding: 0.5rem 1rem;
-        color: #595959;
         gap: 0.5rem;
 
         span {
             margin-left: auto;
+            background-color: var(--background-color);
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
+            display: grid;
+            place-items: center;
         }
     }
 

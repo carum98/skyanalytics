@@ -29,7 +29,7 @@ router.afterEach((to, from) => {
   	<component :is="layout">
 		<RouterView v-slot="{ Component }">
     		<Transition :name="route.meta.transition as string" mode="out-in">
-				<KeepAlive>
+				<KeepAlive include="Home">
 					<Component :is="Component" />
 				</KeepAlive>
 			</Transition>
