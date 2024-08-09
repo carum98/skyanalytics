@@ -6,3 +6,5 @@
 - [[PUT /sources/:code] - Update Source](sources/update.md)
 - [[DELETE /sources/:code] - Remove Source](sources/remove.md)
 - [[GET /sources/:code/views] - Views Stats](sources/views.md)
+- [[GET /sources/:code/stats] - Stat Sources](sources/stats.md)
+- [[GET /sources/:code/metrics] - Metrics](sources/metrics.md)

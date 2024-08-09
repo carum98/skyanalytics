@@ -3,6 +3,7 @@ import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
 import { authMiddleware } from '@middlewares/auth.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
+import { headersTimezoneSchema } from '@schemas/_headers'
 import { paramsCode } from '@schemas/_params'
 import { dateFilter, metricsFilter, statsFilter } from '@schemas/_query'
 import { SourcesService } from '@services/sources.service'
@@ -75,6 +76,7 @@ export class SourcesRouter extends RouterCore {
             handler: controller.getMetrics,
             middlewares: [
                 requestMiddleware({
+                    headers: headersTimezoneSchema,
                     query: metricsFilter,
                     params: paramsCode
                 })
@@ -86,6 +88,7 @@ export class SourcesRouter extends RouterCore {
             handler: controller.getStats,
             middlewares: [
                 requestMiddleware({
+                    headers: headersTimezoneSchema,
                     query: statsFilter.partial(),
                     params: paramsCode
                 })
@@ -97,6 +100,7 @@ export class SourcesRouter extends RouterCore {
             handler: controller.getViews,
             middlewares: [
                 requestMiddleware({
+                    headers: headersTimezoneSchema,
                     query: dateFilter,
                     params: paramsCode
                 })

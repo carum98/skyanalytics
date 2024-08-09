@@ -4,6 +4,7 @@ import { PaginationSchemaType } from '@utils/pagination'
 import { DateFilter, MetricsFilter, StatsFilter } from '@schemas/_query'
 import { InsertSourcesSchema } from '@schemas/sources.schemas'
 import { ParamsCode } from '@schemas/_params'
+import { HeadersTimeZone } from '@schemas/_headers'
 
 export class SourcesController {
     constructor(private service: SourcesService) {}
@@ -48,26 +49,41 @@ export class SourcesController {
     }
 
     getMetrics = async (req: Request, res: Response): Promise<void> => {
+        const headers = req.headers as unknown as HeadersTimeZone
         const params = req.params as unknown as ParamsCode
         const query = req.query as unknown as MetricsFilter
 
-        const metrics = await this.service.getMetrics(params.code, query)
+        const metrics = await this.service.getMetrics(params.code, {
+            ...query,
+            ...headers
+        })
+
         res.json(metrics)
     }
 
     getStats = async (req: Request, res: Response): Promise<void> => {
+        const headers = req.headers as unknown as HeadersTimeZone
         const params = req.params as unknown as ParamsCode
         const query = req.query as unknown as StatsFilter
 
-        const stats = await this.service.getStats(params.code, query)
+        const stats = await this.service.getStats(params.code, {
+            ...query,
+            ...headers
+        })
+
         res.json(stats)
     }
 
     getViews = async (req: Request, res: Response): Promise<void> => {
+        const headers = req.headers as unknown as HeadersTimeZone
         const params = req.params as unknown as ParamsCode
         const query = req.query as unknown as DateFilter
 
-        const views = await this.service.getViews(params.code, query)
+        const views = await this.service.getViews(params.code, {
+            ...query,
+            ...headers
+        })
+
         res.json(views)
     }
 }

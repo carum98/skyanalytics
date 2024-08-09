@@ -23,9 +23,17 @@ This endpoint requires the `X-SkyAnalytics-Key` header, this Key is provided whe
 ## Adapters
 
 To facilitate the use of the API, we have created the following adapters:
-* [JavaScript](https://github.com/carum98/skyanalytics-js)
-* [Vue-2](https://github.com/carum98/skyanalytics-vue2)
-* [Nuxt](https://github.com/carum98/skyanalytics-nuxt)
-* [Flutter](https://github.com/carum98/skyanalytics_flutter)
+* [JavaScript](/packages/adapters/js/readme.md)
+* [Vue-2](/packages/adapters/vue2/readme.md)
+* [Vue-3](/packages/adapters/vue3/readme.md)
+* [Nuxt](/packages/adapters/nuxt/readme.md)
+* [Flutter](/packages/adapters/flutter/README.md)
+
+------
+
+## Time Zones
+The API can support multiple time zones. The default time zone is UTC. You can change the time zone by setting the `X-TimeZone` header in the request.
+
+[Time Zones](./pages/time-zones.md)
 
 ------

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { type ISources } from '@/types'
+import { getCurrentTimeZone } from '@/utils'
 import { $fetch } from '@/utils/fetch'
 import { Chart, LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, type ChartArea } from 'chart.js'
 import { onMounted, onUnmounted, ref } from 'vue'
@@ -17,6 +18,9 @@ async function getData() {
     const response = await $fetch<{ [key: string]: { views: number, sessions: number } }>(`/api/sources/${props.item.code}/views`, {
         query: {
             date_range: 'last_7_days'
+        },
+        headers: {
+            'x-timezone': getCurrentTimeZone()
         }
     })
 

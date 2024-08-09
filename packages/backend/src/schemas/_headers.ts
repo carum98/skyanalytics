@@ -9,3 +9,9 @@ export const headersSourceSchema = z.object({
         required_error: 'Header X-SkyAnalytics-Key is required'
     })
 })
+
+export const headersTimezoneSchema = z.object({
+    'x-timezone': z.string().default('UTC+0'), // IANA Time Zone or Offset UTC ('America/Costa_Rica' or 'UTC-6')
+})
+
+export type HeadersTimeZone = z.infer<typeof headersTimezoneSchema>

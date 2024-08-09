@@ -2,10 +2,12 @@ import { EventsRepository } from '@repositories/events.repositories'
 import { NavigationRepository } from '@repositories/navigations.repository'
 import { SessionRepository } from '@repositories/sessions.repository'
 import { SourcesRepository } from '@repositories/sources.repository'
+import { HeadersTimeZone } from '@schemas/_headers'
 import { DateFilter, MetricsFilter, StatsFilter } from '@schemas/_query'
 import { InsertSourcesSchema } from '@schemas/sources.schemas'
 import { PaginationSchemaType } from '@utils/pagination'
 import { rangeDates } from '@utils/range-dates'
+import { parseToUTC } from '@utils/time-zones'
 
 export class SourcesService {
     constructor(
@@ -35,11 +37,21 @@ export class SourcesService {
         return this.sourceRepository.delete(code)
     }
 
-    public async getMetrics(code: string, filters: MetricsFilter) {
-        return this.navigationsRepository.getMetrics(code, filters)
+    public async getMetrics(code: string, filters: MetricsFilter & HeadersTimeZone) {
+        const timeZone = filters['x-timezone']
+
+        return this.navigationsRepository.getMetrics(
+            code, 
+            {
+                start: parseToUTC(filters.start, timeZone),
+                end: parseToUTC(filters.end, timeZone),
+            }
+        )
     }
 
-    public async getStats(code: string, filters: StatsFilter) {
+    public async getStats(code: string, filters: StatsFilter & HeadersTimeZone) {
+        const timeZone = filters['x-timezone']
+
         let promises = []
 
         if (filters.date_range) {
@@ -47,6 +59,9 @@ export class SourcesService {
 
             filters.start = start
             filters.end = end
+        } else {
+            filters.start = parseToUTC(filters.start, timeZone)
+            filters.end = parseToUTC(filters.end, timeZone)
         }
 
         if (filters.stats.some((stat) => ['os', 'software', 'country', 'location'].includes(stat))) {
@@ -75,9 +90,18 @@ export class SourcesService {
         }), {})
     }
 
-    public async getViews(code: string, filters: DateFilter) {
+    public async getViews(code: string, filters: DateFilter & HeadersTimeZone) {
+        const timeZone = filters['x-timezone']
         const { start, end } = rangeDates(filters.date_range)
 
-        return this.navigationsRepository.getViews(code, filters.date_range, { start, end })
+        return this.navigationsRepository.getViews(
+            code, 
+            filters.date_range, 
+            { 
+                start,
+                end
+            },
+            timeZone
+        )
     }
 }

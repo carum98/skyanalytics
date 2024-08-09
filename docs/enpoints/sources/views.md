@@ -5,6 +5,13 @@ Stats for specific source.
 - Method: `GET`
 - URL: `/sources/:code/views`
 
+## Headers
+| Field | Type | Required | Default |
+| ----- | ---- | -------- | ------- |
+| X-TimeZone | string | false | `UTC+0` |
+
+[TimeZones](../../pages/time-zones.md)
+
 ## Query Parameters
 | Field | Type | Required |
 | ----- | ---- | -------- |
@@ -17,19 +24,34 @@ Stats for specific source.
 Status: `200 OK`
 ```json
 {
-	"2024-07-24": 3,
-    "2024-07-25": 8,
-    "2024-07-26": 3,
-    "2024-07-27": 5,
-    "2024-07-28": 9,
-    "2024-07-29": 2,
-    "2024-07-30": 0,
+    "2024-08-07T18": {
+        "views": 0,
+        "sessions": 0
+    },
+    "2024-08-07T19": {
+        "views": 0,
+        "sessions": 0
+    },
+    "2024-08-07T20": {
+        "views": 0,
+        "sessions": 0
+    },
+    "2024-08-07T21": {
+        "views": 0,
+        "sessions": 0
+    },
 }
 ```
 ```json
 {
-	"2024-07": 3,
-	"2024-07": 8,
+    "2024-08-07": {
+        "views": 0,
+        "sessions": 0
+    },
+    "2024-08-08": {
+        "views": 0,
+        "sessions": 0
+    },
 }
 ```
 

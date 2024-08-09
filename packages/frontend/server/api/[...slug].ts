@@ -3,11 +3,13 @@ export default defineEventHandler(async (event) => {
 
     const slug = getRouterParam(event, 'slug') as string
     const query = getQuery(event)
+    const headers = getRequestHeaders(event)
 
     if (method === 'GET') {
         const data = await useApiFetch(event, slug, {
             method,
-            query
+            query,
+            headers
         })
 
         return data
@@ -16,13 +18,15 @@ export default defineEventHandler(async (event) => {
 
         const data = await useApiFetch(event, slug, {
             method,
-            body
+            body,
+            headers
         })
 
         return data
     }  else if (method === 'DELETE') {
         const data = await useApiFetch(event, slug, {
-            method
+            method,
+            headers
         })
 
         return data

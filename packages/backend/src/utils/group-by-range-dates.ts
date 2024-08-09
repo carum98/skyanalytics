@@ -1,8 +1,14 @@
 import { DateRange } from './range-dates'
+import { parseToTimeZone } from './time-zones'
 
-export function groupByRangeDates(data: Array<{ created_at: Date, session_id: number | null }>, date_range: DateRange, filters: { start: string, end: string }) {
+export function groupByRangeDates(
+    data: Array<{ created_at: Date, session_id: number | null }>, 
+    date_range: DateRange, 
+    filters: { start: string, end: string },
+    timezone: string
+) {
     const groupByDay = Object.groupBy(data, (item) => {
-        return trimDate(item.created_at.toISOString(), date_range)
+        return trimDate(parseToTimeZone(item.created_at, timezone), date_range)
     })
 
     const dataEntries = Object.entries(groupByDay)
@@ -15,8 +21,8 @@ export function groupByRangeDates(data: Array<{ created_at: Date, session_id: nu
         ]))
 
     // Fill days without data with 0
-    const start = new Date(filters.start)
-    const end = new Date(filters.end)
+    const start = new Date(parseToTimeZone(filters.start, timezone))
+    const end = new Date(parseToTimeZone(filters.end, timezone))
 
     for (let date = start; date <= end; dateIncrement(date, date_range)) {
         const key = trimDate(date.toISOString(), date_range)
@@ -33,7 +39,7 @@ export function groupByRangeDates(data: Array<{ created_at: Date, session_id: nu
         return aDate.getTime() - bDate.getTime()
     })
 
-    return Object.fromEntries(dataEntries)
+    return Object.fromEntries(dataEntries) as Record<string, { views: number, sessions: number }>
 }
 
 function trimDate(date: string, date_range: DateRange) {

@@ -6,6 +6,7 @@ import type { DateSelectorValue } from '@components/DateSelector.vue'
 
 import { useFetch } from '@composables/useFetch'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip } from 'chart.js'
+import { getCurrentTimeZone } from '@/utils'
 
 const props = defineProps<{
     item: ISources
@@ -17,7 +18,10 @@ let chart: Chart | null = null
 const canvas = ref<HTMLCanvasElement | null>(null)
 
 const { data } = useFetch<{ [key: string]: { views: number, sessions: number } }>(`/api/sources/${props.item.code}/views`, {
-    query: computed(() => props.filters)
+    query: computed(() => props.filters),
+    headers: {
+        'x-timezone': getCurrentTimeZone()
+    }
 })
 
 watch(data, (value) => {

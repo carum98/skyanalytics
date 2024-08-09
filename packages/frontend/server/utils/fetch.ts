@@ -20,7 +20,8 @@ export async function useApiFetch (event: H3Event, request: RequestInfo, options
     return apiFetch(request, {
         ...options,
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
+            ...options?.headers
         },
         async onResponseError({ response, error }) {
             if (response.status === 401) {

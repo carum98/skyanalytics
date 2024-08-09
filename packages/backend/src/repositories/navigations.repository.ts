@@ -97,7 +97,7 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
         }
     }
 
-    public async getViews(code: string, dateRange: DateRange, filters: MetricsFilter) {
+    public async getViews(code: string, dateRange: DateRange, filters: MetricsFilter, timezone: string) {
         const data = await this.db.select({
             navigations_id: navigations.id,
             created_at: navigations.created_at,
@@ -111,6 +111,6 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
             between(navigations.created_at, new Date(filters.start), new Date(filters.end))
         ))
 
-        return groupByRangeDates(data, dateRange, filters)
+        return groupByRangeDates(data, dateRange, filters, timezone)
     }
 }
