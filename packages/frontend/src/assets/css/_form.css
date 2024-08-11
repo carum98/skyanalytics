@@ -1,6 +1,14 @@
 .sk-form {
+    width: 300px;
+
     > input, > .sk-select, > fieldset {
         margin-bottom: 15px;
+    }
+
+    > img {
+        display: block;
+        margin: 0 auto;
+        filter: var(--drop-shadow);
     }
 
     > label {

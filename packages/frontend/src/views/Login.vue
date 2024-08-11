@@ -22,6 +22,8 @@ async function onSubmit(event: Event) {
 
 <template>
     <form class="sk-form" @submit.prevent="onSubmit">
+        <img src="/img/logo.avif" width="80" height="80" alt="Logo" />
+
         <label>
             Correo
         </label>

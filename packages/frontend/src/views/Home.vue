@@ -13,7 +13,7 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 		<article
 			v-for="item in data?.data"
 			:key="item.code"
-			@click="$router.push({ name: 'sources', params: { code: item.code } })"
+			@click="$router.push({ name: 'sources', params: { code: item.code }, state: { item: JSON.stringify(item) } })"
 		>
 			<header class="flex justify-space-between mb-1">
 				<div class="flex ga-1">

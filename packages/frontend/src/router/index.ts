@@ -9,7 +9,8 @@ const routes: RouteRecordRaw[] = [
         path: '/login',
         component: () => import('@views/Login.vue'),
         meta: {
-            layout: 'login'
+            layout: 'login',
+            disableTransition: true
         }
     },
     {

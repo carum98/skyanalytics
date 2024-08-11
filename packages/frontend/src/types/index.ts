@@ -20,10 +20,16 @@ export interface IViewsStats {
     [key: string]: number
 }
 
+export interface ILocationStat {
+    latitude: number
+    longitude: number
+}
+
 export interface IStats {
     os: IViewsStats
     software: IViewsStats
     country: IViewsStats
     navigations: IViewsStats
     events: IViewsStats
+    location: Array<ILocationStat>
 }

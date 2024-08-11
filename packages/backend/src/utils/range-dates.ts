@@ -4,6 +4,7 @@ export enum DateRange {
     last_7_days = 'last_7_days',
     last_15_days = 'last_15_days',
     last_30_days = 'last_30_days',
+    this_week = 'this_week',
     this_month = 'this_month',
     last_month = 'last_month',
     last_2_months = 'last_2_months',
@@ -29,6 +30,12 @@ export function rangeDates(date_range: DateRange) {
             break
         case DateRange.last_30_days:
             start.setDate(start.getDate() - 30)
+            break
+        case DateRange.this_week:
+            const dayOfWeek = start.getDay()
+            const diffToMonday = (dayOfWeek === 0 ? -6 : 1) - dayOfWeek // Adjust for Sunday being day 0
+            start.setDate(start.getDate() + diffToMonday)
+            start.setHours(0, 0, 0, 0)
             break
         case DateRange.this_month:
             start.setDate(1)

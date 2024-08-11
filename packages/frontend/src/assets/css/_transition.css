@@ -11,7 +11,7 @@
 /* Slides */
 .slide-right-enter-active,
 .slide-right-leave-active {
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .slide-right-enter-from {
@@ -24,7 +24,7 @@
 
 .slide-left-enter-active,
 .slide-left-leave-active {
-  transition: transform 0.3s ease;
+  transition: transform 0.2s ease;
 }
 
 .slide-left-enter-from {

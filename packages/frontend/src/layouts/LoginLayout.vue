@@ -3,7 +3,7 @@ import { onMounted } from 'vue'
 
 onMounted(() => {
     const app = document.querySelector('#app')
-    app.setAttribute('data-layout', 'login')
+    app?.setAttribute('data-layout', 'login')
 })
 </script>
 

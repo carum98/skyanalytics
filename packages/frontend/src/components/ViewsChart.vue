@@ -93,7 +93,43 @@ onMounted(() => {
                     titleAlign: 'center',
                 }
             }
-        }
+        },
+        plugins: [
+            {
+                id: 'hoverSegment',
+                beforeEvent(chart: Chart<"bar"> & { _hoverX?: number | null }, args: any) {
+                    if (args.inChartArea) {
+                        // Check if the mouse is inside one bar
+                        const mouseHoverBarArea = chart.getElementsAtEventForMode(args.event, 'nearest', { intersect: true }, false)
+                            .length > 0
+
+                        if (!mouseHoverBarArea) {
+                            chart._hoverX = chart.scales.x.getValueForPixel(args.event.x)
+                        } else {
+                            chart._hoverX = null
+                        }
+                    } else {
+                        chart._hoverX = null
+                    }
+
+                    args.changed = true
+                },
+                beforeDatasetsDraw(chart: Chart<"bar"> & { _hoverX?: number | null }) {
+                    const { ctx, chartArea: { width, height, top }, scales: { x }, _hoverX } = chart
+
+                    if (_hoverX != null) {
+                        const segment = width / (x.max + 1)
+
+                        const x2 = x.getPixelForValue(_hoverX) - (segment / 2)
+
+                        ctx.save()
+                        ctx.fillStyle = 'rgba(242, 245, 252, 0.06)'
+                        ctx.fillRect(x2, top, segment, height)
+                        ctx.restore()
+                    }
+                }
+            }
+        ]
     })
 })
 

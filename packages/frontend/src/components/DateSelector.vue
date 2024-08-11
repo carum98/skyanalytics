@@ -10,16 +10,17 @@ type Option = {
 export type DateSelectorValue = Record<string, string>
 
 const options: Option[] = [
-    { name: 'Today', value: 'today' },
     { name: 'Last 24 hours', value: 'last_24_hours' },
     { name: 'This week', value: 'this_week' },
     { name: 'Last 7 days', value: 'last_7_days' },
     { name: 'This month', value: 'this_month' },
     { name: 'Last 30 days', value: 'last_30_days' },
+    { name: 'Last 2 months', value: 'last_2_months' },
+    { name: 'Last 3 months', value: 'last_3_months' },
 ]
 
 // data
-const selected = ref<Option>(options[1])
+const selected = ref<Option>(options[0])
 const value = defineModel<DateSelectorValue>()
 
 // watch

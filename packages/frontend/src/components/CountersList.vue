@@ -1,15 +1,21 @@
 <script setup lang="ts">
 import type { IViewsStats } from '@/types'
+import { computed } from 'vue'
 
-defineProps<{
+const props = defineProps<{
     items?: IViewsStats
     disableSprites?: boolean
 }>()
+
+const itemsSorted = computed(() => {
+    if (!props.items) return []
+    return Object.fromEntries(Object.entries(props.items).sort((a, b) => b[1] - a[1]))
+})
 </script>
 
 <template>
     <ul class="counter-list">
-        <li v-for="(value, key) in items" :key="key">
+        <li v-for="(value, key) in itemsSorted" :key="key">
             <i v-if="!disableSprites" class="sprites" :class="`sprites__${key}`"></i>
             {{ key }} <span>{{ value }}</span>
         </li>
@@ -18,6 +24,9 @@ defineProps<{
 
 <style lang="css">
 .counter-list {
+    height: 90%;
+    overflow-y: auto;
+
     li {
         display: flex;
         padding: 0.5rem 1rem;
@@ -31,6 +40,10 @@ defineProps<{
             border-radius: 10px;
             display: grid;
             place-items: center;
+        }
+
+        &:hover {
+            background-color: rgba(242, 245, 252, 0.06);
         }
     }
 
