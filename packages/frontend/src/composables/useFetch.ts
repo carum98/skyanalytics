@@ -1,13 +1,14 @@
 import { isRef, onMounted, onUnmounted, ref, watch, type ComputedRef, type Ref, type UnwrapRef } from 'vue'
 import { $fetch, type FetchRequestOptions } from '@/utils/fetch'
 
-type UseFetchRequestOptions = Omit<FetchRequestOptions, 'query'> & { 
+type UseFetchRequestOptions<T> = Omit<FetchRequestOptions, 'query'> & { 
     query?: Record<string, Ref<string | undefined>> | Ref<Record<string, string | undefined> | undefined>
     watch?: Ref<string | undefined>[]
     immediate?: boolean
+    transform?: (data: T) => any
 }
 
-export function useFetch<T>(url: string, options?: UseFetchRequestOptions) {
+export function useFetch<T>(url: string, options?: UseFetchRequestOptions<T>) {
     // data
     const data = ref<T>()
     const error = ref<any>(null)
@@ -30,7 +31,12 @@ export function useFetch<T>(url: string, options?: UseFetchRequestOptions) {
         try {
             loading.value = true
             const response = await $fetch<T>(url, _options)
-            data.value = response
+
+            if (options?.transform) {
+                data.value = options.transform(response)
+            } else {
+                data.value = response
+            }
         } catch (e) {
             error.value = e
         } finally {
@@ -38,7 +44,7 @@ export function useFetch<T>(url: string, options?: UseFetchRequestOptions) {
         }
     }
 
-    function processQuery(query: Pick<UseFetchRequestOptions, 'query'>) {
+    function processQuery(query: Pick<UseFetchRequestOptions<T>, 'query'>) {
         if (isRef(query.query)) {
             return query.query.value
         }

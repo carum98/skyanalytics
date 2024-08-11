@@ -2,6 +2,7 @@ export interface ISources {
     code: string
     name: string
     key: string
+    icon_path: string | null
 }
 
 export interface ISourcesPagination {

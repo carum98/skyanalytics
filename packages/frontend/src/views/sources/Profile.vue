@@ -31,7 +31,7 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
 <div>
     <section class="flex justify-space-between mb-1">
         <div class="flex align-center ga-1">
-            <div class="avatar-source"></div>
+            <img v-if="item.icon_path" class="avatar-source" :src="item.icon_path" />
             <h2>{{ item?.name }}</h2>
         </div>
 

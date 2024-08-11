@@ -14,7 +14,8 @@ export class SourcesRepository extends RepositoryCore<SelectSourcesSchema, Inser
         const select = db.select({
             code: sources.code,
             name: sources.name,
-            key: sources.key
+            key: sources.key,
+            icon_path: sources.icon_path,
         }).from(table)
 
         super({ db, table, select })
@@ -37,7 +38,17 @@ export class SourcesRepository extends RepositoryCore<SelectSourcesSchema, Inser
         return selectSourcesSchema.parse(data)
     }
 
-    public async create(params: InsertSourcesSchema) {
+    public async getIconPath(code: string) {
+        const data = await this.db.select({
+            icon_path: sources.icon_path
+        })
+        .from(sources)
+        .where(eq(sources.code, code))
+
+        return data?.at(0)?.icon_path
+    }
+
+    public async create(params: InsertSourcesSchema & { icon_path?: string }) {
         const key = uuidGenerator()
         const code = generateCode()
 
@@ -52,7 +63,7 @@ export class SourcesRepository extends RepositoryCore<SelectSourcesSchema, Inser
         return selectSourcesSchema.parse(data)
     }
 
-    public async update(code: string, params: InsertSourcesSchema) {
+    public async update(code: string, params: InsertSourcesSchema & { icon_path?: string }) {
         const data = await this.updateCore({
             where: eq(sources.code, code),
             params

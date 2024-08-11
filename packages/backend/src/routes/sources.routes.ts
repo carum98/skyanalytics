@@ -2,6 +2,7 @@ import { SourcesController } from '@controllers/sources.controller'
 import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
 import { authMiddleware } from '@middlewares/auth.middleware'
+import { multerSingleMiddleware } from '@middlewares/multer.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { headersTimezoneSchema } from '@schemas/_headers'
 import { paramsCode } from '@schemas/_params'
@@ -34,6 +35,7 @@ export class SourcesRouter extends RouterCore {
             name: '/',
             handler: controller.create,
             middlewares: [
+                multerSingleMiddleware('icon'),
                 requestMiddleware({
                     body: insertSourcesSchema
                 })
@@ -54,6 +56,7 @@ export class SourcesRouter extends RouterCore {
             name: '/:code',
             handler: controller.update,
             middlewares: [
+                multerSingleMiddleware('icon'),
                 requestMiddleware({
                     body: insertSourcesSchema.partial(),
                     params: paramsCode
@@ -64,6 +67,16 @@ export class SourcesRouter extends RouterCore {
         this.delete({
             name: '/:code',
             handler: controller.delete,
+            middlewares: [
+                requestMiddleware({
+                    params: paramsCode
+                })
+            ]
+        })
+
+        this.get({
+            name: '/:code/icon',
+            handler: controller.getIcon,
             middlewares: [
                 requestMiddleware({
                     params: paramsCode

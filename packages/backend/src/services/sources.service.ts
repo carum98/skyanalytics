@@ -25,12 +25,22 @@ export class SourcesService {
         return this.sourceRepository.get(code)
     }
 
-    public async create(data: InsertSourcesSchema) {
-        return this.sourceRepository.create(data)
+    public async getIconPath(code: string) {
+        return this.sourceRepository.getIconPath(code)
     }
 
-    public async update(code: string, data: any) {
-        return this.sourceRepository.update(code, data)
+    public async create(data: InsertSourcesSchema, file?: Express.Multer.File) {
+        return this.sourceRepository.create({
+            ...data,
+            icon_path: file?.path
+        })
+    }
+
+    public async update(code: string, data: InsertSourcesSchema, file?: Express.Multer.File) {
+        return this.sourceRepository.update(code, {
+            ...data,
+            icon_path: file?.path
+        })
     }
 
     public async delete(code: string) {

@@ -5,7 +5,15 @@ import { type ISourcesPagination } from '@/types'
 import SkPopover from '@ui/SkPopover.vue'
 import CompactViewsChart from '@components/CompactViewsChart.vue'
 
-const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources")
+const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources", {
+	transform: (data) => ({
+		...data,
+		data: data.data.map((item) => ({
+			...item,
+			icon_path: item.icon_path ? `http://localhost:3001/api/${item.icon_path}` : null,
+		}))
+	})
+})
 </script>
 
 <template>
@@ -17,7 +25,7 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 		>
 			<header class="flex justify-space-between mb-1">
 				<div class="flex ga-1">
-					<div class="avatar-source"></div>
+					<img v-if="item.icon_path" class="avatar-source" :src="item.icon_path" />
 					<h2>{{ item.name }}</h2>
 				</div>
 

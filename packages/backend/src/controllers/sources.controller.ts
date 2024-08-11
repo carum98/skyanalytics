@@ -26,15 +26,17 @@ export class SourcesController {
 
     create = async (req: Request, res: Response): Promise<void> => {
         const body = req.body as unknown as InsertSourcesSchema
+        const file = req.file
 
-        const source = await this.service.create(body)
+        const source = await this.service.create(body, file)
         res.json(source)
     }
 
     update = async (req: Request, res: Response): Promise<void> => {
         const params = req.params as unknown as ParamsCode
+        const file = req.file
 
-        const source = await this.service.update(params.code, req.body)
+        const source = await this.service.update(params.code, req.body, file)
         res.json(source)
     }
 
@@ -45,6 +47,21 @@ export class SourcesController {
 
         if (data) {
             res.status(204).json()
+        }
+    }
+
+    getIcon = async (req: Request, res: Response): Promise<void> => {
+        const params = req.params as unknown as ParamsCode
+        const path = await this.service.getIconPath(params.code)
+
+        if (!path) {
+            res.status(404).json({ message: 'Icon not found' })
+        } else {
+            await new Promise((resolve, reject) => {
+                res.sendFile(path, (err) => {
+                    (err) ? reject(err) : resolve(null)
+                })
+            })
         }
     }
 
