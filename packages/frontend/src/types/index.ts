@@ -3,6 +3,7 @@ export interface ISources {
     name: string
     key: string
     icon_path: string | null
+    domain: string | null
 }
 
 export interface ISourcesPagination {

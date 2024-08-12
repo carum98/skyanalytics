@@ -31,8 +31,13 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
 <div>
     <section class="flex justify-space-between mb-1">
         <div class="flex align-center ga-1">
-            <img v-if="item.icon_path" class="avatar-source" :src="item.icon_path" />
-            <h2>{{ item?.name }}</h2>
+            <img v-if="item.icon_path" :src="item.icon_path" width="50" height="50" />
+            <span v-else></span>
+
+            <div>
+                <h2>{{ item.name }}</h2>
+                <small class="text-gray">{{ item.domain || 'not domain' }}</small>
+            </div>
         </div>
 
         <DateSelector v-model="filters" />

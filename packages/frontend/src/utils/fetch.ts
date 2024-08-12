@@ -21,5 +21,9 @@ export async function $fetch<T>(url: string, options?: FetchRequestOptions) {
         throw new Error(response.statusText)
     }
 
+    if (response.status === 204) {
+        return null as unknown as T
+    }
+
     return await response.json() as T
 }

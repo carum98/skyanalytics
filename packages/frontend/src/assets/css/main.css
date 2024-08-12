@@ -15,11 +15,3 @@
     border-radius: var(--border-radius);
     background-color: var(--table-color);
 }
-
-.avatar-source {
-    display: inline-flex;
-    width: 30px;
-    height: 30px;
-    border-radius: 10px;
-    background-color: var(--table-color);
-}

@@ -23,10 +23,13 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 			:key="item.code"
 			@click="$router.push({ name: 'sources', params: { code: item.code }, state: { item: JSON.stringify(item) } })"
 		>
-			<header class="flex justify-space-between mb-1">
-				<div class="flex ga-1">
-					<img v-if="item.icon_path" class="avatar-source" :src="item.icon_path" />
+			<header>
+				<img v-if="item.icon_path" width="35" height="35" :src="item.icon_path" />
+				<span v-else></span>
+
+				<div>
 					<h2>{{ item.name }}</h2>
+					<small class="text-gray">{{ item.domain ?? 'not domain' }}</small>
 				</div>
 
 				<SkPopover position="bottom">
@@ -74,15 +77,26 @@ section {
 		padding: 1rem;
 		border-radius: 5px;
 		margin: 0.5rem;
-		text-decoration: none;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
 		background-color: var(--table-color);
 		border-radius: var(--border-radius);
 		transition: background-color 0.2s, box-shadow 0.2s;
 
-		position: relative;
+		header {
+			display: grid;
+			grid-template-columns: min-content auto min-content;
+			gap: 15px;
+		}
 
 		h2 {
-			font-size: 1.3rem;
+			font-weight: 300;
+    		line-height: 20px;
+    		font-size: 22px;
+			text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
 		}
 
 		&:hover:not(:has(button:hover)) {

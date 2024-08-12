@@ -33,10 +33,11 @@ export class SourcesController {
     }
 
     update = async (req: Request, res: Response): Promise<void> => {
+        const body = req.body as unknown as InsertSourcesSchema
         const params = req.params as unknown as ParamsCode
         const file = req.file
 
-        const source = await this.service.update(params.code, req.body, file)
+        const source = await this.service.update(params.code, body, file)
         res.json(source)
     }
 

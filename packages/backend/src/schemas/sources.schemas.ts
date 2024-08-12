@@ -9,6 +9,7 @@ export const sources = pgTable('sources', {
     code: varchar('code', { length: 6 }).notNull().unique(),
     name: varchar('name', { length: 100 }).notNull(),
     key: varchar('key', { length: 36 }).notNull().unique(),
+    domain: varchar('domain', { length: 100 }),
     icon_path: varchar('icon_path', { length: 100 }),
     created_at: timestamp("created_at").notNull().defaultNow(),
     updated_at: timestamp("updated_at").notNull().$onUpdate(() => new Date()),
@@ -19,11 +20,12 @@ export const sources = pgTable('sources', {
 
 // Schemas
 export const insertSourcesSchema = createInsertSchema(sources)
-    .pick({ name: true })
+    .pick({ name: true, domain: true })
     .required()
+    .partial({ domain: true })
 
 export const selectSourcesSchema = createSelectSchema(sources)
-    .pick({ code: true, name: true, key: true, icon_path: true })
+    .pick({ code: true, name: true, key: true, domain: true, icon_path: true })
     .transform(data => ({
         ...data,
         icon_path: data.icon_path ? `/sources/${data.code}/icon` : null
