@@ -19,7 +19,7 @@ const customCircleIcon = L.divIcon({
 })
 
 watch(() => props.items, (value) => {
-    if (!value || !map) return
+    if (!value?.length || !map) return
 
     const markers = value.map((item) => L.marker(
         [item.latitude, item.longitude], 

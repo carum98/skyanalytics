@@ -18,6 +18,11 @@ export interface IPagination {
     total_pages: number
 }
 
+export interface IMetrics {
+    views: number
+    visitors: number
+}
+
 export interface IViewsStats {
     [key: string]: number
 }

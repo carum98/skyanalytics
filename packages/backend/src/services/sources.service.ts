@@ -47,14 +47,15 @@ export class SourcesService {
         return this.sourceRepository.delete(code)
     }
 
-    public async getMetrics(code: string, filters: MetricsFilter & HeadersTimeZone) {
+    public async getMetrics(code: string, filters: DateFilter & HeadersTimeZone) {
         const timeZone = filters['x-timezone']
+        const { start, end } = rangeDates(filters.date_range)
 
         return this.navigationsRepository.getMetrics(
             code, 
             {
-                start: parseToUTC(filters.start, timeZone),
-                end: parseToUTC(filters.end, timeZone),
+                start: parseToUTC(start, timeZone),
+                end: parseToUTC(end, timeZone),
             }
         )
     }

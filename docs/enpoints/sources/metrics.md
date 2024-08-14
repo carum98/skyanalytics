@@ -15,8 +15,10 @@ Metrics for sources
 ## Query Parameters
 | Field | Type | Required |
 | ----- | ---- | -------- |
-| start | string | false |
-| end | string | false |
+| date_range | string | false |
+
+`date_range` is a string with the following values:
+`last_30_minutes`, `last_hour`
 
 ## Response
 Status: `200 OK`

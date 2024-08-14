@@ -1,4 +1,6 @@
 export enum DateRange {
+    last_30_minutes = 'last_30_minutes',
+    last_hour = 'last_hour',
     last_12_hours = 'last_12_hours',
     last_24_hours = 'last_24_hours',
     last_7_days = 'last_7_days',
@@ -16,6 +18,12 @@ export function rangeDates(date_range: DateRange) {
     const start = new Date()
 
     switch (date_range) {
+        case DateRange.last_30_minutes:
+            start.setMinutes(start.getMinutes() - 30)
+            break
+        case DateRange.last_hour:
+            start.setHours(start.getHours() - 1)
+            break
         case DateRange.last_12_hours:
             start.setHours(start.getHours() - 12)
             break

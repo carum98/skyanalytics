@@ -27,9 +27,9 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 				<img v-if="item.icon_path" width="35" height="35" :src="item.icon_path" />
 				<span v-else></span>
 
-				<div>
+				<div style="max-width: 200px;">
 					<h2>{{ item.name }}</h2>
-					<small class="text-gray">{{ item.domain ?? 'not domain' }}</small>
+					<p class="text-gray">{{ item.domain ?? 'not domain' }}</p>
 				</div>
 
 				<SkPopover position="bottom">
@@ -69,12 +69,12 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 <style lang="css">
 section {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 	grid-template-rows: min-content;
 	align-items: start;
 
 	article {
-		padding: 1rem;
+		padding: 1.1rem;
 		border-radius: 5px;
 		margin: 0.5rem;
 		display: flex;
@@ -97,6 +97,13 @@ section {
 			text-overflow: ellipsis;
             overflow: hidden;
             white-space: nowrap;
+		}
+
+		p {
+    		text-overflow: ellipsis;
+    		overflow: hidden;
+    		white-space: nowrap;
+			font-size: smaller;
 		}
 
 		&:hover:not(:has(button:hover)) {

@@ -90,7 +90,7 @@ export class SourcesRouter extends RouterCore {
             middlewares: [
                 requestMiddleware({
                     headers: headersTimezoneSchema,
-                    query: metricsFilter,
+                    query: dateFilter,
                     params: paramsCode
                 })
             ]

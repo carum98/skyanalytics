@@ -2,7 +2,7 @@ import { isRef, onMounted, onUnmounted, ref, watch, type ComputedRef, type Ref, 
 import { $fetch, type FetchRequestOptions } from '@/utils/fetch'
 
 type UseFetchRequestOptions<T> = Omit<FetchRequestOptions, 'query'> & { 
-    query?: Record<string, Ref<string | undefined>> | Ref<Record<string, string | undefined> | undefined>
+    query?: Record<string, Ref<string | undefined>> | Ref<Record<string, string | undefined> | undefined> | Record<string, string>
     watch?: Ref<string | undefined>[]
     immediate?: boolean
     transform?: (data: T) => any
@@ -45,19 +45,27 @@ export function useFetch<T>(url: string, options?: UseFetchRequestOptions<T>) {
     }
 
     function processQuery(query: Pick<UseFetchRequestOptions<T>, 'query'>) {
+        if (!query.query) {
+            return undefined
+        }
+
         if (isRef(query.query)) {
             return query.query.value
         }
 
-        return Object.fromEntries(
-            Object.entries(query).map(([key, value]) => {
-                if (isRef(value)) {
-                    return [key, value.value]
-                }
+        if (Object.values(query.query).some(isRef)) {
+            return Object.fromEntries(
+                Object.entries(query).map(([key, value]) => {
+                    if (isRef(value)) {
+                        return [key, value.value]
+                    }
 
-                return [key, value]
-            })
-        ) as Record<string, string | undefined>
+                    return [key, value]
+                })
+            ) as Record<string, string | undefined>
+        }
+
+        return query.query as Record<string, string | undefined>
     }
 
     // lifecycle

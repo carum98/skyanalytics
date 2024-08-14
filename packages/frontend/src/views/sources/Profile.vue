@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import type { ISources, IStats } from '@/types'
+import type { IMetrics, ISources, IStats } from '@/types'
 
 import { useFetch } from '@composables/useFetch'
 import { useRoute } from 'vue-router'
@@ -25,6 +25,12 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
         }
     })
 })
+
+const { data: metrics } = useFetch<IMetrics>(`/api/sources/${route.params.code}/metrics`, {
+    query: {
+        date_range: 'last_30_minutes',
+    }
+})
 </script>
 
 <template>
@@ -35,9 +41,15 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
             <span v-else></span>
 
             <div>
-                <h2>{{ item.name }}</h2>
+                <h2 style="line-height: 20px;">{{ item.name }}</h2>
                 <small class="text-gray">{{ item.domain || 'not domain' }}</small>
             </div>
+
+            <p class="flex align-center" style="gap: 5px;">
+                <span class="green-circle"></span>
+                {{ metrics?.visitors ?? 0 }}
+                <span class="text-gray">current visitors</span>
+            </p>
         </div>
 
         <DateSelector v-model="filters" />
@@ -75,6 +87,14 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
 </template>
 
 <style lang="css">
+.green-circle {
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    background-color: green;
+    border-radius: 50%;
+}
+
 .grid-stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(280px, 1fr));

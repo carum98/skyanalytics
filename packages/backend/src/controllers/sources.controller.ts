@@ -69,7 +69,7 @@ export class SourcesController {
     getMetrics = async (req: Request, res: Response): Promise<void> => {
         const headers = req.headers as unknown as HeadersTimeZone
         const params = req.params as unknown as ParamsCode
-        const query = req.query as unknown as MetricsFilter
+        const query = req.query as unknown as DateFilter
 
         const metrics = await this.service.getMetrics(params.code, {
             ...query,
