@@ -3,18 +3,16 @@ import { z } from 'zod'
 
 // Metrics
 export const metricsFilter = z.object({
-    start: z.string().datetime(),
-    end: z.string().datetime(),
-})
-
-export type MetricsFilter = z.infer<typeof metricsFilter>
-
-// Date Range
-export const dateFilter = z.object({
+    start: z.string().datetime({
+        local: true
+    }),
+    end: z.string().datetime({
+        local: true
+    }),
     date_range: z.nativeEnum(DateRange)
 })
 
-export type DateFilter = z.infer<typeof dateFilter>
+export type MetricsFilter = z.infer<typeof metricsFilter>
 
 // Stats
 export const statsFilter = z.object({
@@ -30,6 +28,5 @@ export const statsFilter = z.object({
     )
 })
 .merge(metricsFilter)
-.merge(dateFilter)
 
 export type StatsFilter = z.infer<typeof statsFilter>

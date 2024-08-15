@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { SourcesService } from '@services/sources.service'
 import { PaginationSchemaType } from '@utils/pagination'
-import { DateFilter, MetricsFilter, StatsFilter } from '@schemas/_query'
+import { MetricsFilter, StatsFilter } from '@schemas/_query'
 import { InsertSourcesSchema } from '@schemas/sources.schemas'
 import { ParamsCode } from '@schemas/_params'
 import { HeadersTimeZone } from '@schemas/_headers'
@@ -69,7 +69,7 @@ export class SourcesController {
     getMetrics = async (req: Request, res: Response): Promise<void> => {
         const headers = req.headers as unknown as HeadersTimeZone
         const params = req.params as unknown as ParamsCode
-        const query = req.query as unknown as DateFilter
+        const query = req.query as unknown as StatsFilter
 
         const metrics = await this.service.getMetrics(params.code, {
             ...query,
@@ -95,7 +95,7 @@ export class SourcesController {
     getViews = async (req: Request, res: Response): Promise<void> => {
         const headers = req.headers as unknown as HeadersTimeZone
         const params = req.params as unknown as ParamsCode
-        const query = req.query as unknown as DateFilter
+        const query = req.query as unknown as MetricsFilter
 
         const views = await this.service.getViews(params.code, {
             ...query,

@@ -6,7 +6,7 @@ import { multerSingleMiddleware } from '@middlewares/multer.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { headersTimezoneSchema } from '@schemas/_headers'
 import { paramsCode } from '@schemas/_params'
-import { dateFilter, metricsFilter, statsFilter } from '@schemas/_query'
+import { statsFilter } from '@schemas/_query'
 import { SourcesService } from '@services/sources.service'
 import { PaginationSchema } from '@utils/pagination'
 import { insertSourcesSchema } from 'src/schemas/sources.schemas'
@@ -90,7 +90,7 @@ export class SourcesRouter extends RouterCore {
             middlewares: [
                 requestMiddleware({
                     headers: headersTimezoneSchema,
-                    query: dateFilter,
+                    query: statsFilter.partial().omit({ stats: true }),
                     params: paramsCode
                 })
             ]
@@ -114,7 +114,7 @@ export class SourcesRouter extends RouterCore {
             middlewares: [
                 requestMiddleware({
                     headers: headersTimezoneSchema,
-                    query: dateFilter,
+                    query: statsFilter.partial().omit({ stats: true }),
                     params: paramsCode
                 })
             ]

@@ -3,7 +3,7 @@ import { NavigationRepository } from '@repositories/navigations.repository'
 import { SessionRepository } from '@repositories/sessions.repository'
 import { SourcesRepository } from '@repositories/sources.repository'
 import { HeadersTimeZone } from '@schemas/_headers'
-import { DateFilter, MetricsFilter, StatsFilter } from '@schemas/_query'
+import { MetricsFilter, StatsFilter } from '@schemas/_query'
 import { InsertSourcesSchema } from '@schemas/sources.schemas'
 import { PaginationSchemaType } from '@utils/pagination'
 import { rangeDates } from '@utils/range-dates'
@@ -47,7 +47,7 @@ export class SourcesService {
         return this.sourceRepository.delete(code)
     }
 
-    public async getMetrics(code: string, filters: DateFilter & HeadersTimeZone) {
+    public async getMetrics(code: string, filters: MetricsFilter & HeadersTimeZone) {
         const timeZone = filters['x-timezone']
         const { start, end } = rangeDates(filters.date_range)
 
@@ -65,15 +65,17 @@ export class SourcesService {
 
         let promises = []
 
-        if (filters.date_range) {
+        if (filters.start && filters.end) {
+            filters.start = parseToUTC(filters.start, timeZone)
+            filters.end = parseToUTC(filters.end, timeZone)
+        }
+
+        if (filters.date_range && !filters.start && !filters.end) {
             const { start, end } = rangeDates(filters.date_range)
 
             filters.start = start
             filters.end = end
-        } else {
-            filters.start = parseToUTC(filters.start, timeZone)
-            filters.end = parseToUTC(filters.end, timeZone)
-        }
+        } 
 
         if (filters.stats.some((stat) => ['os', 'software', 'country', 'location'].includes(stat))) {
             promises.push(
@@ -101,17 +103,25 @@ export class SourcesService {
         }), {})
     }
 
-    public async getViews(code: string, filters: DateFilter & HeadersTimeZone) {
+    public async getViews(code: string, filters: MetricsFilter & HeadersTimeZone) {
         const timeZone = filters['x-timezone']
-        const { start, end } = rangeDates(filters.date_range)
+
+        if (filters.start && filters.end) {
+            filters.start = parseToUTC(filters.start, timeZone)
+            filters.end = parseToUTC(filters.end, timeZone)
+        }
+
+        if (filters.date_range && !filters.start && !filters.end) {
+            const { start, end } = rangeDates(filters.date_range)
+
+            filters.start = start
+            filters.end = end
+        } 
 
         return this.navigationsRepository.getViews(
             code, 
             filters.date_range, 
-            { 
-                start,
-                end
-            },
+            filters,
             timeZone
         )
     }

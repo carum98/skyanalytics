@@ -60,7 +60,7 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
         return this.deleteCore(eq(navigations.id, id))
     }
 
-    public async getMetrics(code: string, filters: MetricsFilter) {
+    public async getMetrics(code: string, filters: Omit<MetricsFilter, 'date_range'>) {
         const data = await this.db.select({
             views: count(),
             visitors: countDistinct(sessions.uuid),
@@ -97,7 +97,7 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
         }
     }
 
-    public async getViews(code: string, dateRange: DateRange, filters: MetricsFilter, timezone: string) {
+    public async getViews(code: string, dateRange: DateRange, filters: Omit<MetricsFilter, 'date_range'>, timezone: string) {
         const data = await this.db.select({
             navigations_id: navigations.id,
             created_at: navigations.created_at,

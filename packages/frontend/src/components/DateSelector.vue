@@ -1,27 +1,48 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
+import { DateRange, range24hours, nextDate, previousDate, formatDate } from '@/utils/dates-options'
+
 import SkPopover from '@ui/SkPopover.vue'
 
 type Option = {
     name: string
-    value: string
+    value: DateRange
 }
 
-export type DateSelectorValue = Record<string, string>
+export type DateSelectorValue = {
+    date_range: DateRange
+    start?: string
+    end?: string
+}
 
 const options: Option[] = [
-    { name: 'Last 24 hours', value: 'last_24_hours' },
-    { name: 'This week', value: 'this_week' },
-    { name: 'Last 7 days', value: 'last_7_days' },
-    { name: 'This month', value: 'this_month' },
-    { name: 'Last 30 days', value: 'last_30_days' },
-    { name: 'Last 2 months', value: 'last_2_months' },
-    { name: 'Last 3 months', value: 'last_3_months' },
+    { name: 'Last 24 hours', value: DateRange.last_24_hours },
+    { name: 'This week', value: DateRange.this_week },
+    { name: 'Last 7 days', value: DateRange.last_7_days },
+    { name: 'This month', value: DateRange.this_month },
+    { name: 'Last 30 days', value: DateRange.last_30_days },
+    { name: 'Last 2 months', value: DateRange.last_2_months },
+    { name: 'Last 3 months', value: DateRange.last_3_months },
 ]
+
+let initial = range24hours()
 
 // data
 const selected = ref<Option>(options[0])
 const value = defineModel<DateSelectorValue>()
+const date = ref<{ start: Date, end: Date }>({
+    start: initial.start,
+    end: initial.end,
+})
+
+// computed
+const placeholder = computed(() => {
+    if (date.value.start && date.value.end) {
+        return `${date.value.start.toLocaleDateString('en-US', { dateStyle: 'medium' })} - ${date.value.end.toLocaleDateString('en-US', { dateStyle: 'medium' })}`
+    }
+
+    return selected.value.name
+})
 
 // watch
 watch(() => selected.value, (newValue) => {
@@ -32,9 +53,27 @@ watch(() => selected.value, (newValue) => {
 
 // methods
 function next() {
+    const values = nextDate(date.value.start, date.value.end, selected.value.value)
+
+    date.value = values
+
+    value.value = {
+        date_range: selected.value.value,
+        start: formatDate(date.value.start),
+        end: formatDate(date.value.end),
+    }
 }
 
 function back() {
+    const values = previousDate(date.value.start, date.value.end, selected.value.value)
+
+    date.value = values
+
+    value.value = {
+        date_range: selected.value.value,
+        start: formatDate(date.value.start),
+        end: formatDate(date.value.end),
+    }
 }
 </script>
 
@@ -43,7 +82,7 @@ function back() {
         <SkPopover position="bottom">
             <template #target="{ props }">
                 <button class="date-selector__picker" v-bind="props">
-                    {{ selected.name }}
+                    {{ placeholder }}
                     <i class="icon-caret-down"></i>
                 </button>
             </template>
@@ -80,7 +119,7 @@ function back() {
 }
 
 .date-selector__picker {
-    width: 200px;
+    min-width: 200px;
     padding: 0.5rem 1rem;
     height: 50px;
     display: flex;
