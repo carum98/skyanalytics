@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import SkSelect from '@/components/ui/SkSelect.vue'
 import type { ISources } from '@/types'
 import { $fetch } from '@/utils/fetch'
 
@@ -12,14 +13,12 @@ const emits = defineEmits<{
 }>()
 
 async function send(event: Event) {
-    const formData = new FormData(event.target as HTMLFormElement)
+    const data = Array
+        .from(new FormData(event.target as HTMLFormElement))
+        .filter(([k, v]) => v);
 
-    // Remove empty fields
-    for (const [key, value] of formData.entries()) {
-        if (!value) {
-            formData.delete(key)
-        }
-    }
+    const formData = new FormData()
+    data.forEach(([k, v]) => formData.append(k, v))
 
     if (props.item) {
         await $fetch(`/api/sources/${props.item.code}`, {
@@ -44,7 +43,7 @@ async function send(event: Event) {
         <input 
             type="text" 
             class="sk-input"
-            placeholder="Nombre"
+            placeholder="Name"
             autofocus
             required
             minlength="3"
@@ -57,10 +56,21 @@ async function send(event: Event) {
         <input 
             type="text" 
             class="sk-input"
-            placeholder="Dominio"
+            placeholder="Domain"
             name="domain"
             :value="props.item?.domain"
         />
+
+        <label>Type</label>
+        <SkSelect
+            name="type"
+            placeholder="Type"
+            :value="props.item?.type"
+            :options="[
+                { name: 'App', value: 'app' },
+                { name: 'Web', value: 'web' },
+            ]"
+        ></SkSelect>
 
         <label>Icon</label>
         <input 

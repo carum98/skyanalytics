@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue'
-import { DateRange, range24hours, nextDate, previousDate, formatDate } from '@/utils/dates-options'
+import { DateRange, range24hours, nextDate, previousDate, formatDate, rangeDates } from '@/utils/dates-options'
 
 import SkPopover from '@ui/SkPopover.vue'
 
@@ -25,14 +25,14 @@ const options: Option[] = [
     { name: 'Last 3 months', value: DateRange.last_3_months },
 ]
 
-let initial = range24hours()
+// let initial = range24hours()
 
 // data
 const selected = ref<Option>(options[0])
 const value = defineModel<DateSelectorValue>()
-const date = ref<{ start: Date, end: Date }>({
-    start: initial.start,
-    end: initial.end,
+const date = ref<{ start?: Date, end?: Date }>({
+    start: undefined,
+    end: undefined,
 })
 
 // computed
@@ -46,6 +46,11 @@ const placeholder = computed(() => {
 
 // watch
 watch(() => selected.value, (newValue) => {
+    date.value = {
+        start: undefined,
+        end: undefined,
+    }
+
     value.value = {
         date_range: newValue.value,
     }
@@ -53,26 +58,34 @@ watch(() => selected.value, (newValue) => {
 
 // methods
 function next() {
-    const values = nextDate(date.value.start, date.value.end, selected.value.value)
+    if (!date.value.start || !date.value.end) {
+        date.value = rangeDates(selected.value.value)
+    }
+
+    const values = nextDate(date.value.start!, date.value.end!, selected.value.value)
 
     date.value = values
 
     value.value = {
         date_range: selected.value.value,
-        start: formatDate(date.value.start),
-        end: formatDate(date.value.end),
+        start: formatDate(date.value.start!),
+        end: formatDate(date.value.end!),
     }
 }
 
 function back() {
-    const values = previousDate(date.value.start, date.value.end, selected.value.value)
+    if (!date.value.start || !date.value.end) {
+        date.value = rangeDates(selected.value.value)
+    }
+
+    const values = previousDate(date.value.start!, date.value.end!, selected.value.value)
 
     date.value = values
 
     value.value = {
         date_range: selected.value.value,
-        start: formatDate(date.value.start),
-        end: formatDate(date.value.end),
+        start: formatDate(date.value.start!),
+        end: formatDate(date.value.end!),
     }
 }
 </script>

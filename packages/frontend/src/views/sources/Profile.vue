@@ -41,7 +41,17 @@ const { data: metrics } = useFetch<IMetrics>(`/api/sources/${route.params.code}/
             <span v-else></span>
 
             <div>
-                <h2 style="line-height: 20px;">{{ item.name }}</h2>
+                <h2 style="line-height: 20px;">
+                    {{ item.name }}
+                    <span 
+                        v-if="item.type === 'app'" 
+                        class="text-gray" 
+                        style="font-size: 15px;"
+                        title="Source type `App`"
+                    >
+                        <i class="icon-mobile-screen"></i>	
+                    </span>
+                </h2>
                 <small class="text-gray">{{ item.domain || 'not domain' }}</small>
             </div>
 

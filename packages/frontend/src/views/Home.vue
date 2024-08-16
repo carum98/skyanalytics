@@ -28,7 +28,18 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 				<span v-else></span>
 
 				<div style="max-width: 200px;">
-					<h2>{{ item.name }}</h2>
+					<h2>
+						{{ item.name }}
+
+						<span 
+							v-if="item.type === 'app'" 
+							class="text-gray" 
+							style="font-size: 15px;"
+							title="Source type `App`"
+						>
+							<i class="icon-mobile-screen"></i>	
+						</span>
+					</h2>
 					<p class="text-gray">{{ item.domain ?? 'not domain' }}</p>
 				</div>
 

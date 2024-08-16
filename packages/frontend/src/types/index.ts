@@ -4,6 +4,7 @@ export interface ISources {
     key: string
     icon_path: string | null
     domain: string | null
+    type: 'web' | 'app' | null
 }
 
 export interface ISourcesPagination {

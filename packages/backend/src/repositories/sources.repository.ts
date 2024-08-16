@@ -17,6 +17,7 @@ export class SourcesRepository extends RepositoryCore<SelectSourcesSchema, Inser
             key: sources.key,
             domain: sources.domain,
             icon_path: sources.icon_path,
+            type: sources.type,
         }).from(table)
 
         super({ db, table, select })
