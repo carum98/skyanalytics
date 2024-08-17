@@ -61,7 +61,7 @@ jobs:
 
           # Check if not exists and create
           if [ ! -f "$FILE" ]; then
-            echo -e "services:\n  api:\n    profiles: [disable]\n    image: null\n  web:\n    profiles: [disable]\n    image: null" > "$FILE"
+            echo -e "services:\n  api:\n    profiles: [disable]\n    image: 'null'\n  web:\n    profiles: [disable]\n    image: null" > "$FILE"
           fi
 
           # Search for the service and replace the image
