@@ -1,0 +1,56 @@
+name: Deploy Frontend
+
+on:
+  push:
+    tags:
+      - 'frontend-*.*.*'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    environment: Production
+
+    steps:
+    - name: Checkout the code
+      uses: actions/checkout@v4
+      with:
+        path: packages/frontend
+
+    - name: Docker Login
+      uses: docker/login-action@v3.0.0
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.TOKEN_DEPLOY }}
+        logout: true
+    
+    - name: Build the Docker image
+      run: docker build . --tag ghcr.io/${{ github.actor }}/skyanalytics-frontend:${{ github.ref_name }}
+
+    - name: Send to registry
+      run: docker push ghcr.io/${{ github.actor }}/skyanalytics-frontend:${{ github.ref_name }}
+
+  pull-image:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+    environment: Production
+
+    steps:
+    - name: Pull the image
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        port: ${{ secrets.SSH_PORT }}
+        username: ${{ secrets.SSH_USERNAME }}
+        password: ${{ secrets.SSH_PASSWORD }}
+        script: |
+          docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.TOKEN_DEPLOY }} &&
+          docker pull ghcr.io/${{ github.actor }}/skyanalytics-frontend:${{ github.ref_name }}
+
+  deploy:
+    needs: [build-and-push, pull-image]
+    uses: ./.github/workflows/deploy.yml
+    secrets: inherit
+    with:
+      serviceName: web
+      dockerImage: ghcr.io/${{ github.actor }}/skyanalytics-frontend:${{ github.ref_name }}
