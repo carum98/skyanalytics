@@ -1,4 +1,5 @@
 export default defineNitroConfig({
+    preset: 'node-server',
     srcDir: "server",
     routeRules: {
         '/api/**': { 
