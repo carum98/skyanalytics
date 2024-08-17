@@ -17,6 +17,15 @@ jobs:
         sparse-checkout: packages/backend
         sparse-checkout-cone-mode: false
 
+    - name: ls
+      run: ls
+
+    - name: ls packages
+      run: ls packages
+
+    - name: ls packages/backend
+      run: ls packages/backend
+
     - name: Docker Login
       uses: docker/login-action@v3.0.0
       with:
