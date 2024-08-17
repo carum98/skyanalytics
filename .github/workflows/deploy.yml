@@ -61,7 +61,7 @@ jobs:
 
           # Check if not exists and create
           if [ ! -f "$FILE" ]; then
-            echo -e "services:\n  api:\n    profiles: [disable]\n    image: 'null'\n  web:\n    profiles: [disable]\n    image: 'null'" > "$FILE"
+            echo -e "services:\n  api:\n    profiles: [active]\n    image: 'null'\n  web:\n    profiles: [active]\n    image: 'null'" > "$FILE"
           fi
 
           # Search for the service and replace the image
@@ -83,7 +83,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
-          echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD }}\nDB_DATABASE=${{ secrets.DB_DATABASE }}\nDB_USER=${{ secrets.DB_USER }}\nCOMPOSE_PROFILES=prod" > ~/analytics/.env
+          echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD }}\nDB_DATABASE=${{ secrets.DB_DATABASE }}\nDB_USER=${{ secrets.DB_USER }}\nCOMPOSE_PROFILES=active" > ~/analytics/.env
 
   docker-compose-up:
     runs-on: ubuntu-latest
