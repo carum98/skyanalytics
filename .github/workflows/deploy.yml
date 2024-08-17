@@ -66,7 +66,7 @@ jobs:
 
           # Search for the service and replace the image
           if grep -q "$SERVICE:" "$FILE"; then
-            sed -i "/$SERVICE:/{s|image:.*|image: $IMAGE|; s|profiles:.*|profiles: [active]|}" "$FILE"
+            sed -i "/$SERVICE:/,/profiles:/{s|profiles:.*|profiles: [active]|} ; /$SERVICE:/,/image:/{s|image:.*|image: '$IMAGE'|}" "$FILE"
           fi
 
   create-env-file:
