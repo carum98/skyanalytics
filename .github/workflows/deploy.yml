@@ -61,12 +61,12 @@ jobs:
 
           # Check if not exists and create
           if [ ! -f "$FILE" ]; then
-            echo -e "services:\n  api:\n    profiles: [disable]\n  web:\n    profiles: [disable]" > "$FILE"
+            echo -e "services:\n  api:\n    profiles: [disable]\n    image: null\n  web:\n    profiles: [disable]\n    image: null" > "$FILE"
           fi
 
           # Search for the service and replace the image
           if grep -q "$SERVICE:" "$FILE"; then
-            sed -i "/$SERVICE:/,/profiles:/{s|image:.*|image: $IMAGE|; s|profiles:.*|profiles: prod|}" "$FILE"
+            sed -i "/$SERVICE:/,/profiles:/{s|image:.*|image: $IMAGE|; s|profiles:.*|profiles: [prod]|}" "$FILE"
           fi
 
   create-env-file:
