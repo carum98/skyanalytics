@@ -43,6 +43,7 @@ jobs:
 
   override-docker-file:
     runs-on: ubuntu-latest
+    needs: [copy-files]
     environment: Production
 
     steps:
@@ -54,10 +55,11 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
-          echo -e "services:\n  ${serviceName}:\n    image: ${dockerImage}" > ~/analytics/docker-compose.override.yml
+          echo -e "services:\n  ${{ inputs.serviceName }}:\n    image: ${{ inputs.dockerImage }}" > ~/analytics/docker-compose.override.yml
 
   create-env-file:
     runs-on: ubuntu-latest
+    needs: [copy-files]
     environment: Production
 
     steps:
