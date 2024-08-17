@@ -53,7 +53,7 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
     with:
-      serviceName: api
+      serviceName: backend
       dockerImage: ghcr.io/${{ github.actor }}/skyanalytics-backend:${{ github.ref_name }}
 
   database-migration:

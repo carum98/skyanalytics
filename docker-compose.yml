@@ -1,13 +1,15 @@
 version: '3.7'
 
 services:
-  api:
+  backend:
     profiles: 
       - prod
     build: 
       context: ./packages/backend
       dockerfile: Dockerfile
-    container_name: skyanalytics-api
+    container_name: skyanalytics-backend
+    expose:
+      - 3000:3000
     networks:
       - skyanalytics-network
     depends_on:
@@ -17,13 +19,15 @@ services:
       - DB_DATABASE=${DB_DATABASE}
       - DB_USER=${DB_USER}
 
-  web:
+  frontend:
     profiles: 
       - prod
     build:
       context: ./packages/frontend
       dockerfile: Dockerfile
-    container_name: skyanalytics-web
+    container_name: skyanalytics-frontend
+    expose:
+      - 8080:8080
     networks:
       - skyanalytics-network
   

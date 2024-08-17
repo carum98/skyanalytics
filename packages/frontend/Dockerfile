@@ -20,8 +20,10 @@ FROM node:22.2.0-alpine3.20
 WORKDIR /app
 
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/.output ./output
+COPY --from=builder /app/.output ./.output
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./package.json
 
-CMD "npm run preview"
+RUN npm install -g serve
+
+CMD ["npm", "run", "start"]

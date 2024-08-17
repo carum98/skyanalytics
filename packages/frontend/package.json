@@ -6,10 +6,9 @@
   "scripts": {
     "dev": "vite --host & npm run dev:server",
     "build": "vite build && npm run build:server",
-    "preview": "vite preview && npm run preview:server",
     "dev:server": "nitro dev --port=3001",
     "build:server": "nitro build",
-    "preview:server": "node .output/server/index.mjs --port=3001"
+    "start": "serve -s dist -p 8080 & node .output/server/index.mjs --port=3001"
   },
   "dependencies": {
     "chart.js": "4.4.3",

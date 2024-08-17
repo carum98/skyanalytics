@@ -53,5 +53,5 @@ jobs:
     uses: ./.github/workflows/deploy.yml
     secrets: inherit
     with:
-      serviceName: web
+      serviceName: frontend
       dockerImage: ghcr.io/${{ github.actor }}/skyanalytics-frontend:${{ github.ref_name }}
