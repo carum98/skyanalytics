@@ -7,6 +7,10 @@ RUN npm install -D typescript
 RUN npm install && npm cache clean --force
 
 COPY . .
+
+# Generate nitro types
+RUN npx nitro prepare
+
 RUN npm run build
 RUN npm prune --production
 
