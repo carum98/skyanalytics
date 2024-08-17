@@ -16,12 +16,12 @@ jobs:
       with:
         sparse-checkout: packages/backend
         sparse-checkout-cone-mode: false
+      
+    - name: Move to the backend directory
+      run: cd packages/backend
 
     - name: ls
       run: ls
-
-    - name: ls packages
-      run: ls packages
 
     - name: Docker Login
       uses: docker/login-action@v3.0.0
