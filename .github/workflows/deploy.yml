@@ -55,23 +55,18 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
-          OVERRIDE_FILE=~/analytics/docker-compose.override.yml
-          SERVICE_NAME=${{ inputs.serviceName }}
-          DOCKER_IMAGE=${{ inputs.dockerImage }}
+          FILE=~/analytics/docker-compose.override.yml
+          SERVICE="${{ inputs.serviceName }}"
+          IMAGE="${{ inputs.dockerImage }}"
 
-          # Check if the override file exists
-          if [ -f "$OVERRIDE_FILE" ]; then
-            # If the file exists, modify the specified service or add it if it doesn't exist
-            if yq eval ".services[\"$SERVICE_NAME\"]" "$OVERRIDE_FILE" > /dev/null; then
-              # Service exists, update the image
-              yq eval ".services[\"$SERVICE_NAME\"].image = \"$DOCKER_IMAGE\"" -i "$OVERRIDE_FILE"
-            else
-              # Service does not exist, add it to the file
-              yq eval ".services[\"$SERVICE_NAME\"] = {\"image\": \"$DOCKER_IMAGE\"}" -i "$OVERRIDE_FILE"
-            fi
-          else
-            # If the file does not exist, create it with the specified service
-            echo -e "services:\n  $SERVICE_NAME:\n    image: $DOCKER_IMAGE" > "$OVERRIDE_FILE"
+          # Check if not exists and create
+          if [ ! -f "$FILE" ]; then
+            echo -e "services:\n  api:\n    profiles: [disable]\n  web:\n    profiles: [disable]" > "$FILE"
+          fi
+
+          # Search for the service and replace the image
+          if grep -q "$SERVICE:" "$FILE"; then
+            sed -i "s|$SERVICE:.*|$SERVICE:\n    image: $IMAGE\n    profiles: [prod]|" "$FILE"
           fi
 
   create-env-file:
