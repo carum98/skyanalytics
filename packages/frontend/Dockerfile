@@ -24,4 +24,4 @@ COPY --from=builder /app/.output ./output
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package.json ./package.json
 
-CMD ["npm", "preview"]
+CMD "npm run preview"
