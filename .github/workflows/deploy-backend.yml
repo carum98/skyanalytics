@@ -14,6 +14,7 @@ jobs:
     - name: Checkout the code
       uses: actions/checkout@v4
       with:
+        path: packages/backend
         sparse-checkout: packages/backend
 
     - name: ls
