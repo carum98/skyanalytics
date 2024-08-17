@@ -14,8 +14,10 @@ jobs:
     - name: Checkout the code
       uses: actions/checkout@v4
       with:
-        sparse-checkout: |
-          packages/backend
+        sparse-checkout: packages/backend
+
+    - name: ls
+      run: ls
 
     - name: Docker Login
       uses: docker/login-action@v3.0.0
