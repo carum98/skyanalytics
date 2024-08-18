@@ -43,3 +43,4 @@ services:
 
 networks:
   skyanalytics-network:
+    name: skyanalytics-network
