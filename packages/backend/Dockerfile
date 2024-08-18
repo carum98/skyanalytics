@@ -22,4 +22,4 @@ COPY --from=builder /app/database ./dist/database
 COPY --from=builder /app/geo ./geo
 COPY --from=builder /app/package.json ./package.json
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]

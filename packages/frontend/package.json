@@ -5,13 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host & npm run dev:server",
-    "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
-    "build-only": "vite build",
-    "type-check": "vue-tsc --build --force",
-    "build:server": "nitro build",
+    "build": "vite build && npm run build:server",
     "dev:server": "nitro dev --port=3001",
-    "preview:server": "node .output/server/index.mjs"
+    "build:server": "nitro build",
+    "start": "serve -s dist -p 8080 & node .output/server/index.mjs --port=3001"
   },
   "dependencies": {
     "chart.js": "4.4.3",
