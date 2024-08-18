@@ -38,7 +38,7 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
-        source: "docker-compose.yml,nginx.conf"
+        source: "docker-compose.yml"
         target: "~/analytics"
 
   override-docker-file:
