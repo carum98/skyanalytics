@@ -1,16 +1,16 @@
 import { ofetch, type FetchOptions } from 'ofetch'
 import { H3Event, createError } from 'h3'
-import { getSession, clearSession } from '~/utils/session'
+import { getSkSession, clearSkSession } from '~/utils/session'
 
 const apiFetch = ofetch.create({ 
-    baseURL: 'http://localhost:3000', 
+    baseURL: process.env.API_URL, 
     headers: {
         'Content-Type': 'application/json'
     }
 })
 
 export async function useApiFetch (event: H3Event, request: RequestInfo, options?: FetchOptions) {
-    const session = await getSession(event)
+    const session = await getSkSession(event)
     const token = session.token
 
     if (token === null) {
@@ -38,6 +38,6 @@ export async function useApiFetch (event: H3Event, request: RequestInfo, options
 }
 
 export const useLogout = async (event: H3Event) => {
-    await clearSession(event)
+    await clearSkSession(event)
     return await sendRedirect(event, '/login', 302)
 }

@@ -1,6 +1,19 @@
 version: '3.7'
 
 services:
+  frontend:
+    profiles: 
+      - prod
+    build:
+      context: ./packages/frontend
+      dockerfile: Dockerfile
+    container_name: skyanalytics-frontend
+    networks:
+      - skyanalytics-network
+    environment:
+      - API_URL=${API_URL}
+      - VITE_PROXY_API_URL=${PROXY_API_URL}
+
   backend:
     profiles: 
       - prod
@@ -16,16 +29,6 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_DATABASE=${DB_DATABASE}
       - DB_USER=${DB_USER}
-
-  frontend:
-    profiles: 
-      - prod
-    build:
-      context: ./packages/frontend
-      dockerfile: Dockerfile
-    container_name: skyanalytics-frontend
-    networks:
-      - skyanalytics-network
   
   db:
     image: postgres:16-alpine

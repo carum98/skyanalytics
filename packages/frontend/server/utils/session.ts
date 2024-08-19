@@ -16,7 +16,7 @@ const config = {
     }
 } as SessionConfig
 
-export async function getSession (event: H3Event): Promise<SessionData> {
+export async function getSkSession (event: H3Event): Promise<SessionData> {
     const session = await h3.getSession(event, config)
 
     return session.data as SessionData
@@ -26,7 +26,7 @@ export async function setSession (event: H3Event, data: SessionData) {
     await h3.updateSession(event, config, (_) => data)
 }
 
-export async function clearSession (event: H3Event) {
+export async function clearSkSession (event: H3Event) {
     await h3.clearSession(event, config)
     h3.deleteCookie(event, config.name as string)
 }

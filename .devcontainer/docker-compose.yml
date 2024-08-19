@@ -16,7 +16,8 @@ services:
     depends_on:
       - db
     env_file:
-      - .env
+      - ./packages/backend/.env
+      - ./packages/frontend/.env
 
   nginx:
     profiles: 
