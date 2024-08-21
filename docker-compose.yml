@@ -21,7 +21,7 @@ services:
       dockerfile: Dockerfile
     container_name: skyanalytics-backend
     volumes:
-      - ./uploads:/app/uploads
+      - ./uploads:/app/dist/uploads
     networks:
       - skyanalytics-network
     depends_on:
