@@ -12,7 +12,6 @@ services:
       - skyanalytics-network
     environment:
       - API_URL=${API_URL}
-      - VITE_PROXY_API_URL=${PROXY_API_URL}
 
   backend:
     profiles: 
