@@ -1,4 +1,4 @@
-import 'package:skyanalytics_flutter/skyanalytics_flutter.dart';
+import 'package:skyanalytics/skyanalytics_flutter.dart';
 
 void main(List<String> args) {
   const skyAnalytics = SkyAnalytics(

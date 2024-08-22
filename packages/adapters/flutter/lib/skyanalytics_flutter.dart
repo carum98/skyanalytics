@@ -7,15 +7,21 @@ import 'package:flutter/widgets.dart';
 
 part 'skyanalytics_navigator_observer.dart';
 
+/// A class that sends events to SkyAnalytics.
 class SkyAnalytics {
+  /// The SkyAnalytics source key.
   final String sourceKey;
+
+  /// The SkyAnalytics host.
   final String host;
 
+  /// Creates a new [SkyAnalytics] instance with the given [sourceKey] and [host].
   const SkyAnalytics({
     required this.sourceKey,
     required this.host,
   });
 
+  /// Sends an event with the given [name] and [parameters] to SkyAnalytics.
   Future<void> event({
     required String name,
     Map<String, dynamic>? parameters,
@@ -25,6 +31,7 @@ class SkyAnalytics {
     });
   }
 
+  /// Navigates to the screen with the given [screenName].
   Future<void> navigate({
     required String screenName,
   }) async {

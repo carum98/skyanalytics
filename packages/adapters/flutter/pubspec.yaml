@@ -1,8 +1,9 @@
 name: 'skyanalytics'
-description: 'SkyAnalytics Flutter is an adapter for [SkyAnalytics]'
-version: 0.0.1
+description: 'SkyAnalytics Flutter is an adapter for [SkyAnalytics]. It provides a way to use SkyAnalytics in your Flutter application.'
+version: 0.0.2
 homepage: https://github.com/carum98/skyanalytics/tree/main/packages/adapters/flutter
 issue_tracker: https://github.com/carum98/skyanalytics/issues
+documentation: https://github.com/carum98/skyanalytics/tree/main/packages/adapters/flutter#readme
 
 platforms:
   android:
