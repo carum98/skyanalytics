@@ -4,13 +4,14 @@ import { type ISourcesPagination } from '@/types'
 
 import SkPopover from '@ui/SkPopover.vue'
 import CompactViewsChart from '@components/CompactViewsChart.vue'
+import SourceAvatar from '@/components/SourceAvatar.vue'
 
 const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources", {
 	transform: (data) => ({
 		...data,
 		data: data.data.map((item) => ({
 			...item,
-			icon_path: item.icon_path ? `${import.meta.env.VITE_PROXY_API_URL}/api/${item.icon_path}` : null,
+			icon_path: item.icon_path ? `${import.meta.env.VITE_PROXY_API_URL}${item.icon_path}` : null,
 		}))
 	})
 })
@@ -24,8 +25,11 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 			@click="$router.push({ name: 'sources', params: { code: item.code }, state: { item: JSON.stringify(item) } })"
 		>
 			<header>
-				<img v-if="item.icon_path" width="35" height="35" :src="item.icon_path" />
-				<span v-else></span>
+				<SourceAvatar 
+					:size="35" 
+					:icon_path="item.icon_path" 
+					style="background-color: var(--background-color); "
+				></SourceAvatar>
 
 				<div style="max-width: 200px;">
 					<h2>

@@ -16,7 +16,7 @@ export function groupByRangeDates(
             date, 
             {
                 views : items?.length || 0,
-                sessions: new Set(data.map(item => item.session_id)).size
+                sessions: new Set(items?.map(item => item.session_id)).size
             }
         ]))
 

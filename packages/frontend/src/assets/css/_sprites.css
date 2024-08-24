@@ -10,6 +10,9 @@
     background-image: url(../img/sprites.png);
     background-repeat: no-repeat;
     scale: 0.9;
+    background-position: 0 var(--sprite-size);
+    background-color: var(--background-color);
+    border-radius: 5px;
 }
 
 /* OS */

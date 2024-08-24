@@ -72,13 +72,13 @@ async function send(event: Event) {
             ]"
         ></SkSelect>
 
-        <label>Icon</label>
+        <!-- <label>Icon</label>
         <input 
             type="file" 
             class="sk-input"
             name="icon"
             accept="image/*"
-        />
+        /> -->
 
         <button type="submit" class="sk-button">Save</button>
     </form>

@@ -9,6 +9,7 @@ import DateSelector, { type DateSelectorValue } from '@components/DateSelector.v
 import ViewsChart from '@components/ViewsChart.vue'
 import CountersList from '@components/CountersList.vue'
 import MapLocations from '@/components/MapLocations.vue'
+import SourceAvatar from '@/components/SourceAvatar.vue'
 
 const route = useRoute()
 
@@ -37,8 +38,11 @@ const { data: metrics } = useFetch<IMetrics>(`/api/sources/${route.params.code}/
 <div>
     <section class="flex justify-space-between mb-1">
         <div class="flex align-center ga-1">
-            <img v-if="item.icon_path" :src="item.icon_path" width="50" height="50" />
-            <span v-else></span>
+            <SourceAvatar 
+                :size="50" 
+                :icon_path="item.icon_path" 
+                style="background-color: var(--table-color); "
+            ></SourceAvatar>
 
             <div>
                 <h2 style="line-height: 20px;">

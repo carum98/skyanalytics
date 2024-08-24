@@ -58,10 +58,15 @@ public async getStats(code: string, filters: StatsFilter) {
     }
 }
 
+// This function groups the data by a key and counts the number of occurrences
+// if the key is null, it will be replaced by 'Unknown'
 function groupByAndCount(data: any[], key: string) {
     return Object.fromEntries(Object.entries(Object.groupBy(
-        data.filter(item => item[key]), 
+        data, 
         (item) => item[key] as string
     ))
-    .map(([key, value]) => [key, value?.length || 0]))
+    .map(([key, value]) => [
+        key === 'null' ? 'Unknown' : key, 
+        value?.length || 0
+    ]))
 }
