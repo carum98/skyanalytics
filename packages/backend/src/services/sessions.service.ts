@@ -1,12 +1,17 @@
 import { SessionRepository } from '@repositories/sessions.repository'
 import { SourcesRepository } from '@repositories/sources.repository'
 import { InsertSessionsSchema } from '@schemas/sessions.schemas'
+import { PaginationSchemaType } from '@utils/pagination'
 
 export class SessionService {
     constructor(
         private sessionRepository: SessionRepository,
         private sourceRepository: SourcesRepository,
     ) {}
+
+    public async getAll(query: PaginationSchemaType) {
+        return this.sessionRepository.getAll(query)
+    }
 
     public async create(params: Omit<InsertSessionsSchema, 'source_id'> & { source_key: string }) {
         const source = await this.sourceRepository.find(params.source_key)

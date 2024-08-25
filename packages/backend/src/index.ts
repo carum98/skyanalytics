@@ -22,6 +22,7 @@ import { UserAccountsService } from '@services/user_accounts.service'
 import { BaseRouter } from '@routes/base.routes'
 import { AuthService } from '@services/auth.service'
 import { RefreshTokenRepository } from '@repositories/refresh_token.repository'
+import { SessionsRouter } from '@routes/sessions.routes'
 
 const di = DepencyInjection.getInstance()
 
@@ -65,7 +66,8 @@ server.routes([
     new SendRouter(di),
     new SourcesRouter(di),
     new NavigationsRouter(di),
-    new UserAccountsRouter(di)
+    new UserAccountsRouter(di),
+    new SessionsRouter(di)
 ])
 
 server.middleware(errorMiddleware)

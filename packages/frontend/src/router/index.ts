@@ -46,6 +46,13 @@ const dialogs: DialogRecordRaw[] = [
     {
         name: 'sources.key',
         component: () => import('@views/sources/Key.vue'),
+    },
+    {
+        name: 'sessions.table',
+        component: () => import('@views/sessions/Table.vue'),
+        rootProps: {
+            width: 500
+        }
     }
 ]
 

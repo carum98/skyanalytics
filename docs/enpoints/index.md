@@ -24,3 +24,6 @@
 - [[POST /navigations] - Create Navigation](navigations/create.md)
 - [[PUT /navigations/:code] - Update Navigation](navigations/update.md)
 - [[DELETE /navigations/:code] - Remove Navigation](navigations/remove.md)
+
+## Sessions
+- [[GET /sessions] - Get All Sessions](sessions/getAll.md)

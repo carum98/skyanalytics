@@ -12,6 +12,17 @@ export interface ISourcesPagination {
     pagination: IPagination
 }
 
+export interface ISession {
+    country: string
+    os: string
+    software: string
+}
+
+export interface ISessionPagination {
+    data: ISession[]
+    pagination: IPagination
+}
+
 export interface IPagination {
     page: number
     total: number

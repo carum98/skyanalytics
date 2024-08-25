@@ -7,6 +7,10 @@ const props = defineProps<{
     disableSprites?: boolean
 }>()
 
+defineEmits<{
+    rowClick: [string]
+}>()
+
 const itemsSorted = computed(() => {
     if (!props.items) return []
     return Object.fromEntries(Object.entries(props.items).sort((a, b) => b[1] - a[1]))
@@ -15,7 +19,7 @@ const itemsSorted = computed(() => {
 
 <template>
     <ul class="counter-list">
-        <li v-for="(value, key) in itemsSorted" :key="key">
+        <li v-for="(value, key) in itemsSorted" :key="key" @click="$emit('rowClick', key as string)">
             <i v-if="!disableSprites" class="sprites" :class="`sprites__${key}`"></i>
             {{ key }} <span>{{ value }}</span>
         </li>
@@ -31,6 +35,7 @@ const itemsSorted = computed(() => {
         display: flex;
         padding: 0.5rem 1rem;
         gap: 0.5rem;
+        cursor: pointer;
 
         span {
             margin-left: auto;

@@ -4,6 +4,7 @@ import type { IMetrics, ISources, IStats } from '@/types'
 
 import { useFetch } from '@composables/useFetch'
 import { useRoute } from 'vue-router'
+import { useDialog } from '@/composables/useDialog'
 
 import DateSelector, { type DateSelectorValue } from '@components/DateSelector.vue'
 import ViewsChart from '@components/ViewsChart.vue'
@@ -12,6 +13,7 @@ import MapLocations from '@/components/MapLocations.vue'
 import SourceAvatar from '@/components/SourceAvatar.vue'
 
 const route = useRoute()
+const dialog = useDialog()
 
 const item = JSON.parse(window.history.state.item) as ISources
 
@@ -32,6 +34,12 @@ const { data: metrics } = useFetch<IMetrics>(`/api/sources/${route.params.code}/
         date_range: 'last_30_minutes',
     }
 })
+
+// methods
+function onRowClick(key: string) {
+    console.log(key)
+    dialog.push({ name: 'sessions.table' })
+}
 </script>
 
 <template>
@@ -75,23 +83,23 @@ const { data: metrics } = useFetch<IMetrics>(`/api/sources/${route.params.code}/
         </div>
         <div class="placeholder box-2">
             <p>Operating Systems</p>
-            <CountersList :items="stat?.os" />
+            <CountersList :items="stat?.os" @row-click="onRowClick" />
         </div>
         <div class="placeholder box-3">
             <p>Countries</p>
-            <CountersList :items="stat?.country" />
+            <CountersList :items="stat?.country" @row-click="onRowClick" />
         </div>
         <div class="placeholder box-4">
             <p>Software</p>
-            <CountersList :items="stat?.software" />
+            <CountersList :items="stat?.software" @row-click="onRowClick" />
         </div>
         <div class="placeholder box-5">
             <p>Events</p>
-            <CountersList :items="stat?.events" disable-sprites />
+            <CountersList :items="stat?.events" disable-sprites @row-click="onRowClick" />
         </div>
         <div class="placeholder box-6">
             <p>Navigations</p>
-            <CountersList :items="stat?.navigations" disable-sprites />
+            <CountersList :items="stat?.navigations" disable-sprites @row-click="onRowClick" />
         </div>
         <div class="placeholder box-7">
             <MapLocations :items="stat?.location" />

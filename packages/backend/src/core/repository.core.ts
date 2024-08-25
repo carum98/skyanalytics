@@ -298,6 +298,14 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
     }
 
     private joinSql (values: SQL[]): SQL {
-        return sql`${sql.join(values.filter(Boolean), sql.raw(' AND '))}`
+        // Remove all undefined values and `SQL` instances that don't have columns in `queryChunks`
+        const items = values.filter(item => item !== undefined && item.queryChunks.at(1) !== undefined)
+
+        // If there are no items, return a SQL instance with a raw value of '1 = 1' to prevent errors
+        if (items.length === 0) {
+            items.push(sql`1 = 1`)
+        }
+
+        return sql`${sql.join(items, sql.raw(' AND '))}`
     }
 }

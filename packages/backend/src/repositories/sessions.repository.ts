@@ -1,12 +1,33 @@
+import { RepositoryCore } from '@core/repository.core'
 import { StatsFilter } from '@schemas/_query'
 import { navigations } from '@schemas/navigations.schemas'
-import { InsertSessionsSchema, sessions } from '@schemas/sessions.schemas'
+import { InsertSessionsSchema, paginateSessionsSchema, SelectSessionsSchema, sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
+import { PaginationSchemaType } from '@utils/pagination'
 import { and, between, eq, sql } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
-export class SessionRepository {
-    constructor(private readonly db: NodePgDatabase) {}
+export class SessionRepository extends RepositoryCore<SelectSessionsSchema, InsertSessionsSchema, InsertSessionsSchema> {
+    constructor(public readonly db: NodePgDatabase) {
+        const table = sessions
+
+        const select = db.select({
+            country: sessions.country,
+            os: sessions.os,
+            software: sessions.software,
+        }).from(table)
+
+        super({ db, table, select })
+    }
+
+    public async getAll(query: PaginationSchemaType) {
+        const data = await this.getAllCore({
+            query: query,
+            where: undefined
+        })
+
+        return paginateSessionsSchema.parse(data)
+    }
 
     public async create(params: InsertSessionsSchema) {
         const data = await this.db.insert(sessions)
@@ -24,7 +45,7 @@ export class SessionRepository {
         return data.at(0)
     }
 
-public async getStats(code: string, filters: StatsFilter) {
+    public async getStats(code: string, filters: StatsFilter) {
         const data = await this.db.selectDistinct({
             os: sessions.os,
             country: sessions.country,

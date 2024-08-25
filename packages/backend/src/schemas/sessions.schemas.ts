@@ -1,8 +1,9 @@
 import { z } from 'zod'
 import { index, integer, json, pgEnum, pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core'
-import { createInsertSchema } from 'drizzle-zod'
+import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { sources } from '@schemas/sources.schemas'
 import { systemOperative } from '@utils/origin-detect'
+import { ResponsePaginationSchema } from '@utils/pagination'
 
 export const osEnum = pgEnum('os', systemOperative)
 
@@ -33,7 +34,10 @@ export const insertSessionsSchema = createInsertSchema(sessions)
     })
     .required()
 
-export const selectSessionsSchema = createInsertSchema(sessions)
+export const selectSessionsSchema = createSelectSchema(sessions)
+    .pick({ country: true, os: true, software: true })
+
+export const paginateSessionsSchema = ResponsePaginationSchema(selectSessionsSchema)
 
 // Types
 export type InsertSessionsSchema = z.infer<typeof insertSessionsSchema>
