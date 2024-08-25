@@ -1,12 +1,18 @@
-# SkyAnalytics
+# <img src="./packages/frontend/public/favicon.ico" width="25" height="25" /> SkyAnalytics
 SkyAnalytics is a service that allows you to track the behavior of your users.
 
-## Documentation
-* [Documentation](./docs/index.md)
-* [Enpoints](./docs/enpoints/index.md)
+## Features
+* Track events
+* Track navigations
+
+## Monorepo
+This project is a monorepo, it is divided into the following packages:
+* [Frontend](/packages/frontend/readme.md)
+* [Backend](/packages/backend/readme.md)
+* [Adapters](/packages/adapters)
 
 ## Adapters
-The adapters are the libraries that allow you to use the SkyAnalytics API in your project. The following are the available adapters:
+To facilitate the use of the API, we have created the following adapters:
 * [JavaScript](/packages/adapters/js/readme.md)
 * [Vue-2](/packages/adapters/vue2/readme.md)
 * [Vue-3](/packages/adapters/vue3/readme.md)
