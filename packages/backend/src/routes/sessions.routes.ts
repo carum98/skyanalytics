@@ -3,6 +3,7 @@ import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
 import { authMiddleware } from '@middlewares/auth.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
+import { headersTimezoneSchema } from '@schemas/_headers'
 import { SessionService } from '@services/sessions.service'
 import { PaginationSchema } from '@utils/pagination'
 
@@ -21,6 +22,7 @@ export class SessionsRouter extends RouterCore {
             handler: controller.getAll,
             middlewares: [
                 requestMiddleware({
+                    headers: headersTimezoneSchema,
                     query: PaginationSchema
                 })
             ]

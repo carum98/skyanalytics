@@ -37,3 +37,18 @@ If you don't set the `X-TimeZone` header, the API will use the default time zone
 This monorepo uses Docker. 
 
 [Read more](/docs/pages/docker.md)
+
+## Filters (Query Parameters)
+The API supports filters in the query parameters. The syntax is `?column[operator]=value`. The following are the available operators:
+
+- `equal`: '='
+- `like`: 'LIKE'
+- `not_equal`: '!='
+- `is_null`: 'IS NULL'
+- `is_not_null`: 'IS NOT NULL'
+- `in`: 'IN'
+- `not_in`: 'NOT IN'
+
+For example, to filter the events by the `sessions` field, you can use the following query parameter: `?country[equal]=CR`. This will return the events where the `country` field is equal to `CR`. 
+
+For nested fields, you can use this syntax: `?sources[code][equal]=123`. This will return the events where the `sources.code` field is equal to `123`.

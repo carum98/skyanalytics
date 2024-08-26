@@ -30,6 +30,11 @@ function parseFilter (filters: Filter): SQL[] {
     const sqlChunks: SQL[] = []
 
     for (const [table, value] of Object.entries(filters)) {
+        // Prevent parsing filters that are not objects (not conditions)
+        if (typeof value === 'string') {
+            continue
+        }
+
         for (const [key, data] of Object.entries(value)) {
             const { table_column, condition_symbol, rawData } = parseData(table, key, data)
 

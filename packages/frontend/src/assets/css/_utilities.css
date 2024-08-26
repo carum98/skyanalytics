@@ -18,6 +18,10 @@
 }
 
 /* Gap */
+.ga-05 {
+    gap: 0.5rem;
+}
+
 .ga-1 {
     gap: 1rem;
 }

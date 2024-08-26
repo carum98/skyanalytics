@@ -265,12 +265,8 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
         const fromIndex = toSQL.sql.lastIndexOf('from')
         const countQuery = 'select count(*) as count ' + toSQL.sql.substring(fromIndex)
 
-        let counter = 0
-
-        const replacedQuery = countQuery.replace(/\?/g, () => {
-            const value = toSQL.params[counter]
-            counter++
-
+        const replacedQuery = countQuery.replace(/\$(\d+)/g, (_, index) => {
+            const value = toSQL.params[index - 1]
             return typeof value === 'string' ? `'${value}'` : value as string
         })
 

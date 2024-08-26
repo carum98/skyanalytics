@@ -1,5 +1,5 @@
 import { RepositoryCore } from '@core/repository.core'
-import { StatsFilter } from '@schemas/_query'
+import { FilterSessions, StatsFilter } from '@schemas/_query'
 import { navigations } from '@schemas/navigations.schemas'
 import { InsertSessionsSchema, paginateSessionsSchema, SelectSessionsSchema, sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
@@ -11,19 +11,25 @@ export class SessionRepository extends RepositoryCore<SelectSessionsSchema, Inse
     constructor(public readonly db: NodePgDatabase) {
         const table = sessions
 
-        const select = db.select({
+        const select = db.selectDistinct({
             country: sessions.country,
             os: sessions.os,
             software: sessions.software,
-        }).from(table)
+            location: sql`${sessions.location}::jsonb`,
+        })
+        .from(table)
+        .leftJoin(sources, eq(sessions.source_id, sources.id))
+        .leftJoin(navigations, eq(sessions.id, navigations.session_id))
 
         super({ db, table, select })
     }
 
-    public async getAll(query: PaginationSchemaType) {
+    public async getAll(query: PaginationSchemaType & FilterSessions) {
         const data = await this.getAllCore({
             query: query,
-            where: undefined
+            where: query.start && query.end
+                ? between(navigations.created_at, new Date(query.start), new Date(query.end))
+                : undefined,
         })
 
         return paginateSessionsSchema.parse(data)

@@ -1,21 +1,39 @@
 <script setup lang="ts" generic="T">
+type Column = {
+    name: string
+    key: string
+}
+
 defineProps<{
     data: Array<T>
-    columns: Array<string>
+    columns: Array<Column>
 }>()
+
+function rowContent(row: T, column: string) {
+    return (row as Record<string, unknown>)[column]
+}
 </script>
 
 <template>
     <table class="sk-table">
         <thead>
             <tr>
-                <th v-for="column in columns" :key="column">{{ column }}</th>
+                <th v-for="column in columns" :key="column.key">
+                    {{ column.name }}
+                </th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="row in data">
-                <td v-for="column in columns" :key="column">
-                    {{ (row as Record<string, unknown>)[column] }}
+                <td v-for="column in columns" :key="column.key">
+                    <slot
+                        :name="`cell(${column.key})`"
+                        :value="rowContent(row, column.key)"
+                        :item="row"
+                        :column="column"
+                    >
+                        {{ rowContent(row, column.key) }}
+                    </slot>
                 </td>
             </tr>
         </tbody>

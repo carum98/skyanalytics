@@ -36,9 +36,18 @@ const { data: metrics } = useFetch<IMetrics>(`/api/sources/${route.params.code}/
 })
 
 // methods
-function onRowClick(key: string) {
-    console.log(key)
-    dialog.push({ name: 'sessions.table' })
+function onRowClick(field: string, value: string) {
+    dialog.push({ 
+        name: 'sessions.table',
+        props: {
+            query: {
+                per_page: '5',
+                [`${field}[equal]`]: value,
+                ['sources[code][equal]']: route.params.code,
+                ...filters.value,
+            }
+        }
+    })
 }
 </script>
 
@@ -83,23 +92,23 @@ function onRowClick(key: string) {
         </div>
         <div class="placeholder box-2">
             <p>Operating Systems</p>
-            <CountersList :items="stat?.os" @row-click="onRowClick" />
+            <CountersList :items="stat?.os" @row-click="onRowClick('os', $event)" />
         </div>
         <div class="placeholder box-3">
             <p>Countries</p>
-            <CountersList :items="stat?.country" @row-click="onRowClick" />
+            <CountersList :items="stat?.country" @row-click="onRowClick('country', $event)" />
         </div>
         <div class="placeholder box-4">
             <p>Software</p>
-            <CountersList :items="stat?.software" @row-click="onRowClick" />
+            <CountersList :items="stat?.software" @row-click="onRowClick('software', $event)" />
         </div>
         <div class="placeholder box-5">
             <p>Events</p>
-            <CountersList :items="stat?.events" disable-sprites @row-click="onRowClick" />
+            <CountersList :items="stat?.events" disable-sprites />
         </div>
         <div class="placeholder box-6">
             <p>Navigations</p>
-            <CountersList :items="stat?.navigations" disable-sprites @row-click="onRowClick" />
+            <CountersList :items="stat?.navigations" disable-sprites />
         </div>
         <div class="placeholder box-7">
             <MapLocations :items="stat?.location" />
