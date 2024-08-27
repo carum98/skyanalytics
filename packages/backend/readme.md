@@ -52,3 +52,9 @@ The API supports filters in the query parameters. The syntax is `?column[operato
 For example, to filter the events by the `sessions` field, you can use the following query parameter: `?country[equal]=CR`. This will return the events where the `country` field is equal to `CR`. 
 
 For nested fields, you can use this syntax: `?sources[code][equal]=123`. This will return the events where the `sources.code` field is equal to `123`.
+
+## Stack
+- [Express](https://github.com/expressjs/express)
+- [PostgreSQL](https://www.postgresql.org)
+- [Drizzle](https://github.com/drizzle-team/drizzle-orm)
+- [Zod](https://github.com/colinhacks/zod)

@@ -28,7 +28,7 @@ const itemsSorted = computed(() => {
 
 <style lang="css">
 .counter-list {
-    height: 90%;
+    height: 80%;
     overflow-y: auto;
 
     li {

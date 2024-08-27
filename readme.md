@@ -18,3 +18,15 @@ To facilitate the use of the API, we have created the following adapters:
 * [Vue-3](/packages/adapters/vue3/readme.md)
 * [Nuxt](/packages/adapters/nuxt/readme.md)
 * [Flutter](/packages/adapters/flutter/README.md)
+
+## Stack
+### Frontend
+- [Vite](https://github.com/vitejs/vite)
+- [Vue 3](https://github.com/vuejs/core)
+- [Nitro](https://github.com/unjs/nitro)
+
+### Backend
+- [Express](https://github.com/expressjs/express)
+- [PostgreSQL](https://www.postgresql.org)
+- [Drizzle](https://github.com/drizzle-team/drizzle-orm)
+- [Zod](https://github.com/colinhacks/zod)

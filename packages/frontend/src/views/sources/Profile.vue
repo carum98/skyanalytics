@@ -11,6 +11,8 @@ import ViewsChart from '@components/ViewsChart.vue'
 import CountersList from '@components/CountersList.vue'
 import MapLocations from '@/components/MapLocations.vue'
 import SourceAvatar from '@/components/SourceAvatar.vue'
+import StatCard from '@components/StatCard.vue'
+import CountersChart from '@components/CountersChart.vue'
 
 const route = useRoute()
 const dialog = useDialog()
@@ -90,26 +92,46 @@ function onRowClick(field: string, value: string) {
         <div class="placeholder box-1">
             <ViewsChart :item="item" :filters="filters" />
         </div>
-        <div class="placeholder box-2">
-            <p>Operating Systems</p>
-            <CountersList :items="stat?.os" @row-click="onRowClick('os', $event)" />
-        </div>
-        <div class="placeholder box-3">
-            <p>Countries</p>
-            <CountersList :items="stat?.country" @row-click="onRowClick('country', $event)" />
-        </div>
-        <div class="placeholder box-4">
-            <p>Software</p>
-            <CountersList :items="stat?.software" @row-click="onRowClick('software', $event)" />
-        </div>
-        <div class="placeholder box-5">
-            <p>Events</p>
-            <CountersList :items="stat?.events" disable-sprites />
-        </div>
-        <div class="placeholder box-6">
-            <p>Navigations</p>
-            <CountersList :items="stat?.navigations" disable-sprites />
-        </div>
+
+        <StatCard class="box-2" title="Operating Systems">
+            <template #list>
+                <CountersList :items="stat?.os" @row-click="onRowClick('os', $event)" />
+            </template>
+            <template #chart>
+                <CountersChart :items="stat?.os" />
+            </template>
+        </StatCard>
+
+        <StatCard class="box-3" title="Countries">
+            <template #list>
+                <CountersList :items="stat?.country" @row-click="onRowClick('country', $event)" />
+            </template>
+            <template #chart>
+                <CountersChart :items="stat?.country" />
+            </template>
+        </StatCard>
+
+        <StatCard class="box-4" title="Software">
+            <template #list>
+                <CountersList :items="stat?.software" @row-click="onRowClick('software', $event)" />
+            </template>
+            <template #chart>
+                <CountersChart :items="stat?.software" />
+            </template>
+        </StatCard>
+
+        <StatCard class="box-5" title="Events">
+            <template #list>
+                <CountersList :items="stat?.events" disable-sprites />
+            </template>
+        </StatCard>
+
+        <StatCard class="box-6" title="Navigations">
+            <template #list>
+                <CountersList :items="stat?.navigations" disable-sprites />
+            </template>
+        </StatCard>
+
         <div class="placeholder box-7">
             <MapLocations :items="stat?.location" />
         </div>
@@ -124,12 +146,19 @@ function onRowClick(field: string, value: string) {
     width: 15px;
     background-color: green;
     border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 green }
+    70% { box-shadow: 0 0 0 10px rgba(145, 243, 88, 0) }
+    100% { box-shadow: 0 0 0 50px rgba(145, 243, 88, 0) }
 }
 
 .grid-stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(280px, 1fr));
-    grid-template-rows: 480px 250px 250px 550px;
+    grid-template-rows: 480px 270px 270px 550px;
     align-items: stretch;
     gap: 1rem;
     width: 100%;
@@ -172,12 +201,6 @@ function onRowClick(field: string, value: string) {
 
     > div {
         padding: 1rem;
-
-        > p {
-            font-size: 1.25rem;
-            margin-left: 10px;
-            margin-bottom: 10px;
-        }
     }
 }
 </style>
