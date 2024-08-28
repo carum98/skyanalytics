@@ -1,0 +1,149 @@
+<script setup lang="ts">
+import { computed, inject, type Ref } from 'vue'
+import type { DateSelectorValue } from '@components/DateSelector.vue'
+
+import ViewsChart from '@components/ViewsChart.vue'
+import CountersList from '@components/CountersList.vue'
+import MapLocations from '@/components/MapLocations.vue'
+import StatCard from '@components/StatCard.vue'
+import CountersChart from '@components/CountersChart.vue'
+
+import { useFetch } from '@composables/useFetch'
+import type { ISources, IStats } from '@/types'
+
+import { useRoute } from 'vue-router'
+import { useDialog } from '@composables/useDialog'
+
+const filters = inject<Ref<DateSelectorValue>>('filters')
+
+const route = useRoute()
+const dialog = useDialog()
+
+const item = JSON.parse(window.history.state.item) as ISources
+
+const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats`, {
+    query: computed(() => {
+        return {
+            ...filters?.value || {},
+            stats: 'os,software,country,navigations,events,location',
+        }
+    })
+})
+
+// methods
+function onRowClick(field: string, value: string) {
+    dialog.push({ 
+        name: 'sessions.table',
+        props: {
+            query: {
+                per_page: '5',
+                [`${field}[equal]`]: value,
+                ['sources[code][equal]']: route.params.code,
+                ...filters?.value || {},
+            }
+        }
+    })
+}
+</script>
+
+<template>
+    <section v-if="item" class="grid-stats">
+        <div class="placeholder box-1">
+            <ViewsChart :item="item" :filters="filters" />
+        </div>
+
+        <StatCard class="box-2" title="Operating Systems">
+            <template #list>
+                <CountersList :items="stat?.os" @row-click="onRowClick('os', $event)" />
+            </template>
+            <template #chart>
+                <CountersChart :items="stat?.os" />
+            </template>
+        </StatCard>
+
+        <StatCard class="box-3" title="Countries">
+            <template #list>
+                <CountersList :items="stat?.country" @row-click="onRowClick('country', $event)" />
+            </template>
+            <template #chart>
+                <CountersChart :items="stat?.country" />
+            </template>
+        </StatCard>
+
+        <StatCard class="box-4" title="Software">
+            <template #list>
+                <CountersList :items="stat?.software" @row-click="onRowClick('software', $event)" />
+            </template>
+            <template #chart>
+                <CountersChart :items="stat?.software" />
+            </template>
+        </StatCard>
+
+        <StatCard class="box-5" title="Events">
+            <template #list>
+                <CountersList :items="stat?.events" disable-sprites />
+            </template>
+        </StatCard>
+
+        <StatCard class="box-6" title="Navigations">
+            <template #list>
+                <CountersList :items="stat?.navigations" disable-sprites />
+            </template>
+        </StatCard>
+
+        <div class="placeholder box-7">
+            <MapLocations :items="stat?.location" />
+        </div>
+    </section>
+</template>
+
+<style lang="css">
+.grid-stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(280px, 1fr));
+    grid-template-rows: 480px 270px 270px 550px;
+    align-items: stretch;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 20px;
+
+    grid-template-areas:
+        'box-1 box-1 box-1'
+        'box-2 box-3 box-4'
+        'box-5 box-6 .'
+        'box-7 box-7 box-7';
+
+    /* Areas */
+    .box-1 {
+        grid-area: box-1;
+    }
+
+    .box-2 {
+        grid-area: box-2;
+    }
+
+    .box-3 {
+        grid-area: box-3;
+    }
+
+    .box-4 {
+        grid-area: box-4;
+    }
+
+    .box-5 {
+        grid-area: box-5;
+    }
+
+    .box-6 {
+        grid-area: box-6;
+    }
+
+    .box-7 {
+        grid-area: box-7;
+    }
+
+    > div {
+        padding: 1rem;
+    }
+}
+</style>

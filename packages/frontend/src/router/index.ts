@@ -24,10 +24,33 @@ const routes: RouteRecordRaw[] = [
     {
         name: 'sources',
         path: '/sources/:code',
-        component: () => import('@/views/sources/Profile.vue'),
+        component: () => import('@views/sources/Profile.vue'),
         meta: {
             title: 'Sources'
-        }
+        },
+        redirect: { name: 'sources.summary' },
+        children: [
+            {
+                name: 'sources.summary',
+                path: 'summary',
+                component: () => import('@views/sources/sections/Summary.vue'),
+            },
+            {
+                name: 'sources.views',
+                path: 'views',
+                component: () => import('@views/sources/sections/Views.vue'),
+            },
+            {
+                name: 'sources.sessions',
+                path: 'sessions',
+                component: () => import('@views/sources/sections/Sessions.vue'),
+            },
+            {
+                name: 'sources.events',
+                path: 'events',
+                component: () => import('@views/sources/sections/Events.vue'),
+            },
+        ]
     }
 ]
 

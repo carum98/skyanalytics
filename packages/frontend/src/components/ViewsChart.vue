@@ -5,8 +5,14 @@ import type { ISources } from '@/types'
 import type { DateSelectorValue } from '@components/DateSelector.vue'
 
 import { useFetch } from '@composables/useFetch'
-import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip } from 'chart.js'
+import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Interaction, type InteractionOptions, type ChartEvent, type InteractionModeFunction } from 'chart.js'
 import { getCurrentTimeZone } from '@/utils'
+
+declare module 'chart.js' {
+  interface InteractionModeMap {
+    pointIndex: InteractionModeFunction;
+  }
+}
 
 const props = defineProps<{
     item: ISources
@@ -24,6 +30,7 @@ const { data } = useFetch<{ [key: string]: { views: number, sessions: number } }
     }
 })
 
+// hooks
 watch(data, (value) => {
     if (!value || !chart) return
 
@@ -37,11 +44,39 @@ watch(data, (value) => {
     chart.update()
 })
 
+// methods
+function handleClick(context: ChartEvent & { chart: Chart, native: PointerEvent }) {
+    const { chart, native } = context
+    const datasets = chart.data.datasets
+
+    const element = chart.getElementsAtEventForMode(native, 'nearest', { intersect: true }, false)
+
+    if (element.length === 1) {
+        const datasetIndex = element.at(0)!.datasetIndex
+        const index = element.at(0)!.index
+        const dataset = datasets.at(datasetIndex)
+
+        console.log(dataset?.data.at(index))
+    }
+}
+
 // lifecycle
 onMounted(() => {
     const ctx = canvas.value?.getContext('2d') as CanvasRenderingContext2D
 
     Chart.register(BarController, BarElement, LinearScale, CategoryScale, Tooltip)
+
+    // Custom interaction mode to show one dataset inside tooltip if it's hovered inside the bar or line
+    // and multiple if it's hovered on the section
+    Interaction.modes.pointIndex = function(chart: Chart, e: ChartEvent, options: InteractionOptions, useFinalPosition?: boolean) {
+        const pointItems = Interaction.modes.nearest(chart, e, { intersect: true }, useFinalPosition)
+
+        if (!pointItems.length) {
+            return Interaction.modes.index(chart, e, { intersect: false }, useFinalPosition)
+        }
+
+        return pointItems
+    }
 
     chart = new Chart(ctx, {
         type: 'bar',
@@ -68,8 +103,7 @@ onMounted(() => {
             responsive: true,
             maintainAspectRatio: false,
             interaction: {
-                intersect: false,
-                mode: 'index'
+                mode: 'pointIndex',
             },
             scales: {
                 y: {
@@ -90,8 +124,16 @@ onMounted(() => {
                     display: false
                 },
                 tooltip: {
+                    position: 'nearest',
+                    usePointStyle: true,
                     titleAlign: 'center',
+                    xAlign: 'center',
+                    yAlign: 'bottom',
                 }
+            },
+            onClick: handleClick,
+            onHover: (event, chartElement) => {
+                (event?.native!.target as HTMLElement)!.style.cursor = chartElement[0] ? 'pointer' : 'default'
             }
         },
         plugins: [

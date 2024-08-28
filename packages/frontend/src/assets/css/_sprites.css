@@ -7,7 +7,7 @@
     height: var(--sprite-size);
     display: inline-block;
     background-size: 200px;
-    background-image: url(../img/sprites.png);
+    background-image: url(../../../public/img/sprites.png);
     background-repeat: no-repeat;
     scale: 0.9;
     background-position: 0 var(--sprite-size);
