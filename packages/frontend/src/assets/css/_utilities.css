@@ -15,6 +15,10 @@
     align-items: flex-end;
 }
 
+.justify-center {
+    justify-content: center;
+}
+
 .d-flex-center {
     display: flex;
     justify-content: center;
@@ -50,4 +54,18 @@
 
 .text-gray {
     color: gray;
+}
+
+/* Padding */
+.p-1 {
+    padding: 1.5rem;
+}
+
+/* Common */
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
 }

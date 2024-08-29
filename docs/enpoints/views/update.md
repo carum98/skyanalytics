@@ -1,8 +1,8 @@
-# Update Navigation
+# Update Views
 
 ## Request
 - Method: `PUT`
-- URL: `/navigations/:code`
+- URL: `/views/:code`
 
 ## Request Body
 | Field | Type | Required |
@@ -11,7 +11,7 @@
 
 ## Response
 Status: `200 OK`
-[See here](../../response/navigations.md)
+[See here](../../response/views.md)
 
 ## Errors
 [See here](../../response/error.md)

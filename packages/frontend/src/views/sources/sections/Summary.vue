@@ -12,12 +12,12 @@ import { useFetch } from '@composables/useFetch'
 import type { ISources, IStats } from '@/types'
 
 import { useRoute } from 'vue-router'
-import { useDialog } from '@composables/useDialog'
+import { useSidebar } from '@composables/useSidebar'
 
 const filters = inject<Ref<DateSelectorValue>>('filters')
 
 const route = useRoute()
-const dialog = useDialog()
+const sidebar = useSidebar()
 
 const item = JSON.parse(window.history.state.item) as ISources
 
@@ -31,17 +31,30 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
 })
 
 // methods
-function onRowClick(field: string, value: string) {
-    dialog.push({ 
-        name: 'sessions.table',
-        props: {
-            query: {
-                per_page: '5',
-                [`${field}[equal]`]: value,
-                ['sources[code][equal]']: route.params.code,
-                ...filters?.value || {},
-            }
-        }
+function onOpenSessions(field?: string, value?: string) {
+    const query = {
+        [`${field}[equal]`]: value,
+        ['sources[code][equal]']: route.params.code,
+        ...filters?.value || {},
+    }
+
+    sidebar.push({ 
+        name: 'sessions.list',
+        props: { query }
+    })
+}
+
+function opOpenViews(viewName?: string) {
+    const query = {
+        per_page: 20,
+        ['navigations[name][equal]']: viewName,
+        ['sources[code][equal]']: route.params.code,
+        ...filters?.value || {},
+    }
+
+    sidebar.push({ 
+        name: 'views.list',
+        props: { query }
     })
 }
 </script>
@@ -52,27 +65,27 @@ function onRowClick(field: string, value: string) {
             <ViewsChart :item="item" :filters="filters" />
         </div>
 
-        <StatCard class="box-2" title="Operating Systems">
+        <StatCard class="box-2" title="Operating Systems" @open-external="onOpenSessions">
             <template #list>
-                <CountersList :items="stat?.os" @row-click="onRowClick('os', $event)" />
+                <CountersList :items="stat?.os" @row-click="onOpenSessions('os', $event)" />
             </template>
             <template #chart>
                 <CountersChart :items="stat?.os" />
             </template>
         </StatCard>
 
-        <StatCard class="box-3" title="Countries">
+        <StatCard class="box-3" title="Countries" @open-external="onOpenSessions">
             <template #list>
-                <CountersList :items="stat?.country" @row-click="onRowClick('country', $event)" />
+                <CountersList :items="stat?.country" @row-click="onOpenSessions('country', $event)" />
             </template>
             <template #chart>
                 <CountersChart :items="stat?.country" />
             </template>
         </StatCard>
 
-        <StatCard class="box-4" title="Software">
+        <StatCard class="box-4" title="Software" @open-external="onOpenSessions">
             <template #list>
-                <CountersList :items="stat?.software" @row-click="onRowClick('software', $event)" />
+                <CountersList :items="stat?.software" @row-click="onOpenSessions('software', $event)" />
             </template>
             <template #chart>
                 <CountersChart :items="stat?.software" />
@@ -85,9 +98,9 @@ function onRowClick(field: string, value: string) {
             </template>
         </StatCard>
 
-        <StatCard class="box-6" title="Navigations">
+        <StatCard class="box-6" title="Views" @open-external="opOpenViews">
             <template #list>
-                <CountersList :items="stat?.navigations" disable-sprites />
+                <CountersList :items="stat?.navigations" disable-sprites @row-click="opOpenViews" />
             </template>
         </StatCard>
 

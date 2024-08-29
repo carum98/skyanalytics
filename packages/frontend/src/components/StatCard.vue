@@ -5,17 +5,29 @@ defineProps<{
     title: string
 }>()
 
+defineEmits<{
+    'openExternal': []
+}>()
+
 const view = ref('list')
 </script>
 
 <template>
     <div class="placeholder stats-card">
         <header v-if="title">
-            <p>{{ title }}</p>
+            <p>
+                {{ title }}
+                <button 
+                    @click="$emit('openExternal')"
+                    class="open-external"
+                >
+                    <i class="icon-arrow-up-right"></i>
+                </button>
+            </p>
 
             <button 
                 @click="view = view === 'list' ? 'chart' : 'list'"
-                class="btn btn-sm btn-outline"
+                class="toogle-view"
             >
                 <i :class="view === 'list' ? 'icon-chart-bar' : 'icon-list'"></i>
             </button>
@@ -39,7 +51,11 @@ const view = ref('list')
         display: flex;
         justify-content: space-between;
 
-        button {
+        .open-external {
+            color: gray;
+        }
+
+        .toogle-view {
             width: 33px;
             height: 33px;
             border-radius: 10px;

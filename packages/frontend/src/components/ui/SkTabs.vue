@@ -51,6 +51,8 @@ onMounted(() => {
     border-radius: 30px;
 
     position: relative;
+
+    height: 40px;
 }
 
 .sk-tabs__item {
@@ -63,7 +65,7 @@ onMounted(() => {
 
 .sk-tabs__gutter {
     position: absolute;
-    inset: 7px;
+    inset: 6px;
     background-color: var(--primary-color);
     border-radius: 30px;
     transition: left 0.3s, width 0.3s;

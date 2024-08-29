@@ -20,10 +20,10 @@
 - [[DELETE /events/:code] - Remove Event](events/remove.md)
 
 ## Navigations
-- [[GET /navigations] - Get Navigations](navigations/getAll.md)
-- [[POST /navigations] - Create Navigation](navigations/create.md)
-- [[PUT /navigations/:code] - Update Navigation](navigations/update.md)
-- [[DELETE /navigations/:code] - Remove Navigation](navigations/remove.md)
+- [[GET /views] - Get Navigations](views/getAll.md)
+- [[POST /views] - Create Navigation](views/create.md)
+- [[PUT /views/:code] - Update Navigation](views/update.md)
+- [[DELETE /views/:code] - Remove Navigation](views/remove.md)
 
 ## Sessions
 - [[GET /sessions] - Get All Sessions](sessions/getAll.md)

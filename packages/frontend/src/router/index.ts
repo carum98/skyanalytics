@@ -2,6 +2,7 @@ import { cookieExists } from '@/utils/cookies'
 import { createWebHistory, createRouter, type RouteRecordRaw } from 'vue-router'
 
 import type { DialogRecordRaw } from '@composables/useDialog'
+import type { SidebarRecordRaw } from '@composables/useSidebar'
 
 const routes: RouteRecordRaw[] = [
     {
@@ -70,11 +71,18 @@ const dialogs: DialogRecordRaw[] = [
         name: 'sources.key',
         component: () => import('@views/sources/Key.vue'),
     },
+]
+
+const sidebars: SidebarRecordRaw[] = [
     {
-        name: 'sessions.table',
-        component: () => import('@views/sessions/Table.vue'),
+        name: 'sessions.list',
+        component: () => import('@views/sessions/List.sidebar.vue'),
+    },
+    {
+        name: 'views.list',
+        component: () => import('@views/views/List.sidebar.vue'),
         rootProps: {
-            width: 500
+            width: 900
         }
     }
 ]
@@ -96,5 +104,6 @@ router.beforeEach((to, _from, next) => {
 
 export {
     router,
-    dialogs
+    dialogs,
+    sidebars
 }

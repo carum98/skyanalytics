@@ -23,6 +23,18 @@ export interface ISessionPagination {
     pagination: IPagination
 }
 
+export interface IView {
+    id: number
+    name: string
+    created_at: string
+    session: ISession
+}
+
+export interface IViewPagination {
+    data: IView[]
+    pagination: IPagination
+}
+
 export interface IPagination {
     page: number
     total: number

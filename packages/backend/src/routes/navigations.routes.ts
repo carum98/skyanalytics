@@ -13,7 +13,7 @@ import { PaginationSchema } from '@utils/pagination'
 export class NavigationsRouter extends RouterCore {
     constructor(di: DepencyInjection) {
         super({
-            path: '/navigations',
+            path: '/views',
             middlewares: [authMiddleware]
         })
 

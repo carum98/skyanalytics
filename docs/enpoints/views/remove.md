@@ -1,8 +1,8 @@
-# Remove Navigation
+# Remove Views
 
 ## Request
 - Method: `DELETE`
-- URL: `/navigations/:code`
+- URL: `/views/:code`
 
 ## Response
 - Status: `204 No Content`

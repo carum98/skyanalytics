@@ -1,8 +1,8 @@
-# Create Navigation
+# Create Views
 
 ## Request
 - Method: `POST`
-- URL: `/navigations`
+- URL: `/views`
 
 ## Request Body
 | Field | Type | Required |
@@ -12,7 +12,7 @@
 
 ## Response
 Status: `201 Created`
-[See here](../../response/navigations.md)
+[See here](../../response/views.md)
 
 ## Errors
 [See here](../../response/error.md)

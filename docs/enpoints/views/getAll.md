@@ -1,16 +1,16 @@
 # Get All Navigations
-This endpoint returns all navigations in the database.
+This endpoint returns all views in the database.
 
 ## Request
 - Method: `GET`
-- URL: `/navigations`
+- URL: `/views`
 
 ## Success Response
 Status: `200 OK`
 
 | Name | Type | Description |
 | --- | --- | --- |
-| data | array | Array of [navigations](../../response/navigations.md) |
+| data | array | Array of [views](../../response/views.md) |
 | pagination | object | Pagination data ([pagination](../../response/pagination.md)) |
 
 ## Errors

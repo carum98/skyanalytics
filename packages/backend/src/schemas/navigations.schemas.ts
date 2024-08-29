@@ -1,5 +1,5 @@
 import { index, integer, pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core'
-import { sessions } from './sessions.schemas'
+import { selectSessionsSchema, sessions } from './sessions.schemas'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z } from 'zod'
 import { ResponsePaginationSchema } from '@utils/pagination'
@@ -21,7 +21,10 @@ export const insertNavigationsSchema = createInsertSchema(navigations)
     .required()
 
 export const selectNavigationsSchema = createSelectSchema(navigations)
-    .pick({ id: true, name: true })
+    .pick({ id: true, name: true, created_at: true })
+    .extend({
+        session: selectSessionsSchema.pick({ os: true, software: true, country: true })
+    })
 
 export const paginatedNavigationsSchema = ResponsePaginationSchema(selectNavigationsSchema)
 

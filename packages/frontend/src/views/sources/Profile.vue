@@ -58,15 +58,14 @@ provide('filters', filters)
             </p>
         </div>
 
-        <SkTabs 
-            style="height: 45px;"
+        <!-- <SkTabs 
             :tabs="[
                 { label: 'Summary', to: { name: 'sources.summary', params: { code: item.code } } },
                 { label: 'Views', to: { name: 'sources.views', params: { code: item.code } } },
-                { label: 'Sessions', to: { name: 'sources.sessions', params: { code: item.code } } },
                 { label: 'Events', to: { name: 'sources.events', params: { code: item.code } } },
+                { label: 'Sessions', to: { name: 'sources.sessions', params: { code: item.code } } },
             ]"
-        ></SkTabs>
+        ></SkTabs> -->
 
         <DateSelector v-model="filters" />
     </section>

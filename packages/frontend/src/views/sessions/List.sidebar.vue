@@ -20,6 +20,7 @@ const { data } = useFetch<ISessionPagination>("/api/sessions", {
     <SkTable 
         v-if="data"
         :data="data.data" 
+        class="p-1"
         :columns="[
             {
                 name: 'Country',

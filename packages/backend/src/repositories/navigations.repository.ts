@@ -16,8 +16,16 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
         const select = db.select({
             id: navigations.id,
             name: navigations.name,
+            created_at: navigations.created_at,
+            session: {
+                os: sessions.os,
+                software: sessions.software,
+                country: sessions.country,
+            },
         })
         .from(table)
+        .leftJoin(sessions, eq(navigations.session_id, sessions.id))
+        .leftJoin(sources, eq(sessions.source_id, sources.id))
 
         super({ db, table, select })
     }

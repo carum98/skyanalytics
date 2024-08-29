@@ -2,6 +2,8 @@
 type Column = {
     name: string
     key: string
+    thClass?: string
+    tdClass?: string
 }
 
 defineProps<{
@@ -10,6 +12,12 @@ defineProps<{
 }>()
 
 function rowContent(row: T, column: string) {
+    if (column.includes('.')) {
+        const [parent, child] = column.split('.')
+        const parentObj = (row as Record<string, unknown>)[parent] as Record<string, unknown>
+        return parentObj[child]
+    }
+
     return (row as Record<string, unknown>)[column]
 }
 </script>
@@ -18,14 +26,14 @@ function rowContent(row: T, column: string) {
     <table class="sk-table">
         <thead>
             <tr>
-                <th v-for="column in columns" :key="column.key">
+                <th v-for="column in columns" :key="column.key" :class="column.thClass">
                     {{ column.name }}
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="row in data">
-                <td v-for="column in columns" :key="column.key">
+                <td v-for="column in columns" :key="column.key" :class="column.tdClass">
                     <slot
                         :name="`cell(${column.key})`"
                         :value="rowContent(row, column.key)"
@@ -66,12 +74,12 @@ function rowContent(row: T, column: string) {
     & th, & td {
         line-height: 1.5;
         vertical-align: middle;
-        text-align: left;
     }
 
     & th {
         padding: 8px var(--padding);
         color: rgba(var(--text-color-rgb), 0.8);
+        font-weight: 600;
     }
 
     & td {
