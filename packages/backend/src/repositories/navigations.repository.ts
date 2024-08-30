@@ -1,5 +1,5 @@
 import { RepositoryCore } from '@core/repository.core'
-import { MetricsFilter, StatsFilter } from '@schemas/_query'
+import { FilterSessions, MetricsFilter, StatsFilter } from '@schemas/_query'
 import { InsertNavigationsSchema, navigations, paginatedNavigationsSchema, selectNavigationsSchema, SelectNavigationsSchema } from '@schemas/navigations.schemas'
 import { sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
@@ -30,10 +30,12 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
         super({ db, table, select })
     }
 
-    public async getAll(query: PaginationSchemaType) {
+    public async getAll(query: PaginationSchemaType & FilterSessions) {
         const data = await this.getAllCore({
             query: query,
-            where: undefined
+            where: query.start && query.end
+                ? between(navigations.created_at, new Date(query.start), new Date(query.end))
+                : undefined,
         })
 
         return paginatedNavigationsSchema.parse(data)

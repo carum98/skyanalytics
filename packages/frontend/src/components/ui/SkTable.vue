@@ -98,6 +98,12 @@ function rowContent(row: T, column: string) {
         padding-right: var(--padding);
     }
 
+    thead {
+        position: sticky;
+        top: 10px;
+        z-index: 2;
+    }
+
     & .table-empty td {
         height: 200px;
         text-align: center;

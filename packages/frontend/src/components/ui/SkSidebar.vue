@@ -50,9 +50,7 @@ onMounted(() => {
         class="sk-sidebar" 
         :style="{ width: width + 'px' }"
     >
-        <main>
-            <slot />
-        </main>
+        <slot />
     </dialog>
 </template>
 

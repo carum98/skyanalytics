@@ -2,14 +2,20 @@ import { Request, Response } from 'express'
 import { NavigationsService } from '@services/navigations.service'
 import { PaginationSchemaType } from '@utils/pagination'
 import { InsertNavigationsSchema } from '@schemas/navigations.schemas'
+import { HeadersTimeZone } from '@schemas/_headers'
+import { FilterSessions } from '@schemas/_query'
 
 export class NavigationController {
     constructor(private service: NavigationsService) {}
 
     public getAll = async (req: Request, res: Response) => {
-        const query = req.query as unknown as PaginationSchemaType
-        
-        const data = await this.service.getAll(query)
+        const headers = req.headers as unknown as HeadersTimeZone
+        const query = req.query as unknown as PaginationSchemaType & FilterSessions
+
+        const data = await this.service.getAll({
+            ...query,
+            "x-timezone": headers['x-timezone']
+        })
 
         res.json(data)
     }

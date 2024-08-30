@@ -16,7 +16,7 @@ let chart: Chart | null = null
 const canvas = ref<HTMLCanvasElement | null>(null)
 
 const image = new Image()
-image.src = `../img/sprites.png`
+image.src = `../../../public/img/sprites.png`
 
 // methods
 const spriteImage = {
