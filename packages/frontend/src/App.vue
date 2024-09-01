@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { shallowRef, defineAsyncComponent } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { shallowRef } from 'vue'
+import { useRouter } from 'vue-router'
+
+import LayoutDefault from '@/layouts/DefaultLayout.vue'
+import LayoutLogin from '@/layouts/LoginLayout.vue'
 
 const router = useRouter()
-const route = useRoute()
 
 const layouts: Record<string, any> = {
-	default: defineAsyncComponent(() => import('@/layouts/DefaultLayout.vue')),
-	login: defineAsyncComponent(() => import('@/layouts/LoginLayout.vue')),
+	default: LayoutDefault,
+	login: LayoutLogin,
 }
 
 router.beforeEach((to, _from, next) => {
@@ -32,10 +34,10 @@ router.afterEach((to, from) => {
 
 <template>
   	<component :is="layout">
-		<RouterView v-slot="{ Component }">
+		<RouterView v-slot="{ Component, route }">
 			<Transition :name="route.meta.transition as string" mode="out-in">
 				<KeepAlive include="Home">
-					<Component :is="Component" />
+					<Component :is="Component" :key="route.name" />
 				</KeepAlive>
 			</Transition>
 		</RouterView>

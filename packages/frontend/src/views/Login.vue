@@ -13,7 +13,8 @@ async function onSubmit(event: Event) {
             body: formData,
         })
 
-        router.push({ name: 'home' })
+        const url = router.resolve({ name: 'home' }).fullPath
+        window.location.replace(url)
     } catch (error) {
         console.error(error)
     }

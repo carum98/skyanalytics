@@ -56,4 +56,15 @@ const itemsSorted = computed(() => {
         border-bottom: 1px solid rgba(0, 0, 0, 0.284);
     }
 }
+
+.counter-list:empty::after {
+    content: 'No data';
+    display: flex;
+    padding: 1rem;
+    text-align: center;
+    color: gray;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
 </style>

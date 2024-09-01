@@ -53,6 +53,8 @@ onMounted(() => {
     position: relative;
 
     height: 40px;
+    width: fit-content;
+    margin: 0 auto;
 }
 
 .sk-tabs__item {

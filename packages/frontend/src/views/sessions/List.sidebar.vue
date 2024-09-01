@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { ISession } from '@/types'
-import { useFetch } from '@composables/useFetch'
 import { getCurrentTimeZone } from '@/utils'
 import { useScrollPagination } from '@composables/useScrollPagination'
 
@@ -25,12 +24,12 @@ const columns = [
 	}
 ]
 
-const { el: scrollContainer, items } = useScrollPagination<ISession>(() => useFetch("/api/sessions", {
+const { el: scrollContainer, items } = useScrollPagination<ISession>(["/api/sessions", {
 	query: props.query,
 	headers: {
 		'x-timezone': getCurrentTimeZone()
 	}
-}))
+}])
 </script>
 
 <template>

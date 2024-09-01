@@ -25,7 +25,7 @@ onMounted(() => {
             <h1>SkyAnalytics</h1>
         </div>
 
-        <SkPopover position="bottom span-left">
+        <SkPopover position="bottom">
             <template #target="{ props }">
                 <button class="dropdown_actions" v-bind="props">
                     <i class="icon-caret-down"></i>
@@ -35,7 +35,7 @@ onMounted(() => {
                 <div class="sk-dropdown__options" v-bind="props">
                     <button @click="logOut">
                         <i class="icon-right-from-bracket"></i>
-                        Cerrar sesión
+                        Log out
                     </button>
                 </div>
             </template>

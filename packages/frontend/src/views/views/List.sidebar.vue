@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { IView } from '@/types'
-import { useFetch } from '@composables/useFetch'
 import { getCurrentTimeZone, formatDate } from '@/utils'
 import { useScrollPagination } from '@composables/useScrollPagination'
 
@@ -8,13 +7,14 @@ import SkTable from '@ui/SkTable.vue'
 
 const columns = [
 	{
-		name: 'Name',
-		key: 'name',
+		name: 'Date',
+		key: 'created_at',
 		thClass: 'text-left'
 	},
 	{
-		name: 'Date',
-		key: 'created_at'
+		name: 'Name',
+		key: 'name',
+		thClass: 'text-left'
 	},
 	{
 		name: 'Country',
@@ -34,12 +34,12 @@ const props = defineProps<{
 	query: Record<string, string>
 }>()
 
-const { el: scrollContainer, items } = useScrollPagination<IView>(() => useFetch("/api/views", {
+const { el: scrollContainer, items } = useScrollPagination<IView>(["/api/views", {
 	query: props.query,
 	headers: {
 		'x-timezone': getCurrentTimeZone()
 	}
-}))
+}])
 </script>
 
 <template>

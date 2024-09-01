@@ -55,7 +55,7 @@ export function useFetch<T>(url: string, options?: UseFetchRequestOptions<T>) {
 
         if (Object.values(query.query).some(isRef)) {
             return Object.fromEntries(
-                Object.entries(query).map(([key, value]) => {
+                Object.entries(query.query).map(([key, value]) => {
                     if (isRef(value)) {
                         return [key, value.value]
                     }

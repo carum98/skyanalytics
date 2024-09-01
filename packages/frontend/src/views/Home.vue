@@ -5,6 +5,7 @@ import { type ISourcesPagination } from '@/types'
 import SkPopover from '@ui/SkPopover.vue'
 import CompactViewsChart from '@components/CompactViewsChart.vue'
 import SourceAvatar from '@/components/SourceAvatar.vue'
+import SourceCurrentVisitors from '@/components/SourceCurrentVisitors.vue'
 
 const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources", {
 	transform: (data) => ({
@@ -73,6 +74,8 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 			</header>
 
 			<CompactViewsChart :item="item"/>
+
+			<SourceCurrentVisitors :item="item"/>
 		</article>
 
 		<button class="sk-button-fab" v-dialog="{ name: 'sources.form', listeners: { onRefresh } }">
