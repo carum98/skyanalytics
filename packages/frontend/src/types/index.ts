@@ -64,3 +64,9 @@ export interface IStats {
     events: IViewsStats
     location: Array<ILocationStat>
 }
+
+export interface IMapLocation {
+	code: string
+	name: string
+	locations: Array<ILocationStat>
+}

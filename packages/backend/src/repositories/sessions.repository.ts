@@ -4,7 +4,7 @@ import { navigations } from '@schemas/navigations.schemas'
 import { InsertSessionsSchema, paginateSessionsSchema, SelectSessionsSchema, sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
 import { PaginationSchemaType } from '@utils/pagination'
-import { and, between, eq, sql } from 'drizzle-orm'
+import { and, between, eq, isNotNull, sql } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
 export class SessionRepository extends RepositoryCore<SelectSessionsSchema, InsertSessionsSchema, InsertSessionsSchema> {
@@ -82,6 +82,33 @@ export class SessionRepository extends RepositoryCore<SelectSessionsSchema, Inse
                 ? data.filter(item => item.location).map(item => item.location)
                 : undefined,
         }
+    }
+
+    public async getLocations(filters: FilterSessions) {
+        const data = await this.db.selectDistinct({
+            sources_code: sources.code,
+            sources_name: sources.name,
+            location: sql`${sessions.location}::jsonb`,
+        })
+        .from(sessions)
+        .leftJoin(sources, eq(sessions.source_id, sources.id))
+        .leftJoin(navigations, eq(sessions.id, navigations.session_id))
+        .where(
+            and(
+                isNotNull(sessions.location),
+                between(navigations.created_at, new Date(filters.start), new Date(filters.end))
+            )
+        )
+
+        return Object.entries(Object.groupBy(
+            data, 
+            (item) => item.sources_code as string
+        ))
+        .map(([key, value]) => ({
+            code: key,
+            name: value?.at(0)?.sources_name,
+            locations: value?.map(item => item.location) || []
+        }))
     }
 }
 

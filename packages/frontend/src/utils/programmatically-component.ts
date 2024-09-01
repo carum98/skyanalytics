@@ -1,5 +1,5 @@
+import { router } from '@/router'
 import { render, createApp, defineComponent, h, type App } from 'vue'
-import { useRouter } from 'vue-router'
 
 export type ProgrammaticallyOptions = {
     component: () => Promise<any>
@@ -49,8 +49,6 @@ export function programmaticallyComponent(
                 })
             ]),
         })
-
-        const router = useRouter()
 
         app = createApp(instance).use(router)
         

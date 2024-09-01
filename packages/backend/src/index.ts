@@ -23,6 +23,8 @@ import { BaseRouter } from '@routes/base.routes'
 import { AuthService } from '@services/auth.service'
 import { RefreshTokenRepository } from '@repositories/refresh_token.repository'
 import { SessionsRouter } from '@routes/sessions.routes'
+import { LocationsService } from '@services/locations.service'
+import { LocationsRouter } from '@routes/locations.routes'
 
 const di = DepencyInjection.getInstance()
 
@@ -58,6 +60,8 @@ di.register(() => new AuthService(
     di.resolve(RefreshTokenRepository)
 ))
 
+di.register(() => new LocationsService(di.resolve(SessionRepository)))
+
 const server = new Server()
 
 server.routes([
@@ -67,7 +71,8 @@ server.routes([
     new SourcesRouter(di),
     new NavigationsRouter(di),
     new UserAccountsRouter(di),
-    new SessionsRouter(di)
+    new SessionsRouter(di),
+    new LocationsRouter(di)
 ])
 
 server.middleware(errorMiddleware)

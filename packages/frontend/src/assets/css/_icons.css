@@ -69,3 +69,7 @@
 .icon-list:before { content: '\e80c'; } /* '' */
 .icon-chart-bar:before { content: '\e80d'; } /* '' */
 .icon-arrow-up-right:before { content: '\e80e'; } /* '' */
+.icon-bars-staggered:before { content: '\e810'; } /* '' */
+.icon-grid-2:before { content: '\e811'; } /* '' */
+.icon-map:before { content: '\e812'; } /* '' */
+

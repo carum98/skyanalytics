@@ -27,3 +27,6 @@
 
 ## Sessions
 - [[GET /sessions] - Get All Sessions](sessions/getAll.md)
+
+## Locations
+- [[GET /locations] - Get All Locations](locations/getAll.md)

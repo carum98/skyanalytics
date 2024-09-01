@@ -87,14 +87,14 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 <style lang="css">
 section {
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
 	grid-template-rows: min-content;
 	align-items: start;
+	gap: 1rem;
 
 	article {
 		padding: 1.1rem;
 		border-radius: 5px;
-		margin: 0.5rem;
 		display: flex;
 		flex-direction: column;
 		gap: 10px;

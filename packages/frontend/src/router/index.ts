@@ -18,8 +18,13 @@ const routes: RouteRecordRaw[] = [
         name: 'home',
         path: '/',
         component: () => import('@views/Home.vue'),
+    },
+    {
+        name: 'map',
+        path: '/map',
+        component: () => import('@views/Map.vue'),
         meta: {
-            title: 'Analytics'
+            disableTransition: true
         }
     },
     {

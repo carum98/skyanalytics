@@ -16,29 +16,34 @@ export function useSidebar() {
             throw new Error(`Sidebar ${name} not found`)
         }
 
+        open({
+            component: sidebar.component,
+            props: {
+                ...sidebar.props,
+                ...options.props,
+            },
+            listeners: {
+                ...sidebar.listeners,
+                ...options.listeners,
+            },
+            rootProps: {
+                ...sidebar.rootProps,
+                ...options.rootProps,
+            }
+        })
+    }
+
+    function open(sidebar: ProgrammaticallyOptions) {
         const { open } = programmaticallyComponent({
             component: import('@ui/SkSidebar.vue'),
-            params: {
-                component: sidebar.component,
-                props: {
-                    ...sidebar.props,
-                    ...options.props,
-                },
-                listeners: {
-                    ...sidebar.listeners,
-                    ...options.listeners,
-                },
-                rootProps: {
-                    ...sidebar.rootProps,
-                    ...options.rootProps,
-                }
-            }
+            params: sidebar
         })
 
         open({})
     }
 
     return {
-        push
+        push,
+        open
     }
 }

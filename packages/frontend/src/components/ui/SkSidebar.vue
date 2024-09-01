@@ -3,8 +3,10 @@ import { onMounted, ref } from 'vue'
 
 withDefaults(defineProps<{
     width?: number
+    position?: 'left' | 'right'
 }>(), {
-    width: 600
+    width: 600,
+    position: 'right'
 })
 
 const dialog = ref<HTMLDialogElement>()
@@ -48,6 +50,7 @@ onMounted(() => {
     <dialog 
         ref="dialog" 
         class="sk-sidebar" 
+        :class="position"
         :style="{ width: width + 'px' }"
     >
         <slot />
@@ -57,12 +60,22 @@ onMounted(() => {
 <style lang="css">
 .sk-sidebar {
     border: unset;
-    margin-left: auto;
     height: 100vh;
     max-height: 100vh;
 
     background-color: var(--background-color);
-    animation: closeSidebar 0.5s forwards;
+
+    animation-duration: 0.5s;
+    animation-fill-mode: forwards;
+
+    &.left {
+        animation-name: outLeftToRight;
+    }
+
+    &.right {
+        margin-left: auto;
+        animation-name: outRightToLeft;
+    }
 
     &::backdrop {
         opacity: 0;
@@ -76,7 +89,13 @@ onMounted(() => {
 }
 
 .sk-sidebar[open] {
-    animation: openSidebar 0.5s forwards;
+    &.left {
+        animation-name: inLeftToRight;
+    }
+
+    &.right {
+        animation-name: inRightToLeft;
+    }
 
     &::backdrop {
         opacity: 1;
@@ -93,22 +112,23 @@ onMounted(() => {
     }
 }
 
-@keyframes openSidebar {
-    from {
-        transform: translateX(100%)
-    }
-    to {
-        transform: translateX(0);
-    }
+@keyframes inRightToLeft {
+    from { transform: translateX(100%) }
+    to { transform: translateX(0) }
 }
 
-@keyframes closeSidebar {
-    from {
-        transform: translateX(0);
-    }
-    to {
-        transform: translateX(100%)
-    }
+@keyframes outRightToLeft {
+    from { transform: translateX(0) }
+    to { transform: translateX(100%) }
 }
 
+@keyframes inLeftToRight {
+    from { transform: translateX(-100%) }
+    to { transform: translateX(0) }
+}
+
+@keyframes outLeftToRight {
+    from { transform: translateX(0) }
+    to { transform: translateX(-100%) }
+}
 </style>

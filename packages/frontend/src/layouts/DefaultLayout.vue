@@ -1,15 +1,27 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useSidebar } from '@composables/useSidebar'
 import { $fetch } from '@/utils/fetch'
 
 import SkPopover from '@ui/SkPopover.vue'
 
 const router = useRouter()
+const sidebar = useSidebar()
 
 async function logOut() {
     await $fetch('/api/logout', { method: 'POST' })
     router.push({ name: 'login' })
+}
+
+function onSidebar() {
+    sidebar.open({
+        component: () => import('@/layouts/NavigationLayout.vue'),
+        rootProps: {
+            position: 'left',
+            width: 250
+        }
+    })
 }
 
 onMounted(() => {
@@ -20,6 +32,10 @@ onMounted(() => {
 
 <template>
     <header>
+        <button @click="onSidebar">
+            <i class="icon-bars-staggered" style="font-size: 18px;"></i>
+        </button>
+
         <div class="flex align-center ga-1">
             <img src="/img/logo.avif" width="30" height="30" alt="SkyAnalytics" />
             <h1>SkyAnalytics</h1>

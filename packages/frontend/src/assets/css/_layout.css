@@ -26,11 +26,11 @@
         position: fixed;
         top: 0;
         right: 10px;
-        left: 0;
+        left: 10px;
         height: var(--header-height);
         display: flex;
         align-items: center;
-        justify-content: flex-end;
+        justify-content: space-between;
         padding: 0 20px;
         backdrop-filter: blur(7px);
         z-index: 5;
@@ -53,7 +53,7 @@
     }
 
     > main {
-        padding: var(--header-height) 30px 0 30px;
+        padding: var(--header-height) 30px 30px 30px;
         overflow: scroll;
         height: 100%;
 

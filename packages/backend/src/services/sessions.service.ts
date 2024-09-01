@@ -1,9 +1,9 @@
 import { SessionRepository } from '@repositories/sessions.repository'
 import { SourcesRepository } from '@repositories/sources.repository'
 import { HeadersTimeZone } from '@schemas/_headers'
-import { filterSessions, FilterSessions } from '@schemas/_query'
+import { FilterSessions } from '@schemas/_query'
 import { InsertSessionsSchema } from '@schemas/sessions.schemas'
-import { PaginationSchema, PaginationSchemaType } from '@utils/pagination'
+import { PaginationSchemaType } from '@utils/pagination'
 import { rangeDates } from '@utils/range-dates'
 import { parseToUTC } from '@utils/time-zones'
 
