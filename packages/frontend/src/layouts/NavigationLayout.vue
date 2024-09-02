@@ -9,6 +9,11 @@ const items = [
 		label: 'Map',
 		icon: 'icon-map',
 		to: { name: 'map' }
+	},
+	{
+		label: 'Bug Report',
+		icon: 'icon-bug',
+		to: { name: 'bug-report' }
 	}
 ]
 </script>
@@ -19,6 +24,7 @@ const items = [
 			v-for="item in items"
 			:to="item.to"
 			:key="item.to.name"
+			@click="() => $emit('close')"
 		>
 			<i :class="item.icon"></i>
 			{{ item.label }}

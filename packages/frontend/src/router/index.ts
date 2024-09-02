@@ -27,6 +27,14 @@ const routes: RouteRecordRaw[] = [
             disableTransition: true
         }
     },
+	{
+		name: 'bug-report',
+		path: '/bug-report',
+		component: () => import('@views/BugReport.vue'),
+		meta: {
+            disableTransition: true
+        }
+	},
     {
         name: 'sources',
         path: '/sources/:code',

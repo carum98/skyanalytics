@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch, type WatchStopHandle } from 'vue'
 import { useFetch } from '@/composables/useFetch'
 import type { IMapLocation } from '@/types'
 
@@ -17,6 +17,13 @@ import 'leaflet.markercluster/dist/MarkerCluster.css'
 // data
 let map: L.Map | null = null
 const filters = ref<DateSelectorValue>()
+const element = ref<HTMLElement>()
+
+const layer = ref('normal')
+const overlay = ref(['heat', 'markers'])
+const clusters = ref(true)
+
+const watcher: WatchStopHandle[] = []
 
 // methods
 const { data } = useFetch<IMapLocation[]>("/api/locations", {
@@ -27,12 +34,18 @@ const { data } = useFetch<IMapLocation[]>("/api/locations", {
 watch(() => data.value, (value) => {
 	if (!value?.length || !map) return
 
-	// Clear map
+	// Remove all layers
 	map.eachLayer((layer) => {
-		if (layer instanceof L.Marker) {
+		if (!(layer instanceof L.TileLayer)) {
 			map?.removeLayer(layer)
 		}
 	})
+
+	// Clear watchers
+	watcher.forEach((stop) => stop())
+	watcher.slice(0, watcher.length)
+
+	let layer: L.Layer | null = null
 
 	const markers = value.map((item) => {
 		return item.locations.map((location) => {
@@ -59,28 +72,80 @@ watch(() => data.value, (value) => {
 	map.fitBounds(group.getBounds())
 
 	// Add markers
-	map.addLayer(cluster)
-	map.addLayer(heat)
+	const clusterWatcher = watch(clusters, (value) => {
+		if (layer != null) {
+			map?.removeLayer(layer)
+		}
+
+		layer = value ? cluster : group
+
+		map?.addLayer(layer!)
+	}, { immediate: true })
+
+	const overlayWatcher = watch(overlay, (newValue, oldValue) => {
+		const addedValues = newValue.filter(value => !oldValue?.includes(value)) ?? []
+		const removedValues = oldValue?.filter(value => !newValue.includes(value)) ?? []
+
+		removedValues.forEach((value) => {
+			if (value === 'heat') {
+				map?.removeLayer(heat)
+			} else if (value === 'markers') {
+				map?.removeLayer(layer!)
+			}
+		})
+
+		addedValues.forEach((value) => {
+			if (value === 'heat') {
+				map?.addLayer(heat)
+			} else if (value === 'markers') {
+				map?.addLayer(layer!)
+			}
+		})
+	}, { immediate: true })
+
+	watcher.push(clusterWatcher, overlayWatcher)
 })
 
 // lifecycle
 onMounted(() => {
-    map = L.map('map', {
+	if (!element.value) return
+
+    map = L.map(element.value, {
         zoomControl: false,
         attributionControl: false,
     })
 
-    // Center map
-    map.setView([9.934739, -84.087502], 13)
+	watch(layer, (value) => {
+		if (!map) return
 
-    L.tileLayer(`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=83c91e5e-5fc6-4702-9c2d-ca29e4d54a2f`)
-        .addTo(map)
+		// Clear map
+		map.eachLayer((layer) => {
+			if (layer instanceof L.TileLayer) {
+				map?.removeLayer(layer)
+			}
+		})
+
+		if (value === 'normal') {
+			L.tileLayer(`https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png?api_key=83c91e5e-5fc6-4702-9c2d-ca29e4d54a2f`)
+				.addTo(map)
+		} else if (value === 'satellite') {
+			L.tileLayer('https://{s}.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}&s=Ga',{
+                maxZoom: 20,
+                subdomains:['mt0','mt1','mt2','mt3'],
+                attribution: '© Google'
+            }).addTo(map)
+		}
+	}, { immediate: true })
+})
+
+onUnmounted(() => {
+	map?.remove()
 })
 </script>
 
 <template>
     <section class="map-container">
-        <div id="map"></div>
+        <div ref="element" class="map"></div>
 
         <div class="zoom-controls">
             <button @click="map?.zoomIn()">+</button>
@@ -90,23 +155,54 @@ onMounted(() => {
         <div class="date-selector">
             <DateSelector v-model="filters" />
         </div>
+
+		<div class="configuration">
+			<p>Map</p>
+			<fieldset>
+				<label>
+					<input type="radio" name="layer" value="normal" v-model="layer">
+					<span><i class="icon-earth-americas"></i></span>
+					Normal
+                </label>
+				<label>
+					<input type="radio" name="layer" value="satellite" v-model="layer">
+					<span><i class="icon-satellite"></i></span>
+					Satélite
+                </label>
+			</fieldset>
+
+			<hr>
+
+			<p>Layers</p>
+			<fieldset>
+				<label>
+					<input type="checkbox" name="overlay" value="heat" v-model="overlay"> 
+					<span><i class="icon-fire"></i></span>
+					Heatmap
+                </label>
+				<label>
+					<input type="checkbox" name="overlay" value="markers" v-model="overlay"> 
+					<span><i class="icon-location-dot"></i></span>
+					Markers
+				</label>
+			</fieldset>
+
+			<hr>
+
+			<label>
+				<input type="checkbox" v-model="clusters" /> Clusters
+			</label>
+		</div>
     </section>
 </template>
 
 <style lang="css">
-#map {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
-}
-
 .custom-circle-icon {
     background-color: #0e5db7;
     border-radius: 50%; 
     width: 100%;
     height: 100%;
     border: 2px solid white;
-    box-shadow: 0 0 20px 5px rgba(0, 0, 0, 0.5);
 }
 
 .map-container {
@@ -117,6 +213,12 @@ onMounted(() => {
     padding: 25px;
     background-color: var(--table-color);
     position: relative;
+
+	.map {
+    	width: 100%;
+    	height: 100%;
+    	border-radius: 10px;
+	}
 
     .zoom-controls {
         z-index: 999;
@@ -144,5 +246,70 @@ onMounted(() => {
         top: 20px;
         right: 20px;
     }
+
+	.configuration {
+		z-index: 999;
+		position: absolute;
+		bottom: 35px;
+		left: 35px;
+		padding: 10px 20px;
+        background-color: var(--table-color);
+		border-radius: 10px;
+
+		p {
+			margin-bottom: 7px;
+		}
+
+		hr {
+			border: none;
+			border-top: 1px solid rgba(128, 128, 128, 0.4);
+			margin: 10px 0;
+		}
+
+		input[type="checkbox"] {
+			accent-color: var(--primary-color);
+		}
+
+		fieldset {
+			border: none;
+			display: flex;
+			justify-content: space-around;
+			gap: 15px;
+			margin-bottom: 10px;
+
+			label {
+				font-size: 12px;
+				color: gray;
+				text-align: center;
+				cursor: pointer;
+			}
+
+			input[type="radio"],
+			input[type="checkbox"] {
+				display: none;
+
+			}
+
+			i {
+				font-size: 25px;
+			}
+
+			input[type="radio"]:checked + span,
+			input[type="checkbox"]:checked + span {
+				color: var(--primary-color);
+			}
+
+			span {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				background-color: var(--background-color);
+				border-radius: 10px;
+				width: 55px;
+				height: 55px;
+				margin: auto;
+			}
+		}
+	}
 }
 </style>

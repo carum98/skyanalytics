@@ -19,7 +19,7 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 </script>
 
 <template>
-	<section>
+	<section class="home-panel">
 		<article
 			v-for="item in data?.data"
 			:key="item.code"
@@ -85,7 +85,7 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 </template>
 
 <style lang="css">
-section {
+.home-panel {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
 	grid-template-rows: min-content;

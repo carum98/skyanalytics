@@ -69,7 +69,12 @@
 .icon-list:before { content: '\e80c'; } /* '' */
 .icon-chart-bar:before { content: '\e80d'; } /* '' */
 .icon-arrow-up-right:before { content: '\e80e'; } /* '' */
+.icon-satellite:before { content: '\e80f'; } /* '' */
 .icon-bars-staggered:before { content: '\e810'; } /* '' */
 .icon-grid-2:before { content: '\e811'; } /* '' */
 .icon-map:before { content: '\e812'; } /* '' */
+.icon-earth-americas:before { content: '\e813'; } /* '' */
+.icon-fire:before { content: '\e814'; } /* '' */
+.icon-location-dot:before { content: '\e815'; } /* '' */
+.icon-bug:before { content: '\e816'; } /* '' */
 
