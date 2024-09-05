@@ -13,7 +13,8 @@ export class UserAccountsRepository extends RepositoryCore<SelectUserAccountsSch
         const select = db.select({
             code: userAccounts.code,
             name: userAccounts.name,
-            email: userAccounts.email
+            email: userAccounts.email,
+			role: userAccounts.role,
         }).from(table)
 
         super({ db, table, select })

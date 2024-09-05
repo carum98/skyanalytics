@@ -12,7 +12,7 @@ import { PaginationSchema } from '@utils/pagination'
 export class UserAccountsRouter extends RouterCore {
     constructor(di: DepencyInjection) {
         super({
-            path: '/user-accounts',
+            path: '/users',
             middlewares: [authMiddleware]
         })
 

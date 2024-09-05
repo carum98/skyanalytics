@@ -21,12 +21,12 @@ async function send(event: Event) {
     data.forEach(([k, v]) => formData.append(k, v))
 
     if (props.item) {
-        await $fetch(`/api/user-accounts/${props.item.code}`, {
+        await $fetch(`/api/users/${props.item.code}`, {
             method: 'PUT',
             body: formData,
         })
     } else {
-        await $fetch('/api/user-accounts', {
+        await $fetch('/api/users', {
             method: 'POST',
             body: formData,
         })
@@ -78,7 +78,6 @@ async function send(event: Event) {
             :value="props.item?.role"
             :options="[
 				{ value: 'admin', name: 'Admin' },
-				{ value: 'user', name: 'User' },
 				{ value: 'guest', name: 'Guest' }
             ]"
         ></SkSelect>

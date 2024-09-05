@@ -10,7 +10,7 @@ This endpoint returns all sessions in the database.
 | ----- | ---- | -------- | ------- |
 | X-TimeZone | string | false | `UTC+0` |
 
-[TimeZones](../../pages/time-zones.md)
+[TimeZones](../../../packages/backend/readme.md#timezones)
 
 ### Query Parameters
 | Name | Type | Description |

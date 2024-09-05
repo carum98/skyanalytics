@@ -1,5 +1,3 @@
-import { setSession, SessionData } from '~/utils/session'
-
 export default defineEventHandler(async (event) => {
     const formData = await readFormData(event)
 

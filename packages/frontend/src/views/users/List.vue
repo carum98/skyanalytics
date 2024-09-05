@@ -5,25 +5,28 @@ import type { IUserPagination } from '@/types'
 import SkTable from '@components/ui/SkTable.vue'
 import SkPopover from '@components/ui/SkPopover.vue'
 
-const { data, refresh: onRefresh } = useFetch<IUserPagination>('/api/user-accounts')
+const { data, refresh: onRefresh } = useFetch<IUserPagination>('/api/users')
 
 const columns = [
 	{
 		name: 'Name',
 		key: 'name',
-		thClass: 'text-left'
+		thClass: 'text-left',
+		width: '30%'
 	},
 	{
 		name: 'Email',
 		key: 'email',
-		thClass: 'text-left'
+		thClass: 'text-left',
+		width: '50%'
 	},
 	{
 		name: 'Role',
-		key: 'role'
+		key: 'role',
+		tdClass: 'flex justify-center'
 	},
 	{
-		name: 'Actions',
+		name: '',
 		key: 'actions',
 		width: '100px'
 	}
@@ -37,8 +40,12 @@ const columns = [
 			:data="data.data"
 			:columns="columns"
 		>
+			<template #cell(role)="{ value }">
+				<span class="badge-role">{{ value }}</span>
+			</template>
+
 			<template #cell(actions)="{ item }">
-				<SkPopover position="bottom">
+				<SkPopover position="bottom" :key="item.code">
 					<template #target="{ props }">
 						<div class="flex">
 							<button @click.stop class="sk-dropdown__button mx-auto" v-bind="props">

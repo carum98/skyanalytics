@@ -30,3 +30,11 @@
 
 ## Locations
 - [[GET /locations] - Get All Locations](locations/getAll.md)
+
+## Users
+- [[GET /users] - Get All Users](users/getAll.md)
+- [[POST /users] - Create User](users/create.md)
+- [[POST /users/:code] - Get One User](users/getOne.md)
+- [[PUT /users/:code] - Update User](users/update.md)
+- [[DELETE /users/:code] - Remove User](users/remove.md)
+- [[GET /users/:code] - Get One User](users/getOne.md)
