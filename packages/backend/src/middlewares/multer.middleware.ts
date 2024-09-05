@@ -15,3 +15,5 @@ const upload = multer({
 })
 
 export const multerSingleMiddleware = (fileName: string) => upload.single(fileName)
+
+export const multerNoneMiddleware = () => upload.none()

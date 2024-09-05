@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import type { ISources } from '@/types'
 import { $fetch } from '@/utils/fetch'
+import { computed } from 'vue'
 
 const props = defineProps<{
-    item: ISources
+	path: string
+	code: string
+	name: string
+	message?: string
 }>()
 
 const emits = defineEmits<{
@@ -11,8 +14,18 @@ const emits = defineEmits<{
     refresh: []
 }>()
 
+const text = computed(() => {
+	if (props.message && props.message.includes(':name')) {
+		return props.message.replace(':name', props.name)
+	} else {
+		return `Remove ${props.name}?`
+	}
+})
+
 async function onRemove() {
-    await $fetch(`/api/sources/${props.item.code}`, {
+	const path = props.path.replace(':code', props.code)
+
+    await $fetch(path, {
         method: 'DELETE'
     })
 
@@ -26,9 +39,7 @@ async function onRemove() {
         <path fill="currentColor" d="M20 6h-4V5a3 3 0 0 0-3-3h-2a3 3 0 0 0-3 3v1H4a1 1 0 0 0 0 2h1v11a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V8h1a1 1 0 0 0 0-2ZM10 5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v1h-4Zm7 14a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8h10Z"/>
     </svg>
 
-    <p>
-        Remove source <strong>{{ item.name }}</strong>?
-    </p>
+    <p>{{ text }}</p>
 
     <div class="d-flex-center">
         <button class="sk-button sk-button--transparent" @click="$emit('close')">

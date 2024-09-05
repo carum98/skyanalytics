@@ -22,7 +22,7 @@ const layout = shallowRef(layouts.default)
 
 router.afterEach((to, from) => {
 	if (from.matched.length === 0 || to.meta.disableTransition || from.meta.disableTransition) {
-		to.meta.transition = ''
+		to.meta.transition = 'fade'
 		return
 	}
 

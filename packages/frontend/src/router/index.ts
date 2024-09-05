@@ -35,36 +35,28 @@ const routes: RouteRecordRaw[] = [
             disableTransition: true
         }
 	},
+	{
+		name: 'settings',
+		path: '/settings',
+		component: () => import('@views/Settings.vue'),
+		meta: {
+			disableTransition: true
+		},
+		redirect: { 
+			name: 'settings.users'
+		},
+		children: [
+			{
+				name: 'settings.users',
+				path: 'users',
+				component: () => import('@views/users/List.vue'),
+			}
+		]
+	},
     {
         name: 'sources',
         path: '/sources/:code',
         component: () => import('@views/sources/Profile.vue'),
-        meta: {
-            title: 'Sources'
-        },
-        redirect: { name: 'sources.summary' },
-        children: [
-            {
-                name: 'sources.summary',
-                path: 'summary',
-                component: () => import('@views/sources/sections/Summary.vue'),
-            },
-            {
-                name: 'sources.views',
-                path: 'views',
-                component: () => import('@views/sources/sections/Views.vue'),
-            },
-            {
-                name: 'sources.sessions',
-                path: 'sessions',
-                component: () => import('@views/sources/sections/Sessions.vue'),
-            },
-            {
-                name: 'sources.events',
-                path: 'events',
-                component: () => import('@views/sources/sections/Events.vue'),
-            },
-        ]
     }
 ]
 
@@ -77,13 +69,20 @@ const dialogs: DialogRecordRaw[] = [
         }
     },
     {
-        name: 'sources.delete',
-        component: () => import('@views/sources/Delete.vue'),
-    },
-    {
         name: 'sources.key',
         component: () => import('@views/sources/Key.vue'),
     },
+	{
+        name: 'users.form',
+        component: () => import('@views/users/Form.vue'),
+        rootProps: {
+            width: 300
+        }
+    },
+	{
+		name: 'remove',
+		component: () => import('@components/DialogRemove.vue'),
+	}
 ]
 
 const sidebars: SidebarRecordRaw[] = [

@@ -4,6 +4,7 @@ type Column = {
     key: string
     thClass?: string
     tdClass?: string
+	width?: string
 }
 
 defineProps<{
@@ -26,7 +27,12 @@ function rowContent(row: T, column: string) {
     <table class="sk-table">
         <thead>
             <tr>
-                <th v-for="column in columns" :key="column.key" :class="column.thClass">
+                <th 
+					v-for="column in columns" 
+					:key="column.key" 
+					:class="column.thClass"
+					:style="{ width: column.width }"
+				>
                     {{ column.name }}
                 </th>
             </tr>

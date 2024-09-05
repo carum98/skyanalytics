@@ -70,3 +70,15 @@ export interface IMapLocation {
 	name: string
 	locations: Array<ILocationStat>
 }
+
+export interface IUser {
+	code: string
+	email: string
+	name: string
+	role: string
+}
+
+export interface IUserPagination {
+	data: IUser[]
+	pagination: IPagination
+}

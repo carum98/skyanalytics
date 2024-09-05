@@ -68,6 +68,10 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 								<i class="icon-trash"></i>
 								Delete
 							</button>
+							<button v-dialog="{ name: 'remove', props: { path: '/api/sources/:code', code: item.code, name: item.name }, listeners: { onRefresh } }">
+								<i class="icon-trash"></i>
+								Delete
+							</button>
 						</div>
 					</template>
 				</SkPopover>
