@@ -8,6 +8,9 @@ services:
       context: ./packages/frontend
       dockerfile: Dockerfile
     container_name: skyanalytics-frontend
+    ports:
+      - ${PORT_FRONTEND}:8080
+      - ${PORT_FRONTEND_NITRO}:3001
     networks:
       - skyanalytics-network
     environment:
@@ -20,6 +23,8 @@ services:
       context: ./packages/backend
       dockerfile: Dockerfile
     container_name: skyanalytics-backend
+    ports:
+      - ${PORT_BACKEND}:3000
     volumes:
       - ./uploads:/app/dist/uploads
     networks:

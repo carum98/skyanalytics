@@ -12,6 +12,8 @@ To run the production environment, in the root of the project needs to set `COMP
 docker compose -f docker-compose.yml up
 ```
 
+To expose the ports from the containers define in the `.env` `PORT_BACKEND`, `PORT_FRONTEND` and `PORT_FRONTEND_NITRO`.
+
 ### Development
 To run the development environment, can use `.devcontainer` or `docker-compose`. In both cases, the development environment will be set up `/packages/frontend/.env`, `/packages/backend/.env` and in the root of the project needs to set `COMPOSE_PROFILES=dev`
 
