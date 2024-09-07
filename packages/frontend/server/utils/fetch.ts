@@ -3,7 +3,7 @@ import { H3Event, createError } from 'h3'
 import { getSkSession, clearSkSession } from '~/utils/session'
 
 const apiFetch = ofetch.create({ 
-    baseURL: process.env.API_URL, 
+    baseURL: process.env.URL_BACKEND, 
     headers: {
         'Content-Type': 'application/json'
     }

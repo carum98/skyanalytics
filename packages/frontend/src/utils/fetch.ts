@@ -1,7 +1,7 @@
 export type FetchRequestOptions = RequestInit & { query?: Record<string, string | undefined> }
 
 export async function $fetch<T>(url: string, options?: FetchRequestOptions) {
-    const uri = new URL(url, import.meta.env.VITE_PROXY_API_URL)
+    const uri = new URL(url, import.meta.env.VITE_URL_FRONTEND)
 
     // Add query parameters to the URL
     if (options?.query) {

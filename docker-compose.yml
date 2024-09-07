@@ -14,7 +14,7 @@ services:
     networks:
       - skyanalytics-network
     environment:
-      - API_URL=${API_URL}
+      - URL_BACKEND=${URL_BACKEND}
 
   backend:
     profiles: 

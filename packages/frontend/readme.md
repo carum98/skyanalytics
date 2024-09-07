@@ -4,8 +4,8 @@ Frontend for SkyAnalytics, shows the statistics of the events and navigations.
 ## Environment Variables
 | Name | Description |
 |------|-------------|
-| `API_URL` | The URL of the backend API. |
-| `VITE_PROXY_API_URL` | The URL of Proxy API (Nitro). |
+| `URL_BACKEND` | The URL of the backend API. |
+| `VITE_URL_FRONTEND` | The URL of Proxy API (Nitro). |
 
 ## Backend
 The frontend uses the [SkyAnalytics Backend](/packages/backend/readme.md).

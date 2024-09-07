@@ -5,7 +5,7 @@ export default defineNitroConfig({
         '/api/**': { 
             cors: true,
             headers: {
-                'Access-Control-Allow-Origin': 'https://skyanalytics.carum.dev',
+                'Access-Control-Allow-Origin': import.meta.env.VITE_URL_FRONTEND || 'http://localhost:3000',
                 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
                 'Access-Control-Allow-Headers': 'X-Timezone, Content-Type, Authorization',
                 'Access-Control-Max-Age': '86400',

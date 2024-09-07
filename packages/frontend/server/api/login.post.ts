@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
     const data = await $fetch<SessionData>('/login', {
         method: 'POST',
         body: Object.fromEntries(formData),
-        baseURL: process.env.API_URL,
+        baseURL: process.env.URL_BACKEND,
     })
 
     await setSession(event, data)
