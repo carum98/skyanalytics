@@ -12,7 +12,7 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 		...data,
 		data: data.data.map((item) => ({
 			...item,
-			icon_path: item.icon_path ? `${import.meta.env.VITE_URL_FRONTEND}${item.icon_path}` : null,
+			icon_path: item.icon_path ? `${import.meta.env.VITE_URL_FRONTEND}/api${item.icon_path}` : null,
 		}))
 	})
 })

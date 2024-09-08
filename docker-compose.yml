@@ -10,7 +10,7 @@ services:
     container_name: skyanalytics-frontend
     ports:
       - ${PORT_FRONTEND}:8080
-      - ${PORT_FRONTEND_NITRO}:3001
+      - ${PORT_FRONTEND_NITRO}:3000
     networks:
       - skyanalytics-network
     environment:
