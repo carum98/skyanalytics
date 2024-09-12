@@ -5,6 +5,11 @@ export interface SessionData {
     token: string
     refreshToken: string
     expiredAt: number
+	user: {
+		code: string;
+		name: string;
+		role: "admin" | "guest";
+	}
 }
 
 const config = {

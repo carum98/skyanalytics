@@ -14,6 +14,11 @@ export function authMiddleware (req: Request, _res: Response, next: NextFunction
     try {
         const payload = verifyToken(token)
 
+		req.body = {
+			...req.body,
+			payload,
+		}
+
         next()
     } catch (error) {
         if (error instanceof TokenExpiredError) {

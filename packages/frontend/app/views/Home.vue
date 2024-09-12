@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import { useFetch } from '@composables/useFetch'
+import { useSession } from '@shared/composables/useSession'
 import { type ISourcesPagination } from '@/types'
 
 import SkPopover from '@ui/SkPopover.vue'
 import CompactViewsChart from '@components/CompactViewsChart.vue'
 import SourceAvatar from '@/components/SourceAvatar.vue'
 import SourceCurrentVisitors from '@/components/SourceCurrentVisitors.vue'
+
+const { session } = useSession()
 
 const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources", {
 	transform: (data) => ({
@@ -48,7 +51,7 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 					<p class="text-gray">{{ item.domain ?? 'not domain' }}</p>
 				</div>
 
-				<SkPopover position="bottom">
+				<SkPopover v-if="session?.role === 'admin'" position="bottom">
 					<template #target="{ props }">
 						<button @click.stop class="sk-dropdown__button" v-bind="props">
 							<i class="icon-ellipsis-vertical"></i>
@@ -64,10 +67,6 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 								<i class="icon-pen-to-square"></i>
 								Edit
 							</button>
-							<button v-dialog="{ name: 'sources.delete', props: { item }, listeners: { onRefresh } }">
-								<i class="icon-trash"></i>
-								Delete
-							</button>
 							<button v-dialog="{ name: 'remove', props: { path: '/api/sources/:code', code: item.code, name: item.name }, listeners: { onRefresh } }">
 								<i class="icon-trash"></i>
 								Delete
@@ -82,7 +81,7 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 			<SourceCurrentVisitors :item="item"/>
 		</article>
 
-		<button class="sk-button-fab" v-dialog="{ name: 'sources.form', listeners: { onRefresh } }">
+		<button v-if="session?.role === 'admin'" class="sk-button-fab" v-dialog="{ name: 'sources.form', listeners: { onRefresh } }">
 			<i class="icon-plus"></i>
 		</button>
 	</section>

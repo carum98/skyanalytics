@@ -1,9 +1,10 @@
 import { AuthController } from '@controllers/auth.controller'
 import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
-import { refreshMiddleware } from '@middlewares/auth.middleware'
+import { authMiddleware, refreshMiddleware } from '@middlewares/auth.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { loginBodySchema, refreshTokenBodySchema } from '@schemas/_request'
+import { sessionPayload } from '@schemas/_session'
 import { AuthService } from '@services/auth.service'
 
 export class BaseRouter extends RouterCore {
@@ -36,5 +37,16 @@ export class BaseRouter extends RouterCore {
                 refreshMiddleware
             ]
         })
+
+		this.get({
+			name: '/me',
+			handler: authController.me,
+			middlewares: [
+				authMiddleware,
+				requestMiddleware({
+					body: sessionPayload,
+				})
+			]
+		})
     }
 }

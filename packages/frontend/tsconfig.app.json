@@ -1,6 +1,6 @@
 {
   "extends": "@vue/tsconfig/tsconfig.dom.json",
-  "include": ["env.d.ts", "app/**/*", "app/**/*.vue"],
+  "include": ["env.d.ts", "app/**/*", "app/**/*.vue", "shared/**/*.ts"],
   "exclude": ["app/**/__tests__/*"],
   "compilerOptions": {
     "composite": true,
@@ -15,6 +15,7 @@
       "@assets/*": ["assets/*"],
       "@composables/*": ["composables/*"],
       "@ui/*": ["components/ui/*"],
+	  "@shared/*": ["../shared/*"]
     }
   }
 }

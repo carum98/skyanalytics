@@ -72,7 +72,7 @@ export class UserAccountsRepository extends RepositoryCore<SelectUserAccountsSch
             id: userAccounts.id,
             code: userAccounts.code,
             name: userAccounts.name,
-            email: userAccounts.email,
+			role: userAccounts.role,
             password: userAccounts.password
         })
         .from(userAccounts)

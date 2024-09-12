@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useSession } from '@shared/composables/useSession'
 import { RouterLink } from 'vue-router'
+
+const { session } = useSession()
 
 const items = [
 	{
@@ -21,7 +24,8 @@ const items = [
 		label: 'Settings',
 		icon: 'icon-gear',
 		to: { name: 'settings' },
-		class: 'mt-auto'
+		class: 'mt-auto',
+		roles: ['admin']
 	}
 ]
 </script>
@@ -34,6 +38,7 @@ const items = [
 			:key="item.to.name"
 			@click="() => $emit('close')"
 			:class="item.class"
+			v-show="!item.roles || item.roles.includes(session!.role)"
 		>
 			<i :class="item.icon"></i>
 			{{ item.label }}

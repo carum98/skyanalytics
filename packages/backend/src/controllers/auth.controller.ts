@@ -1,4 +1,5 @@
 import { LoginBodySchema, RefreshTokenBodySchema } from '@schemas/_request'
+import { SessionPayload } from '@schemas/_session'
 import { AuthService } from '@services/auth.service'
 import { Request, Response } from 'express'
 
@@ -18,4 +19,11 @@ export class AuthController {
         const response = await this.service.refreshToken(params)
         res.json(response)
     }
+
+	me = async (req: Request, res: Response): Promise<void> => {
+		const params = req.body as SessionPayload
+
+		const response = await this.service.me(params)
+		res.json(response)
+	}
 }

@@ -9,6 +9,11 @@ export default defineEventHandler(async (event) => {
 
     await setSession(event, data)
 
+	await setSession(event, {
+		...data,
+		user: await useApiFetch(event, '/me')
+	})
+
     return {
         isLogged: true,
     }

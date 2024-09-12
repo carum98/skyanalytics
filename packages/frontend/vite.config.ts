@@ -18,6 +18,7 @@ export default defineConfig({
       '@views': fileURLToPath(new URL('./app/views', import.meta.url)),
       '@composables': fileURLToPath(new URL('./app/composables', import.meta.url)),
       '@ui': fileURLToPath(new URL('./app/components/ui', import.meta.url)),
+	  '@shared': fileURLToPath(new URL('./shared', import.meta.url)),
     }
   }
 })

@@ -1,6 +1,7 @@
 import { RefreshTokenRepository } from '@repositories/refresh_token.repository'
 import { UserAccountsRepository } from '@repositories/user_accounts.repository'
 import { LoginBodySchema, RefreshTokenBodySchema } from '@schemas/_request'
+import { SessionPayload, userSessionPayloadSchema } from '@schemas/_session'
 import { NotFoundError, UnauthorizedError } from '@utils/errors'
 import { matchPassword } from '@utils/hash-password'
 import { sign } from '@utils/jwt'
@@ -26,7 +27,7 @@ export class AuthService {
             throw new UnauthorizedError('Invalid password')
         }
 
-        const response = sign(userAccount)
+        const response = sign(userSessionPayloadSchema.parse(userAccount))
 
         this.refreshTokenRepository.upsert({
             token: response.refresh_token,
@@ -58,4 +59,10 @@ export class AuthService {
 
         return response
     }
+
+	public async me(params: SessionPayload) {
+		const { payload } = params
+
+		return payload
+	}
 }

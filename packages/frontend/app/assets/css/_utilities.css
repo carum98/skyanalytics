@@ -88,3 +88,19 @@
 .text-left {
     text-align: left;
 }
+
+.tx-13 {
+	font-size: 13px;
+
+	&.compact {
+		height: 16px;
+	}
+}
+
+.tx-15 {
+	font-size: 14px;
+
+	&.compact {
+		height: 18px;
+	}
+}
