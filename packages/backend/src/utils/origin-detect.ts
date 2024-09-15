@@ -21,7 +21,7 @@ export function detectOS(userAgent: string) {
 }
 
 const softwareRules: [string, RegExp][] = [
-    ['edge', /Edge\/([0-9\._]+)/],
+    ['edge', /Edg\/([0-9\._]+)/],
     ['samsung', /SamsungBrowser\/([0-9\.]+)/],
     ['chrome', /(?!Chrom.*OPR)Chrom(?:e|ium)\/([0-9\.]+)(:?\s|$)/],
     ['firefox', /Firefox\/([0-9\.]+)(?:\s|$)/],
