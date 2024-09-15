@@ -35,7 +35,7 @@ this.$skyAnalytics.event('event', { key: 'value' })
 
 ### Composable
 ```javascript
-import { useAnalytics } from 'skyanalytics-vue3'
+import { useAnalytics } from '@skyanalytics/vue3'
 
 useAnalytics.event('event', { key: 'value' })
 useAnalytics.navigate('page', { key: 'value' })
@@ -44,7 +44,7 @@ useAnalytics.navigate('page', { key: 'value' })
 ## Vue-Router
 ```javascript
 import { createRouter } from 'vue-router'
-import { useAnalytics } from 'skyanalytics-vue3'
+import { useAnalytics } from '@skyanalytics/vue3'
 
 const analytics = useAnalytics()
 
