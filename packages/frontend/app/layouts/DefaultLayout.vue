@@ -47,7 +47,7 @@ onMounted(() => {
 		<section class="flex ga-1">
 			<div class="placeholder px-1 d-flex-center" style="flex-flow: column;">
 				<p class="tx-15 compact">{{ session?.name }}</p>
-				<p class="tx-13 compact text-gray">{{ session?.role }}</p>
+				<p class="tx-13 compact text-gray" style="text-transform: capitalize;">{{ session?.role }}</p>
 			</div>
 			<SkPopover position="bottom">
 				<template #target="{ props }">

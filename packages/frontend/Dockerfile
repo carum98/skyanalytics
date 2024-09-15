@@ -2,6 +2,8 @@
 FROM node:22.2.0-alpine3.20 as builder
 
 ARG VITE_URL_FRONTEND=
+ARG VITE_ANALYTICS_HOST=
+ARG VITE_ANALYTICS_KEY=
 
 WORKDIR /app
 COPY package*.json ./

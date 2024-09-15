@@ -81,7 +81,12 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 			<SourceCurrentVisitors :item="item"/>
 		</article>
 
-		<button v-if="session?.role === 'admin'" class="sk-button-fab" v-dialog="{ name: 'sources.form', listeners: { onRefresh } }">
+		<button 
+			v-if="session?.role === 'admin'" 
+			class="sk-button-fab" 
+			v-dialog="{ name: 'sources.form', listeners: { onRefresh } }"
+			v-sk-analytics="{ event: 'add-project' }"
+		>
 			<i class="icon-plus"></i>
 		</button>
 	</section>

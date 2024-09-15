@@ -1,5 +1,6 @@
 import { cookieExists } from '@/utils/cookies'
 import { createWebHistory, createRouter, type RouteRecordRaw } from 'vue-router'
+import { useAnalytics } from '@skyanalytics/vue3'
 
 import type { DialogRecordRaw } from '@composables/useDialog'
 import type { SidebarRecordRaw } from '@composables/useSidebar'
@@ -105,7 +106,10 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _from, next) => {
+	const analytics = useAnalytics()
     const isAuthenticated = cookieExists('skyanalytics')
+
+	analytics.navigate(to.name as string)
 
     if (to.name !== 'login' && !isAuthenticated) {
         next({ name: 'login' })

@@ -26,7 +26,7 @@ jobs:
         logout: true
     
     - name: Build the Docker image
-      run: cd packages/frontend && docker build . --tag ghcr.io/${{ github.actor }}/skyanalytics-frontend:${{ github.ref_name }} --build-arg VITE_URL_FRONTEND=${{ vars.URL_FRONTEND }}
+      run: cd packages/frontend && docker build . --tag ghcr.io/${{ github.actor }}/skyanalytics-frontend:${{ github.ref_name }} --build-arg VITE_URL_FRONTEND=${{ vars.URL_FRONTEND }} --build-arg VITE_URL_BACKEND=${{ vars.URL_BACKEND }} --build-arg VITE_ANALYTICS_KEY=${{ secrets.ANALYTICS_KEY }}
 
     - name: Send to registry
       run: docker push ghcr.io/${{ github.actor }}/skyanalytics-frontend:${{ github.ref_name }}
