@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue'
+import { defineAsyncComponent, shallowRef } from 'vue'
 import { useRouter } from 'vue-router'
-
-import LayoutDefault from '@/layouts/DefaultLayout.vue'
-import LayoutLogin from '@/layouts/LoginLayout.vue'
 
 const router = useRouter()
 
 const layouts: Record<string, any> = {
-	default: LayoutDefault,
-	login: LayoutLogin,
+	default: defineAsyncComponent(() => import('@/layouts/DefaultLayout.vue')),
+	login: defineAsyncComponent(() => import('@/layouts/LoginLayout.vue')),
 }
 
 router.beforeEach((to, _from, next) => {
