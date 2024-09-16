@@ -45,7 +45,7 @@ function onOpenSessions(field?: string, value?: string) {
     })
 }
 
-function opOpenViews(viewName?: string) {
+function onOpenViews(viewName?: string) {
     const query = {
         per_page: 20,
         ['navigations[name][equal]']: viewName,
@@ -57,6 +57,20 @@ function opOpenViews(viewName?: string) {
         name: 'views.list',
         props: { query }
     })
+}
+
+function onOpenEvents(eventName?: string) {
+	const query = {
+		per_page: 20,
+		['events[name][equal]']: eventName,
+		['sources[code][equal]']: route.params.code,
+		...filters?.value || {},
+	}
+
+	sidebar.push({ 
+		name: 'events.list',
+		props: { query }
+	})
 }
 </script>
 
@@ -99,12 +113,12 @@ function opOpenViews(viewName?: string) {
 			<CountersList :items="stat?.software" @row-click="onOpenSessions('software', $event)" />
         </StatCard>
 
-        <StatCard class="box-5" title="Events">
-			<CountersList :items="stat?.events" disable-sprites />
+        <StatCard class="box-5" title="Events" @open-external="onOpenEvents">
+			<CountersList :items="stat?.events" disable-sprites @row-click="onOpenEvents" />
         </StatCard>
 
-        <StatCard class="box-6" title="Views" @open-external="opOpenViews">
-			<CountersList :items="stat?.navigations" disable-sprites @row-click="opOpenViews" />
+        <StatCard class="box-6" title="Views" @open-external="onOpenViews">
+			<CountersList :items="stat?.navigations" disable-sprites @row-click="onOpenViews" />
         </StatCard>
 
         <div class="placeholder box-7">

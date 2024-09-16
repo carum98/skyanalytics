@@ -2,14 +2,20 @@ import { Request, Response } from 'express'
 import { EventsService } from '@services/events.service'
 import { PaginationSchemaType } from '@utils/pagination'
 import { InsertEventsSchema } from '@schemas/events.schemas'
+import { HeadersTimeZone } from '@schemas/_headers'
+import { MetricsFilter } from '@schemas/_query'
 
 export class EventsController {
     constructor(private service: EventsService) {}
 
     public getAll = async (req: Request, res: Response) => {
-        const query = req.query as unknown as PaginationSchemaType
+		const headers = req.headers as unknown as HeadersTimeZone
+        const query = req.query as unknown as PaginationSchemaType & MetricsFilter
         
-        const data = await this.service.getAll(query)
+        const data = await this.service.getAll({
+            ...query,
+            "x-timezone": headers['x-timezone']
+        })
 
         res.json(data)
     }

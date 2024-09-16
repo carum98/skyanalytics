@@ -53,15 +53,15 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 					</template>
 					<template #popover="{ props }">
 						<div class="sk-dropdown__options" v-bind="props">
-							<button v-dialog="{ name: 'sources.key', props: { item } }">
+							<button v-dialog="{ name: 'sources.key', props: { item } }" v-sk-analytics="{ event: 'get-key-project' }">
 								<i class="icon-key"></i>
 								Key
 							</button>
-							<button v-dialog="{ name: 'sources.form', props: { item }, listeners: { onRefresh } }">
+							<button v-dialog="{ name: 'sources.form', props: { item }, listeners: { onRefresh } }" v-sk-analytics="{ event: 'edit-project' }">
 								<i class="icon-pen-to-square"></i>
 								Edit
 							</button>
-							<button v-dialog="{ name: 'remove', props: { path: '/api/sources/:code', code: item.code, name: item.name }, listeners: { onRefresh } }">
+							<button v-dialog="{ name: 'remove', props: { path: '/api/sources/:code', code: item.code, name: item.name }, listeners: { onRefresh } }" v-sk-analytics="{ event: 'remove-project' }">
 								<i class="icon-trash"></i>
 								Delete
 							</button>

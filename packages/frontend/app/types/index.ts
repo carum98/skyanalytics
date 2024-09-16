@@ -35,6 +35,18 @@ export interface IViewPagination {
     pagination: IPagination
 }
 
+export interface IEvent {
+	id: number
+	name: string
+	created_at: string
+	session: ISession
+}
+
+export interface IEventPagination {
+	data: IEvent[]
+	pagination: IPagination
+}
+
 export interface IPagination {
     page: number
     total: number

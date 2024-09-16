@@ -1,9 +1,8 @@
 import { index, integer, pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z } from 'zod'
-import { selectSourcesSchema, sources } from './sources.schemas'
 import { ResponsePaginationSchema } from '@utils/pagination'
-import { sessions } from './sessions.schemas'
+import { selectSessionsSchema, sessions } from './sessions.schemas'
 
 // Database schema
 export const events = pgTable('events', {
@@ -23,7 +22,10 @@ export const insertEventsSchema = createInsertSchema(events)
     .required()
 
 export const selectEventsSchema = createSelectSchema(events)
-    .pick({ id: true, name: true })
+    .pick({ id: true, name: true, created_at: true })
+	.extend({
+        session: selectSessionsSchema.pick({ os: true, software: true, country: true })
+    })
 
 export const paginatedEventsSchema = ResponsePaginationSchema(selectEventsSchema)
 

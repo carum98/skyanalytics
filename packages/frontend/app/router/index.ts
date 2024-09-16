@@ -97,6 +97,13 @@ const sidebars: SidebarRecordRaw[] = [
         rootProps: {
             width: 900
         }
+    },
+	{
+        name: 'events.list',
+        component: () => import('@views/events/List.sidebar.vue'),
+        rootProps: {
+            width: 900
+        }
     }
 ]
 

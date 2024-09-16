@@ -3,7 +3,7 @@ import { and, between, count, countDistinct, eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { events, InsertEventsSchema, paginatedEventsSchema, selectEventsSchema, SelectEventsSchema } from '@schemas/events.schemas'
 import { PaginationSchemaType } from '@utils/pagination'
-import { StatsFilter } from '@schemas/_query'
+import { FilterSessions, StatsFilter } from '@schemas/_query'
 import { sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
 
@@ -14,16 +14,26 @@ export class EventsRepository extends RepositoryCore<SelectEventsSchema, InsertE
         const select = db.select({
             id: events.id,
             name: events.name,
+			created_at: events.created_at,
+			session: {
+                os: sessions.os,
+                software: sessions.software,
+                country: sessions.country,
+            },
         })
         .from(table)
+		.innerJoin(sessions, eq(events.session_id, sessions.id))
+		.innerJoin(sources, eq(sessions.source_id, sources.id))
 
         super({ db, table, select })
     }
 
-    public async getAll(query: PaginationSchemaType) {
+    public async getAll(query: PaginationSchemaType & FilterSessions) {
         const data = await this.getAllCore({
             query: query,
-            where: undefined
+            where: query.start && query.end
+                ? between(events.created_at, new Date(query.start), new Date(query.end))
+                : undefined
         })
 
         return paginatedEventsSchema.parse(data)
