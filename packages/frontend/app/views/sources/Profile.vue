@@ -8,7 +8,6 @@ import ViewsChart from '@components/ViewsChart.vue'
 import CountersList from '@components/CountersList.vue'
 import MapLocations from '@/components/MapLocations.vue'
 import StatCard from '@components/StatCard.vue'
-import CountersChart from '@components/CountersChart.vue'
 
 import { useFetch } from '@composables/useFetch'
 import type { ISources, IStats } from '@/types'
@@ -68,21 +67,12 @@ function opOpenViews(viewName?: string) {
             <SourceAvatar 
                 :size="50" 
                 :icon_path="item.icon_path" 
-                style="background-color: var(--table-color); "
+				:isMobile="item.type === 'app'"
+				style="background-color: var(--table-color);"
             ></SourceAvatar>
 
             <div>
-                <h2 style="line-height: 20px;">
-                    {{ item.name }}
-                    <span 
-                        v-if="item.type === 'app'" 
-                        class="text-gray" 
-                        style="font-size: 15px;"
-                        title="Source type `App`"
-                    >
-                        <i class="icon-mobile-screen"></i>	
-                    </span>
-                </h2>
+                <h2 style="line-height: 20px;">{{ item.name }}</h2>
                 <small class="text-gray">{{ item.domain || 'not domain' }}</small>
             </div>
 
@@ -98,42 +88,23 @@ function opOpenViews(viewName?: string) {
         </div>
 
         <StatCard class="box-2" title="Operating Systems" @open-external="onOpenSessions">
-            <template #list>
-                <CountersList :items="stat?.os" @row-click="onOpenSessions('os', $event)" />
-            </template>
-            <template #chart>
-                <CountersChart :items="stat?.os" />
-            </template>
+			<CountersList :items="stat?.os" @row-click="onOpenSessions('os', $event)" />
         </StatCard>
 
         <StatCard class="box-3" title="Countries" @open-external="onOpenSessions">
-            <template #list>
-                <CountersList :items="stat?.country" @row-click="onOpenSessions('country', $event)" />
-            </template>
-            <template #chart>
-                <CountersChart :items="stat?.country" />
-            </template>
+			<CountersList :items="stat?.country" @row-click="onOpenSessions('country', $event)" />
         </StatCard>
 
         <StatCard class="box-4" title="Software" @open-external="onOpenSessions">
-            <template #list>
-                <CountersList :items="stat?.software" @row-click="onOpenSessions('software', $event)" />
-            </template>
-            <template #chart>
-                <CountersChart :items="stat?.software" />
-            </template>
+			<CountersList :items="stat?.software" @row-click="onOpenSessions('software', $event)" />
         </StatCard>
 
         <StatCard class="box-5" title="Events">
-            <template #list>
-                <CountersList :items="stat?.events" disable-sprites />
-            </template>
+			<CountersList :items="stat?.events" disable-sprites />
         </StatCard>
 
         <StatCard class="box-6" title="Views" @open-external="opOpenViews">
-            <template #list>
-                <CountersList :items="stat?.navigations" disable-sprites @row-click="opOpenViews" />
-            </template>
+			<CountersList :items="stat?.navigations" disable-sprites @row-click="opOpenViews" />
         </StatCard>
 
         <div class="placeholder box-7">

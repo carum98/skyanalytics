@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useFetch } from '@composables/useFetch'
 import { useSession } from '@shared/composables/useSession'
+import { useRouter } from 'vue-router'
 import { type ISourcesPagination } from '@/types'
 
 import SkPopover from '@ui/SkPopover.vue'
@@ -8,6 +9,7 @@ import CompactViewsChart from '@components/CompactViewsChart.vue'
 import SourceAvatar from '@/components/SourceAvatar.vue'
 import SourceCurrentVisitors from '@/components/SourceCurrentVisitors.vue'
 
+const router = useRouter()
 const { session } = useSession()
 
 const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources", {
@@ -26,27 +28,19 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 		<article
 			v-for="item in data?.data"
 			:key="item.code"
-			@click="$router.push({ name: 'sources', params: { code: item.code }, state: { item: JSON.stringify(item) } })"
+			@click="router.push({ name: 'sources', params: { code: item.code }, state: { item: JSON.stringify(item) } })"
 		>
 			<header>
 				<SourceAvatar 
 					:size="35" 
 					:icon_path="item.icon_path" 
+					:isMobile="item.type === 'app'"
 					style="background-color: var(--background-color); "
 				></SourceAvatar>
 
 				<div style="max-width: 200px;">
 					<h2>
 						{{ item.name }}
-
-						<span 
-							v-if="item.type === 'app'" 
-							class="text-gray" 
-							style="font-size: 15px;"
-							title="Source type `App`"
-						>
-							<i class="icon-mobile-screen"></i>	
-						</span>
 					</h2>
 					<p class="text-gray">{{ item.domain ?? 'not domain' }}</p>
 				</div>
