@@ -16,5 +16,5 @@ To facilitate the use of the API, we have created the following adapters:
 * [JavaScript](/packages/adapters/js/readme.md)
 * [Vue-2](/packages/adapters/vue2/readme.md)
 * [Vue-3](/packages/adapters/vue3/readme.md)
-* [Nuxt](/packages/adapters/nuxt/readme.md)
+* [Nuxt](/packages/adapters/nuxt/README.md)
 * [Flutter](/packages/adapters/flutter/README.md)

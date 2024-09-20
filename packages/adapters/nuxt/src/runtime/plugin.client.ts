@@ -9,6 +9,10 @@ export default defineNuxtPlugin({
     // Get the module options
     const options = useRuntimeConfig().public.skyanalytics as ModuleOptions
 
+	if (!options.enabled) {
+		return
+	}
+
     // Initialize the analytics client
     skyanalytics.init(options)
 

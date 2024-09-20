@@ -12,6 +12,7 @@ export default defineNuxtModule<ModuleOptions>({
     host: '',
     key: '',
     captureNavigation: true,
+	enabled: true,
   },
   setup(options, nuxt) {
     const { resolve } = createResolver(import.meta.url)
