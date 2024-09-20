@@ -6,7 +6,11 @@ import skyanalytics from '@skyanalytics/js'
 type HTMLElementWithRemoveListener = HTMLElement & { $removeListener: Function }
 
 export default {
-    install(app: App, options: SkyAnalyticsOptions) {
+    install(app: App, options: SkyAnalyticsOptions & { enabled?: boolean }) {
+		if (!options.enabled) {
+			return
+		}
+
         skyanalytics.init(options)
 
         app.config.globalProperties.$skyAnalytics = skyanalytics

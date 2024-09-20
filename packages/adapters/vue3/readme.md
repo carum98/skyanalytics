@@ -19,7 +19,8 @@ const app = createApp({
 
 app.use(analytics, {
     key: 'source_key',
-    host: 'http://localhost:3000'
+    host: 'http://localhost:3000',
+	enabled: true // default is true
 })
 ```
 
