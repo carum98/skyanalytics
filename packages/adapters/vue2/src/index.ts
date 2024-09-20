@@ -6,7 +6,11 @@ import skyanalytics from '@skyanalytics/js'
 type HTMLElementWithRemoveListener = HTMLElement & { $removeListener: Function }
 
 export default {
-    install(vue: VueConstructor, options: SkyAnalyticsOptions) {
+    install(vue: VueConstructor, options: SkyAnalyticsOptions & { enabled?: boolean }) {
+		if (!options.enabled) {
+			return
+		}
+
         skyanalytics.init(options)
 
         vue.prototype.$skyAnalytics = skyanalytics

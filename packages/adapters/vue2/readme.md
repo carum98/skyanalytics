@@ -15,7 +15,8 @@ import SkyAnalytics from '@skyanalytics/vue2'
 
 Vue.use(SkyAnalytics, {
     key: 'source_key',
-    host: 'http://localhost:3000'
+    host: 'http://localhost:3000',
+	enabled: true // default is true
 })
 ```
 
@@ -31,7 +32,7 @@ this.$skyAnalytics.event('event', { key: 'value' })
 
 ### Composable
 ```javascript
-import { useAnalytics } from 'skyanalytics-vue2'
+import { useAnalytics } from '@skyanalytics/vue2'
 
 useAnalytics.event('event', { key: 'value' })
 useAnalytics.navigate('page', { key: 'value' })
@@ -41,12 +42,13 @@ useAnalytics.navigate('page', { key: 'value' })
 ```javascript
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import SkyAnalytics from 'skyanalytics-vue2'
+import SkyAnalytics from '@skyanalytics/vue2'
 
 Vue.use(VueRouter)
 Vue.use(SkyAnalytics, {
     key: 'source_key',
-    host: 'http://localhost:3000'
+    host: 'http://localhost:3000',
+	enabled: true // default is true
 })
 
 const router = new VueRouter({
