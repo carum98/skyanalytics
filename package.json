@@ -7,7 +7,8 @@
     "packages/adapters/js",
     "packages/adapters/vue2",
     "packages/adapters/vue3",
-    "packages/adapters/nuxt"
+    "packages/adapters/nuxt",
+	"packages/adapters/web-script"
   ],
   "scripts": {
     "dev:backend": "npm run dev --workspace=@skyanalytics/backend",

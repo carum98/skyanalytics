@@ -18,3 +18,4 @@ To facilitate the use of the API, we have created the following adapters:
 * [Vue-3](/packages/adapters/vue3/readme.md)
 * [Nuxt](/packages/adapters/nuxt/README.md)
 * [Flutter](/packages/adapters/flutter/README.md)
+* [Web Script](/packages/adapters/web-script/readme.md)

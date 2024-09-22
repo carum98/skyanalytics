@@ -1,0 +1,24 @@
+{
+  "name": "@skyanalytics/web-script",
+  "version": "1.0.0",
+  "description": "SkyAnalytics Web-Script is an adapter for [SkyAnalytics]",
+  "author": "Carlos Eduardo Umaña Acevedo <cumana3098@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/carum98/skyanalytics.git",
+    "directory": "packages/adapters/web-script"
+  },
+  "bugs": {
+    "url": "https://github.com/carum98/skyanalytics.git/issues"
+  },
+  "homepage": "https://github.com/carum98/skyanalytics/tree/main/packages/adapters/web-script#readme",
+  "scripts": {
+    "build": "rollup --config",
+    "dev": "rollup --config --watch"
+  },
+  "devDependencies": {
+    "@rollup/plugin-terser": "0.4.4",
+    "rollup": "4.22.4"
+  }
+}
