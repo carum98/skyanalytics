@@ -113,10 +113,12 @@ const router = createRouter({
 })
 
 router.beforeEach((to, _from, next) => {
-	const analytics = useAnalytics()
     const isAuthenticated = cookieExists('skyanalytics')
 
-	analytics.navigate(to.name as string)
+	if (import.meta.env.MODE === 'production') {
+		const analytics = useAnalytics()
+		analytics.navigate(to.name as string)
+	}
 
     if (to.name !== 'login' && !isAuthenticated) {
         next({ name: 'login' })

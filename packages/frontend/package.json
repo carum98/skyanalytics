@@ -11,7 +11,7 @@
     "start": "serve -s dist -p 8080 & node .output/server/index.mjs"
   },
   "dependencies": {
-    "@skyanalytics/vue3": "1.0.1",
+    "@skyanalytics/vue3": "1.0.2",
     "chart.js": "4.4.4",
     "leaflet": "1.9.4",
     "leaflet.heat": "0.2.0",

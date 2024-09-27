@@ -12,6 +12,7 @@ createApp(App)
 	.use(analytics, {
 		host: import.meta.env.VITE_URL_BACKEND,
 		key: import.meta.env.VITE_ANALYTICS_KEY,
+		enabled: import.meta.env.MODE === 'production',
 	})
     .use(router)
     .mount('#app')
