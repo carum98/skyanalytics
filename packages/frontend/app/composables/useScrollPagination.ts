@@ -1,4 +1,4 @@
-import type { IPagination } from '@/types'
+import type { IPagination } from '@shared/types'
 import { onMounted, ref, watch } from 'vue'
 import { useFetch } from './useFetch'
 

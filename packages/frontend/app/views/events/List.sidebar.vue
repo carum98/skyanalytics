@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IEvent } from '@/types'
+import type { IEvent } from '@shared/types'
 import { getCurrentTimeZone, formatDate } from '@/utils'
 import { useScrollPagination } from '@composables/useScrollPagination'
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import SkSelect from '@/components/ui/SkSelect.vue'
-import type { ISources } from '@/types'
+import type { ISources } from '@shared/types'
 import { $fetch } from '@/utils/fetch'
 
 const props = defineProps<{

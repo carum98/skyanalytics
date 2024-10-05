@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ISession } from '@/types'
+import type { ISession } from '@shared/types'
 import { getCurrentTimeZone } from '@/utils'
 import { useScrollPagination } from '@composables/useScrollPagination'
 

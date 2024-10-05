@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IUser } from '@/types'
+import type { IUser } from '@shared/types'
 import { $fetch } from '@/utils/fetch'
 import SkSelect from '@/components/ui/SkSelect.vue'
 

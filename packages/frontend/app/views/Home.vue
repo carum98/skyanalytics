@@ -1,32 +1,35 @@
 <script setup lang="ts">
 import { useFetch } from '@composables/useFetch'
 import { useSession } from '@shared/composables/useSession'
+import { getCurrentTimeZone } from '@/utils'
 import { useRouter } from 'vue-router'
-import { type ISourcesPagination } from '@/types'
 
 import SkPopover from '@ui/SkPopover.vue'
 import CompactViewsChart from '@components/CompactViewsChart.vue'
 import SourceAvatar from '@/components/SourceAvatar.vue'
 import SourceCurrentVisitors from '@/components/SourceCurrentVisitors.vue'
+import type { ApiStats } from '@shared/types'
 
 const router = useRouter()
 const { session } = useSession()
 
-const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources", {
+const { data, refresh: onRefresh } = useFetch<ApiStats>("/api/stats", {
 	transform: (data) => ({
-		...data,
-		data: data.data.map((item) => ({
+		...data.map((item) => ({
 			...item,
 			icon_path: item.icon_path ? `${import.meta.env.VITE_URL_FRONTEND}/api${item.icon_path}` : null,
 		}))
-	})
+	}),
+	headers: {
+		'x-timezone': getCurrentTimeZone()
+	}
 })
 </script>
 
 <template>
 	<section class="home-panel">
 		<article
-			v-for="item in data?.data"
+			v-for="item in data"
 			:key="item.code"
 			@click="router.push({ name: 'sources', params: { code: item.code }, state: { item: JSON.stringify(item) } })"
 		>
@@ -70,9 +73,9 @@ const { data, refresh: onRefresh } = useFetch<ISourcesPagination>("/api/sources"
 				</SkPopover>
 			</header>
 
-			<CompactViewsChart :item="item"/>
+			<CompactViewsChart :data="item.views" />
 
-			<SourceCurrentVisitors :item="item"/>
+			<SourceCurrentVisitors :data="item.metrics" />
 		</article>
 
 		<button 

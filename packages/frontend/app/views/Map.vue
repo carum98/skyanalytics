@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, watch, type WatchStopHandle } from 'vue'
 import { useFetch } from '@/composables/useFetch'
-import type { IMapLocation } from '@/types'
+import type { IMapLocation } from '@shared/types'
 
 import DateSelector, { type DateSelectorValue } from '@/components/DateSelector.vue'
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useFetch } from '@composables/useFetch'
-import type { IUserPagination } from '@/types'
+import type { IUserPagination } from '@shared/types'
 
 import SkTable from '@components/ui/SkTable.vue'
 import SkPopover from '@components/ui/SkPopover.vue'

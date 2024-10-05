@@ -1,36 +1,15 @@
 <script setup lang="ts">
-import { type ISources } from '@/types'
-import { getCurrentTimeZone } from '@/utils'
-import { $fetch } from '@/utils/fetch'
+import { type IView } from '@shared/types'
 import { Chart, LineController, LineElement, PointElement, LinearScale, CategoryScale, Tooltip, type ChartArea } from 'chart.js'
 import { onMounted, onUnmounted, ref } from 'vue'
 
 const props = defineProps<{
-    item: ISources
+	data: IView
 }>()
 
 // data
 let chart: Chart | null = null
 const canvas = ref<HTMLCanvasElement | null>(null)
-
-// methods
-async function getData() {
-    const response = await $fetch<{ [key: string]: { views: number, sessions: number } }>(`/api/sources/${props.item.code}/views`, {
-        query: {
-            date_range: 'last_7_days'
-        },
-        headers: {
-            'x-timezone': getCurrentTimeZone()
-        }
-    })
-
-    const labels = Object.keys(response)
-    const data = Object.values(response).map(item => item.sessions)
-
-    chart?.data.labels?.push(...labels)
-    chart?.data.datasets[0].data?.push(...data)
-    chart?.update()
-}
 
 // lifecycle
 onMounted(() => {
@@ -89,7 +68,12 @@ onMounted(() => {
         }
     })
 
-    getData()
+	const labels = Object.keys(props.data)
+    const data = Object.values(props.data).map(item => item.sessions)
+
+    chart?.data.labels?.push(...labels)
+    chart?.data.datasets[0].data?.push(...data)
+    chart?.update()
 })
 
 onUnmounted(() => {

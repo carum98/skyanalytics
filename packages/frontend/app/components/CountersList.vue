@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IViewsStats } from '@/types'
+import type { IViewsStats } from '@shared/types'
 import { computed } from 'vue'
 
 const props = defineProps<{

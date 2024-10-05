@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ILocationStat } from '@/types'
+import type { ILocationStat } from '@shared/types'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { watch } from 'vue'

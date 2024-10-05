@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
 
-import type { ISources } from '@/types'
+import type { ISources } from '@shared/types'
 import type { DateSelectorValue } from '@components/DateSelector.vue'
 
 import { useFetch } from '@composables/useFetch'

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { IView } from '@/types'
+import type { IView } from '@shared/types'
 import { getCurrentTimeZone, formatDate } from '@/utils'
 import { useScrollPagination } from '@composables/useScrollPagination'
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { ISources } from '@/types'
+import type { ISources } from '@shared/types'
 
 const props = defineProps<{
     item: ISources

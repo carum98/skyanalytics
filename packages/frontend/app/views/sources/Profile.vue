@@ -10,7 +10,7 @@ import MapLocations from '@/components/MapLocations.vue'
 import StatCard from '@components/StatCard.vue'
 
 import { useFetch } from '@composables/useFetch'
-import type { ISources, IStats } from '@/types'
+import type { ApiStats, IStats } from '@shared/types'
 
 import { useRoute } from 'vue-router'
 import { useSidebar } from '@composables/useSidebar'
@@ -20,7 +20,7 @@ const filters = ref<DateSelectorValue>()
 const route = useRoute()
 const sidebar = useSidebar()
 
-const item = JSON.parse(window.history.state.item) as ISources
+const item = JSON.parse(window.history.state.item) as ApiStats[0]
 
 const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats`, {
     query: computed(() => {
@@ -90,7 +90,7 @@ function onOpenEvents(eventName?: string) {
                 <small class="text-gray">{{ item.domain || 'not domain' }}</small>
             </div>
 
-            <SourceCurrentVisitors :item="item" />
+            <SourceCurrentVisitors :data="item.metrics" />
         </div>
 
         <DateSelector v-model="filters" />

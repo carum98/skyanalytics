@@ -9,12 +9,13 @@ const apiFetch = ofetch.create({
     }
 })
 
-export async function useApiFetch (event: H3Event, request: RequestInfo, options?: FetchOptions) {
+export async function useApiFetch<T>(event: H3Event, request: RequestInfo, options?: FetchOptions) {
     const session = await getSkSession(event)
     const token = session.token
 
     if (token === null) {
-        return await useLogout(event)
+        await useLogout(event)
+		throw new Error('Unauthorized')
     }
 
     return apiFetch(request, {
@@ -34,7 +35,7 @@ export async function useApiFetch (event: H3Event, request: RequestInfo, options
                 }))
             }
         }
-    })
+    }) as Promise<T>
 }
 
 export const useLogout = async (event: H3Event) => {

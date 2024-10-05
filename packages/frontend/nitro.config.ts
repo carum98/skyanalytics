@@ -10,7 +10,12 @@ export default defineNitroConfig({
                 'Access-Control-Allow-Headers': 'X-Timezone, Content-Type, Authorization',
                 'Access-Control-Max-Age': '86400',
                 'Access-Control-Allow-Credentials': 'true'
-            }
+            },
         },
-    }
+    },
+	imports: {
+		dirs: [
+			'shared/types',
+		]
+	},
 })
