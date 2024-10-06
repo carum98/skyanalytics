@@ -11,3 +11,6 @@
 | ----- | ---- | -------- |
 | event | string | false |
 | navigation | string | false |
+
+## Response
+- Status: `201 Created`
