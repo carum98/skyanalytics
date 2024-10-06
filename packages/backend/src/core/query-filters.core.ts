@@ -31,7 +31,7 @@ function parseFilter (filters: Filter): SQL[] {
 
     for (const [table, value] of Object.entries(filters)) {
         // Prevent parsing filters that are not objects (not conditions)
-        if (typeof value === 'string') {
+        if (typeof value === 'string' || value === undefined) {
             continue
         }
 
