@@ -13,7 +13,7 @@ import type { ApiStats } from '@shared/types'
 const router = useRouter()
 const { session } = useSession()
 
-const { data, refresh: onRefresh } = useFetch<ApiStats>("/api/stats", {
+const { data, refresh: onRefresh, loading } = useFetch<ApiStats>("/api/stats", {
 	transform: (data) => ({
 		...data.map((item) => ({
 			...item,
@@ -78,6 +78,19 @@ const { data, refresh: onRefresh } = useFetch<ApiStats>("/api/stats", {
 			<SourceCurrentVisitors :data="item.metrics" />
 		</article>
 
+		<template v-if="loading">
+			<article v-for="i in 10" :key="i">
+				<header>
+					<div class="skeleton" style="width: 35px; height: 35px;"></div>
+					<div class="skeleton" style="width: 150px; height: 40px;"></div>
+				</header>
+				<div class="skeleton" style="height: 160px;"></div>
+				<div>
+					<div class="skeleton" style="width: 150px; height: 20px; margin: auto;"></div>
+				</div>
+			</article>
+		</template>
+
 		<button 
 			v-if="session?.role === 'admin'" 
 			class="sk-button-fab" 
@@ -134,6 +147,22 @@ const { data, refresh: onRefresh } = useFetch<ApiStats>("/api/stats", {
         	background-color: rgba(var(--table-color-rgb), 0.8);
 			box-shadow: var(--shadow);
 		}
+
+		.skeleton {
+			background: linear-gradient(90deg, var(--background-color) 25%, #272727 50%, var(--background-color) 75%);
+			border-radius: 10px;
+			background-size: 200% 100%;
+  			animation: skeleton-loading 1s infinite;
+		}
+	}
+}
+
+@keyframes skeleton-loading {
+	0% {
+		background-position: 200% 0;
+	}
+	100% {
+		background-position: -200% 0;
 	}
 }
 </style>
