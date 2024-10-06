@@ -1,5 +1,5 @@
 import { DateRange } from './range-dates'
-import { parseToTimeZone } from './time-zones'
+import { parseToTimeZone, getUTCOffsetForTimeZone } from './time-zones'
 
 export function groupByRangeDates(
     data: Array<{ created_at: Date, session_id: number | null }>, 
@@ -7,8 +7,10 @@ export function groupByRangeDates(
     filters: { start: string, end: string },
     timezone: string
 ) {
+	const utcTimeZone = getUTCOffsetForTimeZone(timezone)
+
     const groupByDay = Object.groupBy(data, (item) => {
-        return trimDate(parseToTimeZone(item.created_at, timezone), date_range)
+        return trimDate(parseToTimeZone(item.created_at, utcTimeZone), date_range)
     })
 
     const dataEntries = Object.entries(groupByDay)
@@ -21,8 +23,8 @@ export function groupByRangeDates(
         ]))
 
     // Fill days without data with 0
-    const start = new Date(parseToTimeZone(filters.start, timezone))
-    const end = new Date(parseToTimeZone(filters.end, timezone))
+    const start = new Date(parseToTimeZone(filters.start, utcTimeZone))
+    const end = new Date(parseToTimeZone(filters.end, utcTimeZone))
 
     for (let date = start; date <= end; dateIncrement(date, date_range)) {
         const key = trimDate(date.toISOString(), date_range)
