@@ -16,7 +16,7 @@ import SkyAnalytics from '@skyanalytics/vue2'
 Vue.use(SkyAnalytics, {
     key: 'source_key',
     host: 'http://localhost:3000',
-	enabled: true // default is true
+    enabled: true // default is true
 })
 ```
 

@@ -39,8 +39,8 @@ export function useAnalytics() {
         skyanalytics.event({ name }).then()
     }
 
-    function navigate(name: string) {
-        skyanalytics.navigation({ name }).then()
+    function navigate(name: string, metadata?: Record<string, string>) {
+        skyanalytics.navigation({ name, metadata }).then()
     }
 
     return {

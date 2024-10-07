@@ -9,4 +9,5 @@ export interface SkyAnalyticsPayloadEvent {
 
 export interface SkyAnalyticsPayloadNavigation {
     navigation: string
+	metadata?: Record<string, string>
 }

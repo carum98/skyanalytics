@@ -27,3 +27,9 @@ analytics.navigation({ name: 'page_name' });
 ```javascript
 analytics.event({ name: 'event_name' });
 ```
+
+### Metadata
+You can add metadata to your navigations.
+```javascript
+analytics.navigation({ name: 'page_name', metadata: { key1: 'value1', key2: 'value2' } });
+```

@@ -26,9 +26,10 @@ export class SkyAnalytics {
         })
     }
 
-    navigation(payload: { name: string }) {
+    navigation(payload: { name: string, metadata?: Record<string, string> }) {
         return this.send({
             navigation: payload.name,
+			metadata: payload.metadata
         })
     }
 }
