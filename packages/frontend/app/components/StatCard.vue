@@ -1,6 +1,7 @@
 <script setup lang="ts">
 defineProps<{
     title: string
+	disableExternal?: boolean
 }>()
 
 defineEmits<{
@@ -14,6 +15,7 @@ defineEmits<{
             <p>
                 {{ title }}
                 <button 
+					v-if="!disableExternal"
                     @click="$emit('openExternal')"
                     class="open-external"
                 >

@@ -3,6 +3,7 @@ import { FilterSessions, StatsFilter } from '@schemas/_query'
 import { navigations } from '@schemas/navigations.schemas'
 import { InsertSessionsSchema, paginateSessionsSchema, SelectSessionsSchema, sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
+import { groupByAndCount } from '@utils/group-and-count'
 import { PaginationSchemaType } from '@utils/pagination'
 import { and, between, eq, isNotNull, sql } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
@@ -110,17 +111,4 @@ export class SessionRepository extends RepositoryCore<SelectSessionsSchema, Inse
             locations: value?.map(item => item.location) || []
         }))
     }
-}
-
-// This function groups the data by a key and counts the number of occurrences
-// if the key is null, it will be replaced by 'Unknown'
-function groupByAndCount(data: any[], key: string) {
-    return Object.fromEntries(Object.entries(Object.groupBy(
-        data, 
-        (item) => item[key] as string
-    ))
-    .map(([key, value]) => [
-        key === 'null' ? 'Unknown' : key, 
-        value?.length || 0
-    ]))
 }

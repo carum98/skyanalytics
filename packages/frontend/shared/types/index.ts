@@ -105,6 +105,7 @@ export interface IStats {
     navigations: IViewsStats
     events: IViewsStats
     location: Array<ILocationStat>
+	metadata: Record<string, IViewsStats> | null
 }
 
 export interface IMapLocation {

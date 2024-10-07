@@ -15,6 +15,13 @@
       "when": 1725504168353,
       "tag": "0001_useful_revanche",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1728258631235,
+      "tag": "0002_normal_jazinda",
+      "breakpoints": true
     }
   ]
 }

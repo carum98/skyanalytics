@@ -26,7 +26,7 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
     query: computed(() => {
         return {
             ...filters?.value || {},
-            stats: 'os,software,country,navigations,events,location',
+            stats: 'os,software,country,navigations,events,location,metadata',
         }
     })
 })
@@ -101,27 +101,33 @@ function onOpenEvents(eventName?: string) {
             <ViewsChart :item="item" :filters="filters" />
         </div>
 
-        <StatCard class="box-2" title="Operating Systems" @open-external="onOpenSessions">
+        <StatCard title="Operating Systems" @open-external="onOpenSessions">
 			<CountersList :items="stat?.os" @row-click="onOpenSessions('os', $event)" />
         </StatCard>
 
-        <StatCard class="box-3" title="Countries" @open-external="onOpenSessions">
+        <StatCard title="Countries" @open-external="onOpenSessions">
 			<CountersList :items="stat?.country" @row-click="onOpenSessions('country', $event)" />
         </StatCard>
 
-        <StatCard class="box-4" title="Software" @open-external="onOpenSessions">
+        <StatCard title="Software" @open-external="onOpenSessions">
 			<CountersList :items="stat?.software" @row-click="onOpenSessions('software', $event)" />
         </StatCard>
 
-        <StatCard class="box-5" title="Events" @open-external="onOpenEvents">
+        <StatCard title="Events" @open-external="onOpenEvents">
 			<CountersList :items="stat?.events" disable-sprites @row-click="onOpenEvents" />
         </StatCard>
 
-        <StatCard class="box-6" title="Views" @open-external="onOpenViews">
+        <StatCard title="Views" @open-external="onOpenViews">
 			<CountersList :items="stat?.navigations" disable-sprites @row-click="onOpenViews" />
         </StatCard>
 
-        <div class="placeholder box-7">
+		<template v-if="stat?.metadata">
+			<StatCard v-for="(item, value) in stat.metadata" disable-external :title="value">
+				<CountersList disable-sprites :items="item" />
+			</StatCard>
+		</template>
+
+        <div class="placeholder box-2">
             <MapLocations :items="stat?.location" />
         </div>
     </section>
@@ -132,45 +138,21 @@ function onOpenEvents(eventName?: string) {
 .grid-stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(280px, 1fr));
-    grid-template-rows: 480px 270px 270px 550px;
+    grid-template-rows: 480px 300px 300px 550px;
     align-items: stretch;
     gap: 1rem;
     width: 100%;
     margin-bottom: 20px;
 
-    grid-template-areas:
-        'box-1 box-1 box-1'
-        'box-2 box-3 box-4'
-        'box-5 box-6 .'
-        'box-7 box-7 box-7';
-
     /* Areas */
     .box-1 {
-        grid-area: box-1;
+		height: 480px;
+		grid-column: span 3;
     }
 
     .box-2 {
-        grid-area: box-2;
-    }
-
-    .box-3 {
-        grid-area: box-3;
-    }
-
-    .box-4 {
-        grid-area: box-4;
-    }
-
-    .box-5 {
-        grid-area: box-5;
-    }
-
-    .box-6 {
-        grid-area: box-6;
-    }
-
-    .box-7 {
-        grid-area: box-7;
+		height: 550px;
+		grid-column: span 3;
     }
 
     > div {

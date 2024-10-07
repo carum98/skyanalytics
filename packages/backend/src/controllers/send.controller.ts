@@ -23,7 +23,8 @@ export class SendController {
         if (body.navigation) {
             await this.navigationService.create({
                 name: body.navigation,
-                session_id
+                session_id,
+				metadata: body.metadata
             })
         }
 

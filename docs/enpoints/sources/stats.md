@@ -21,7 +21,7 @@ Stats for specific source.
 | stats | string | false |
 
 `stats` is a string with the following values:
-`os`, `software`, `country`, `location`, `events`, `navigations`
+`os`, `software`, `country`, `location`, `events`, `navigations`, `metadata`
 
 ## Response
 Status: `200 OK`
@@ -54,7 +54,16 @@ Status: `200 OK`
     "events": {
         "create.ticket": 1,
         "update.ticket": 1
-    }
+    },
+	"metadata": {
+		"key1": {
+			"value1": 1,
+			"value2": 2
+		},
+		"key2": {
+			"value2": 1
+		}
+	}
 }
 ```
 

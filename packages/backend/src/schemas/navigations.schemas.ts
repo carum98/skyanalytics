@@ -1,4 +1,4 @@
-import { index, integer, pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core'
+import { index, integer, pgTable, serial, timestamp, varchar, json } from 'drizzle-orm/pg-core'
 import { selectSessionsSchema, sessions } from './sessions.schemas'
 import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z } from 'zod'
@@ -11,6 +11,7 @@ export const navigations = pgTable('navigations', {
     created_at: timestamp("created_at").notNull().defaultNow(),
     updated_at: timestamp("updated_at").notNull().$onUpdate(() => new Date()),
     deleted_at: timestamp("deleted_at"),
+	metadata: json('metadata'),
 }, (table) => ({
     parent_id: index('navigation_session_id').on(table.session_id),
 }))
@@ -19,9 +20,12 @@ export const navigations = pgTable('navigations', {
 export const insertNavigationsSchema = createInsertSchema(navigations)
     .pick({ name: true, session_id: true })
     .required()
+	.extend({
+		metadata: z.record(z.string()).optional()
+	})
 
 export const selectNavigationsSchema = createSelectSchema(navigations)
-    .pick({ id: true, name: true, created_at: true })
+    .pick({ id: true, name: true, metadata: true, created_at: true })
     .extend({
         session: selectSessionsSchema.pick({ os: true, software: true, country: true })
     })

@@ -16,11 +16,11 @@
 }
 
 /* OS */
-.sprites__Android {
+.sprites__Android, [class*="sprites__android_"] {
     background-position: calc(var(--sprite-size) * 0) 0;
 }
 
-.sprites__iOS {
+.sprites__iOS, [class*="sprites__ios_"] {
     background-position: calc(var(--sprite-size) * -1) 0;
 }
 

@@ -3,6 +3,7 @@
 | id | number |
 | name | string |
 | created_at | string |
+| metadata | object - null |
 | session | object |
 | session.country | string |
 | session.os | string |
@@ -12,6 +13,10 @@
 {
     "id": 1,
     "name": "Event 1",
+	"metadata": {
+		"key1": "value1",
+		"key2": "value2"
+	},
     "created_at": "2021-01-01T00:00:00.000Z",
     "session": {
         "country": "CR",

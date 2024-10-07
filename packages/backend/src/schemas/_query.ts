@@ -15,7 +15,7 @@ export type MetricsFilter = z.infer<typeof metricsFilter>
 export const statsFilter = z.object({
     stats: z.preprocess(
         (value) => typeof value === 'string' ? value.split(',') : value,
-        z.array(z.enum(['os', 'software', 'country', 'location', 'events', 'navigations']))
+        z.array(z.enum(['os', 'software', 'country', 'location', 'events', 'navigations', 'metadata']))
     )
 })
 .merge(metricsFilter)

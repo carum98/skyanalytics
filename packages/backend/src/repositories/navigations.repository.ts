@@ -3,10 +3,11 @@ import { FilterSessions, MetricsFilter, StatsFilter } from '@schemas/_query'
 import { InsertNavigationsSchema, navigations, paginatedNavigationsSchema, selectNavigationsSchema, SelectNavigationsSchema } from '@schemas/navigations.schemas'
 import { sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
+import { groupByAndCount } from '@utils/group-and-count'
 import { groupByRangeDates } from '@utils/group-by-range-dates'
 import { PaginationSchemaType } from '@utils/pagination'
 import { DateRange } from '@utils/range-dates'
-import { and, between, count, countDistinct, eq } from 'drizzle-orm'
+import { and, between, count, countDistinct, eq, isNotNull } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
 export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema, InsertNavigationsSchema, InsertNavigationsSchema>{
@@ -17,6 +18,7 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
             id: navigations.id,
             name: navigations.name,
             created_at: navigations.created_at,
+			metadata: navigations.metadata,
             session: {
                 os: sessions.os,
                 software: sessions.software,
@@ -123,4 +125,36 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
 
         return groupByRangeDates(data, dateRange, filters, timezone)
     }
+
+	public async getStatsMetadata(code: string, filters: StatsFilter) {
+		const data = await this.db.select({
+			metadata: navigations.metadata,
+        })
+        .from(navigations)
+        .leftJoin(sessions, eq(navigations.session_id, sessions.id))
+        .leftJoin(sources, eq(sessions.source_id, sources.id))
+        .where(
+            and(
+                eq(sources.code, code),
+                between(navigations.created_at, new Date(filters.start), new Date(filters.end)),
+				isNotNull(navigations.metadata)
+            )
+        )
+
+		// Get all keys from metadata availables
+        const keys = Array.from(new Set(data.flatMap(item => Object.keys(item.metadata as object))))
+
+		// Group by metadata keys and count
+		// Remove undefined keys
+		const values = keys.map(key => ({
+			[key]: Object.fromEntries(
+				Object.entries(groupByAndCount(data, `metadata.${key}`))
+				.filter(([key, _]) => key !== 'undefined')
+			)
+		}))
+
+		return {
+			metadata: Object.assign({}, ...values)
+		}
+	}
 }

@@ -95,6 +95,12 @@ export class SourcesService {
             )
         }
 
+		if (filters.stats.includes('metadata')) {
+			promises.push(
+				this.navigationsRepository.getStatsMetadata(code, filters)
+			)
+		}
+
         const data = await Promise.all(promises)
 
         return data.reduce((acc, item) => ({
