@@ -13,6 +13,11 @@ export class SendController {
         const body = req.body as SendBodySchema
         const session_id = (req as any).session_id as number
 
+        // Global metadata
+        if (!body.event && !body.navigation && body.metadata) {
+            req.session.metadata = body.metadata
+        }
+
         if (body.event) {
             await this.eventsService.create({ 
                 name: body.event,
@@ -21,10 +26,17 @@ export class SendController {
         }
 
         if (body.navigation) {
+            const metadata = {
+                ...req.session.metadata,
+                ...body.metadata
+            }
+
             await this.navigationService.create({
                 name: body.navigation,
                 session_id,
-				metadata: body.metadata
+				metadata: Object.keys(metadata).length > 0 
+                    ? metadata 
+                    : undefined
             })
         }
 

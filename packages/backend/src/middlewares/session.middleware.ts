@@ -13,6 +13,7 @@ let lookup: Reader<CityResponse> | null = null
 declare module 'express-session' {
     interface SessionData {
       session_id: number
+      metadata?: Record<string, string>
     }
 }
 

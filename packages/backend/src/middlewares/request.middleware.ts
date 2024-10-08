@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from 'express'
-import { ZodError, AnyZodObject } from 'zod'
+import { ZodError, AnyZodObject, ZodEffects } from 'zod'
 
 interface IRequest {
-    body?: AnyZodObject
+    body?: AnyZodObject | ZodEffects<any>
     query?: AnyZodObject
     params?: AnyZodObject
     headers?: AnyZodObject

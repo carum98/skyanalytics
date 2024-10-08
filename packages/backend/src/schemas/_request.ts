@@ -4,7 +4,15 @@ import { z } from 'zod'
 export const sendBodySchema = z.object({
     event: z.string().min(3).max(100).optional(),
     navigation: z.string().min(3).max(100).optional(),
-	metadata: z.record(z.string()).optional()
+    metadata: z.record(z.string()).optional()
+})
+.refine((data) => !(data.event && data.navigation), {
+    message: "You cannot send 'event' and 'navigation' at the same time",
+    path: ['event', 'navigation'],
+})
+.refine((data) => data.event || data.navigation || data.metadata, {
+    message: "'metadata' is required if you do not send 'event' or 'navigation'",
+    path: ['metadata'],
 })
 
 export type SendBodySchema = z.infer<typeof sendBodySchema>
