@@ -54,23 +54,33 @@ export function sessionMiddleware(service: SessionService) {
 
           // Software information
           const software = detectSoftware(user_agent)
-
-          session = await service.create({
-            source_key,
-            ip,
-            uuid,
-            os,
-            software,
-            country: result?.country?.iso_code || null,
-            location: result?.location ? {
-              latitude: result.location.latitude,
-              longitude: result.location.longitude,
-              city: result.city?.names?.en || null
-            } : null,
-          })
+		  
+          try {
+            session = await service.create({
+              source_key,
+              ip,
+              uuid,
+              os,
+              software,
+              country: result?.country?.iso_code || null,
+              location: result?.location ? {
+                latitude: result.location.latitude,
+                longitude: result.location.longitude,
+                city: result.city?.names?.en || null
+              } : null,
+            })
+          } catch (error) {
+            // Debugging logs to prevent server crashes
+            console.error(error)
+            console.log(uuid)
+          }
         };
 
         // return res.status(400).json({ message: 'Invalid session' });
+
+        if (session === undefined) {
+          return res.status(400).json({ message: 'Invalid session' });
+        }
 
         (req as any).session_id = session?.id
         req.session.session_id = session?.id
