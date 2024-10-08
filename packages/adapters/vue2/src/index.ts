@@ -35,16 +35,21 @@ export default {
 }
 
 export function useAnalytics() {
-    function event(name: string, data?: Object) {
-        skyanalytics.event({ name }).then()
+    function event(name: string) {
+        skyanalytics.event({ name })
     }
 
     function navigate(name: string, metadata?: Record<string, string>) {
-        skyanalytics.navigation({ name, metadata }).then()
+        skyanalytics.navigation({ name, metadata })
+    }
+
+    function metadata(data: Record<string, string>) {
+        skyanalytics.metadata(data)
     }
 
     return {
         event,
-        navigate
+        navigate,
+        metadata
     }
 }

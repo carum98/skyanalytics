@@ -36,6 +36,7 @@ import { useAnalytics } from '@skyanalytics/vue2'
 
 useAnalytics.event('event', { key: 'value' })
 useAnalytics.navigate('page', { key: 'value' })
+useAnalytics.metadata({ key: 'value' })
 ```
 
 ## Vue-Router

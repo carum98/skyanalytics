@@ -1,4 +1,4 @@
-import { SkyAnalyticsOptions, SkyAnalyticsPayloadEvent, SkyAnalyticsPayloadNavigation } from './types'
+import { SkyAnalyticsOptions, SkyAnalyticsPayloadEvent, SkyAnalyticsPayloadMetadata, SkyAnalyticsPayloadNavigation } from './types'
 
 export class SkyAnalytics {
     private options!: SkyAnalyticsOptions
@@ -7,7 +7,7 @@ export class SkyAnalytics {
         this.options = options;
     }
 
-    private send(payload: SkyAnalyticsPayloadEvent | SkyAnalyticsPayloadNavigation) {
+    private send(payload: SkyAnalyticsPayloadEvent | SkyAnalyticsPayloadNavigation | SkyAnalyticsPayloadMetadata) {
         const { host, key } = this.options
 
         return fetch(`${host}/send`, {
@@ -30,6 +30,12 @@ export class SkyAnalytics {
         return this.send({
             navigation: payload.name,
 			metadata: payload.metadata
+        })
+    }
+
+    metadata(payload: Record<string, string>) {
+        return this.send({
+            metadata: payload,
         })
     }
 }

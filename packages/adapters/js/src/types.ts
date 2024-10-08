@@ -11,3 +11,7 @@ export interface SkyAnalyticsPayloadNavigation {
     navigation: string
 	metadata?: Record<string, string>
 }
+
+export interface SkyAnalyticsPayloadMetadata {
+    metadata: Record<string, string>
+}
