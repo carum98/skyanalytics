@@ -17,10 +17,16 @@ import 'package:skyanalytics/skyanalytics_flutter.dart';
 const skyAnalytics = SkyAnalytics(
     sourceKey: 'sourceKey',
     host: 'https://example.com',
+    enabled: true, // default is true
+    showLogs: false, // default is false
 );
 
 skyAnalytics.event(name: 'create_element');
 skyAnalytics.navigate(screenName: 'home');
+skyAnalytics.metadata({
+    'key1': 'value1',
+    'key2': 'value2',
+});
 ```
 
 ### NavigatorObserver

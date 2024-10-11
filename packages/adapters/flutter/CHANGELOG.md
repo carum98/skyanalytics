@@ -5,3 +5,9 @@
 ## 0.0.2 (2024-08-21)
 
 * Add documentation
+
+## 0.0.3 (2024-10-11)
+
+* Fix send cookies.
+* Add `enabled` and `showLogs` parameters.
+* Add `metadata` method to send global metadata.

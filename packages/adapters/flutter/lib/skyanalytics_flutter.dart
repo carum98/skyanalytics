@@ -21,11 +21,41 @@ class SkyAnalytics {
   /// The SkyAnalytics host.
   final String host;
 
-  /// Creates a new [SkyAnalytics] instance with the given [sourceKey] and [host].
-  SkyAnalytics({
+  /// The flag to enable or disable the analytics.
+  final bool isEnable;
+
+  /// The flag to show logs.
+  final bool showLogs;
+
+  /// Private constructor for singleton pattern.
+  SkyAnalytics._internal({
     required this.sourceKey,
     required this.host,
-  });
+    required this.isEnable,
+    required this.showLogs,
+  }) {
+    if (showLogs) {
+      print('SkyAnalytics instance');
+    }
+  }
+
+  /// The singleton instance.
+  static SkyAnalytics? _instance;
+
+  /// Factory constructor to provide the singleton instance.
+  factory SkyAnalytics({
+    required String sourceKey,
+    required String host,
+    required bool enabled,
+    showLogs = false,
+  }) {
+    return _instance ??= SkyAnalytics._internal(
+      sourceKey: sourceKey,
+      host: host,
+      isEnable: enabled,
+      showLogs: showLogs,
+    );
+  }
 
   /// Sends an event with the given [name] and [parameters] to SkyAnalytics.
   Future<void> event({
@@ -46,13 +76,32 @@ class SkyAnalytics {
     });
   }
 
-  /// Disposes the [SkyAnalytics] instance.
-  void dispose() {
-    client.close(force: true);
-    cookieManager.clearCookies();
+  /// Sets the global metadata with the given [payload].
+  Future<void> metadata(
+    Map<String, String> payload,
+  ) async {
+    await _send({
+      'metadata': payload,
+    });
   }
 
+  /// Clears the metadata.
+  Future<void> clearMetadata() async {
+    await _send({
+      'metadata': {},
+    });
+  }
+
+  /// Sends the given [params] to the SkyAnalytics API.
   Future<void> _send(Map<String, dynamic> params) async {
+    if (!isEnable) {
+      return;
+    }
+
+    if (showLogs) {
+      print('SkyAnalytics send: $params');
+    }
+
     try {
       final uri = Uri.parse(host).replace(path: '/send');
 
@@ -69,6 +118,7 @@ class SkyAnalytics {
       request.headers.set('X-SkyAnalytics-Key', sourceKey);
 
       cookieManager.setCookies(request);
+
       request.write(json.encode(params));
 
       final response = await request.close();
@@ -80,6 +130,12 @@ class SkyAnalytics {
         print('Error: $e');
       }
     }
+  }
+
+  /// Disposes the [SkyAnalytics] instance.
+  void dispose() {
+    client.close(force: true);
+    cookieManager.clearCookies();
   }
 }
 
