@@ -47,7 +47,7 @@ function anchorPosition({ position }: { position: Position }) {
     const element = {
         style: {
             'position-anchor': `--${id}`,
-            'inset-area': position,
+            'position-area': position,
             'position-try-options': 'flip-block flip-inline'
         }
     }

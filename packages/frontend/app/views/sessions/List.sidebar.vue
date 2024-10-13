@@ -12,15 +12,18 @@ const props = defineProps<{
 const columns = [
 	{
 		name: 'Country',
-		key: 'country'
+		key: 'country',
+		thClass: 'text-left'
 	},
 	{
 		name: 'OS',
-		key: 'os'
+		key: 'os',
+		thClass: 'text-left'
 	},
 	{
 		name: 'Software',
-		key: 'software'
+		key: 'software',
+		thClass: 'text-left'
 	}
 ]
 

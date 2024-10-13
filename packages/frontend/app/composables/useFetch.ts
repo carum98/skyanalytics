@@ -70,7 +70,7 @@ export function useFetch<T>(url: string, options?: UseFetchRequestOptions<T>) {
 
     // lifecycle
     onMounted(() => {
-        if (!options?.immediate) {
+        if (options?.immediate === true || options?.immediate === undefined) {
             fetchData()
         }
 

@@ -90,7 +90,9 @@ function onOpenEvents(eventName?: string) {
                 <small class="text-gray">{{ item.domain || 'not domain' }}</small>
             </div>
 
-            <SourceCurrentVisitors :data="item.metrics" />
+            <SourceCurrentVisitors 
+                :item="item"
+            ></SourceCurrentVisitors>
         </div>
 
         <DateSelector v-model="filters" />
@@ -138,7 +140,6 @@ function onOpenEvents(eventName?: string) {
 .grid-stats {
     display: grid;
     grid-template-columns: repeat(3, minmax(280px, 1fr));
-    grid-template-rows: 480px 300px 300px 550px;
     align-items: stretch;
     gap: 1rem;
     width: 100%;
@@ -151,11 +152,12 @@ function onOpenEvents(eventName?: string) {
     }
 
     .box-2 {
-		height: 550px;
+		height: 750px;
 		grid-column: span 3;
     }
 
     > div {
+        height: 350px;
         padding: 1rem;
     }
 }

@@ -1,18 +1,28 @@
 <script setup lang="ts">
-import type { IMetrics } from '@shared/types'
 import { computed } from 'vue'
+import { useFetch } from '@/composables/useFetch'
+import type { IMetrics, ISources } from '@shared/types'
 
 const props = defineProps<{
-    data: IMetrics
+    data?: IMetrics
+    item?: ISources
 }>()
 
-const disabled = computed(() => !Boolean(props.data?.visitors))
+const { data } = useFetch<IMetrics>(`/api/sources/${props.item?.code}/metrics`, {
+    query: {
+        date_range: 'last_30_minutes',
+    },
+    immediate: props.item?.code !== undefined,
+})
+
+const value = computed(() => props.data?.visitors ?? data.value?.visitors ?? 0)
+const disabled = computed(() => !Boolean(value.value))
 </script>
 
 <template>
 	<p class="flex align-center justify-center" style="gap: 5px; overflow: visible;">
 		<span class="green-circle" :class="{ disabled }"></span>
-		{{ data.visitors ?? 0 }}
+		{{ value }}
 		<span class="text-gray">current visitors</span>
 	</p>
 </template>
