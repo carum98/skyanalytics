@@ -28,7 +28,10 @@ const columns = [
 ]
 
 const { el: scrollContainer, items } = useScrollPagination<ISession>(["/api/sessions", {
-	query: props.query,
+	query: {
+		...props.query,
+		per_page: '25'
+	},
 	headers: {
 		'x-timezone': getCurrentTimeZone()
 	}
