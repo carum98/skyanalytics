@@ -13,6 +13,7 @@ export class SessionRepository extends RepositoryCore<SelectSessionsSchema, Inse
         const table = sessions
 
         const select = db.selectDistinct({
+            id: sessions.id,
             country: sessions.country,
             os: sessions.os,
             software: sessions.software,
@@ -54,6 +55,7 @@ export class SessionRepository extends RepositoryCore<SelectSessionsSchema, Inse
 
     public async getStats(code: string, filters: StatsFilter) {
         const data = await this.db.selectDistinct({
+            id: sessions.id,
             os: sessions.os,
             country: sessions.country,
             software: sessions.software,
