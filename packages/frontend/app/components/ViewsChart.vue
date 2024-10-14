@@ -23,6 +23,23 @@ const props = defineProps<{
 let chart: Chart | null = null
 const canvas = ref<HTMLCanvasElement | null>(null)
 
+const datasets = [
+    {
+        label: 'Sessions',
+        data: [],
+        borderColor: 'green',
+        backgroundColor: 'rgba(0, 128, 0, 0.5)',
+        borderRadius: 10
+    },
+    {
+        label: 'Views',
+        data: [],
+        borderColor: 'green',
+        backgroundColor: 'rgba(0, 128, 0, 0.3)',
+        borderRadius: 10
+    }
+]
+
 const { data } = useFetch<{ [key: string]: { views: number, sessions: number } }>(`/api/sources/${props.item.code}/views`, {
     query: computed(() => props.filters),
     headers: {
@@ -60,6 +77,19 @@ function handleClick(context: ChartEvent & { chart: Chart, native: PointerEvent 
     }
 }
 
+function handleToggleDataset(event: Event ,index: number) {
+    const dataset = chart?.data.datasets[index]
+
+    if (dataset) {
+        dataset.hidden = !dataset.hidden
+        chart?.update()
+    }
+
+    // Toggle opacity of the button
+    const button = (event.target as HTMLElement)
+    button.style.opacity = dataset?.hidden ? '0.5' : '1'
+}
+
 // lifecycle
 onMounted(() => {
     const ctx = canvas.value?.getContext('2d') as CanvasRenderingContext2D
@@ -82,22 +112,7 @@ onMounted(() => {
         type: 'bar',
         data: {
             labels: [],
-            datasets: [
-                {
-                    label: 'Sessions',
-                    data: [],
-                    borderColor: 'green',
-                    backgroundColor: 'rgba(0, 128, 0, 0.5)',
-                    borderRadius: 10
-                },
-                {
-                    label: 'Views',
-                    data: [],
-                    borderColor: 'green',
-                    backgroundColor: 'rgba(0, 128, 0, 0.3)',
-                    borderRadius: 10
-                }
-            ]
+            datasets
         },
         options: {
             responsive: true,
@@ -219,5 +234,44 @@ function processDateLabels(values: string[]) {
 </script>
 
 <template>
-    <canvas ref="canvas"></canvas>
+    <section style="height: 100%; position: relative;">
+        <canvas ref="canvas"></canvas>
+
+        <div class="views-chart__actions">
+            <button 
+                v-for="(item, index) in datasets" 
+                @click="handleToggleDataset($event, index)"
+            >
+                <span :style="{ backgroundColor: item.backgroundColor?.toString() }"></span>
+                {{ item.label }}
+            </button>
+        </div>
+    </section>
 </template>
+
+<style lang="css">
+.views-chart__actions {
+    position: absolute;
+    display: flex;
+    gap: 10px;
+    top: 0;
+    right: 0;
+
+    button {
+        padding: 0.5rem 1rem;
+        background-color: var(--background-color);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+
+        span {
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            border-radius: 50%;
+        }
+    }
+}
+</style>
