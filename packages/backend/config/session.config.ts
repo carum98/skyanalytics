@@ -6,8 +6,9 @@ export const sessionConfig: session.SessionOptions = {
     saveUninitialized: false,
     resave: false,
     cookie: {
-        secure: false,
+        secure: true,
         httpOnly: true,
+        sameSite: 'none', // Set to 'none' to allow cross-site cookies
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
 }
