@@ -22,3 +22,7 @@ geo
 .output
 
 uploads
+
+# Certificates
+nginx.crt
+nginx.key

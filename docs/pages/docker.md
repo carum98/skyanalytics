@@ -28,3 +28,10 @@ docker compose -f docker-compose.yml -f .devcontainer/docker-compose.yml up
 
 ### Nginx
 In the development environment, starts an Nginx container to simulate the production environment.
+
+The Nginx container exposes the ports `81` and `443` to the host machine, this permits to access with `https` and `http` to the frontend and backend.
+
+To generate the certificates, run the following command inside the .devcontainer/certs folder:
+```bash
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout nginx.key -out nginx.crt
+```
