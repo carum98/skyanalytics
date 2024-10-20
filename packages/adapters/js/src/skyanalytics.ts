@@ -1,14 +1,22 @@
 import { SkyAnalyticsOptions, SkyAnalyticsPayloadEvent, SkyAnalyticsPayloadMetadata, SkyAnalyticsPayloadNavigation } from './types'
 
 export class SkyAnalytics {
-    private options!: SkyAnalyticsOptions
+    private options: SkyAnalyticsOptions | undefined
 
     init(options: SkyAnalyticsOptions) {
         this.options = options;
     }
 
+    get isInitialized() {
+        return Boolean(this.options)
+    }
+
     private send(payload: SkyAnalyticsPayloadEvent | SkyAnalyticsPayloadNavigation | SkyAnalyticsPayloadMetadata) {
-        const { host, key } = this.options
+        if (!this.isInitialized) {
+            throw new Error('SkyAnalytics not initialized')
+        }
+
+        const { host, key } = this.options as SkyAnalyticsOptions
 
         return fetch(`${host}/send`, {
             method: 'POST',

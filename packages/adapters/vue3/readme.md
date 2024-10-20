@@ -59,3 +59,6 @@ router.beforeEach((to, from, next) => {
   next()
 })
 ```
+
+> [!WARNING]  
+> Use with caution, the methods `$skyAnalytics` make sure that the instance is initialized and the plugin is enabled. Otherwise, it will throw an error.

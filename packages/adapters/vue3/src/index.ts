@@ -7,47 +7,47 @@ type HTMLElementWithRemoveListener = HTMLElement & { $removeListener: Function }
 
 export default {
     install(app: App, options: SkyAnalyticsOptions & { enabled?: boolean }) {
-		if (!options.enabled) {
-			return
-		}
-
-        skyanalytics.init(options)
-
         app.config.globalProperties.$skyAnalytics = skyanalytics
-
         app.provide('skyAnalytics', skyanalytics)
 
         app.directive('sk-analytics', {
             created: (el: HTMLElementWithRemoveListener, binding: DirectiveBinding<{ event: string, data?: object }>) => {
-                async function send() {
-                    await skyanalytics.event({
-                        name: binding.value.event,
-                    })
+                if (!skyanalytics.isInitialized) return
+
+                function send() {
+                    skyanalytics.event({ name: binding.value.event })
                 }
 
                 el.addEventListener('click', send)
-                el.$removeListener = () => {
-                    el.removeEventListener('click', send)
-                }
+                el.$removeListener = () => el.removeEventListener('click', send)
             },
             unmounted: (el: HTMLElementWithRemoveListener) => {
                 el.$removeListener()
             }
         })
+
+        // Initialize the analytics instance
+        if (options.enabled !== false) {
+            skyanalytics.init(options)
+        }
     }
 }
 
 export function useAnalytics() {
+    const analytics = skyanalytics.isInitialized 
+        ? skyanalytics 
+        : undefined
+
     function event(name: string) {
-        skyanalytics.event({ name })
+        analytics?.event({ name })
     }
 
     function navigate(name: string, metadata?: Record<string, string>) {
-        skyanalytics.navigation({ name, metadata })
+        analytics?.navigation({ name, metadata })
     }
 
     function metadata(data: Record<string, string>) {
-        skyanalytics.metadata(data)
+        analytics?.metadata(data)
     }
 
     return {

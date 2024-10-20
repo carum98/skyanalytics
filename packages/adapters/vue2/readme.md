@@ -43,7 +43,7 @@ useAnalytics.metadata({ key: 'value' })
 ```javascript
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import SkyAnalytics from '@skyanalytics/vue2'
+import SkyAnalytics, { useAnalytics } from '@skyanalytics/vue2'
 
 Vue.use(VueRouter)
 Vue.use(SkyAnalytics, {
@@ -58,6 +58,15 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
     Vue.prototype.$skyAnalytics.navigation({ name: to.name })
+
+    // or
+
+    const analytics = useAnalytics()
+    analytics.navigate(to.name)
+
     next()
 })
 ```
+
+> [!WARNING]  
+> Use with caution, the methods `$skyAnalytics` make sure that the instance is initialized and the plugin is enabled. Otherwise, it will throw an error.
