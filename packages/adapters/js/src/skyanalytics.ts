@@ -17,6 +17,7 @@ export class SkyAnalytics {
                 'X-SkyAnalytics-Key': key,
             },
             body: JSON.stringify(payload),
+            credentials: 'include',
         })
     }
 
