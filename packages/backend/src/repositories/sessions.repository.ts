@@ -18,6 +18,7 @@ export class SessionRepository extends RepositoryCore<SelectSessionsSchema, Inse
             os: sessions.os,
             software: sessions.software,
             location: sql`${sessions.location}::jsonb`,
+            created_at: sessions.created_at,
         })
         .from(table)
         .leftJoin(sources, eq(sessions.source_id, sources.id))
