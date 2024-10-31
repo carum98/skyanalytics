@@ -213,15 +213,13 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
         if (sort_by !== undefined && sort_order !== undefined) {
             const column = this.columns.find((column) => column.name === sort_by) as PgColumn
 
-            /// TODO: Temporarily disable sorting
-            
-            // if (sort_order === 'desc') {
-            //     query = query.orderBy(desc(column))
-            // }
+            if (sort_order === 'desc') {
+                query = query.orderBy(desc(column))
+            }
 
-            // if (sort_order === 'asc') {
-            //     query = query.orderBy(asc(column))
-            // }
+            if (sort_order === 'asc') {
+                query = query.orderBy(asc(column))
+            }
         }
 
         // Execute the query and return the data
@@ -265,10 +263,16 @@ export abstract class RepositoryCore<TSelect, TInsert, TUpdate> {
         const fromIndex = toSQL.sql.lastIndexOf('from')
         const countQuery = 'select count(*) as count ' + toSQL.sql.substring(fromIndex)
 
-        const replacedQuery = countQuery.replace(/\$(\d+)/g, (_, index) => {
+        let replacedQuery = countQuery.replace(/\$(\d+)/g, (_, index) => {
             const value = toSQL.params[index - 1]
             return typeof value === 'string' ? `'${value}'` : value as string
         })
+
+        // Remove order by clause from the query to prevent errors
+        const orderIndex = replacedQuery.lastIndexOf('order by')
+        if (orderIndex !== -1) {
+            replacedQuery = replacedQuery.substring(0, orderIndex)
+        }
 
         const result = await this.db.execute(sql`${sql.raw(replacedQuery)}`)
 
