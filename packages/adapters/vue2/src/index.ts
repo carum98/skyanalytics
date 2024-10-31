@@ -21,6 +21,8 @@ export default {
                 el.$removeListener = () => el.removeEventListener('click', send)
             },
             unbind: (el: HTMLElementWithRemoveListener) => {
+                if (!skyanalytics.isInitialized) return
+
                 el.$removeListener()
             }
         })
