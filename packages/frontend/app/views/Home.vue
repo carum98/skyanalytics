@@ -75,7 +75,7 @@ const { data, refresh: onRefresh, loading } = useFetch<ApiStats>("/api/stats", {
 
 			<CompactViewsChart :data="item.views" />
 
-			<SourceCurrentVisitors :data="item.metrics" />
+			<SourceCurrentVisitors :data="item.metrics" :item="item" />
 		</article>
 
 		<template v-if="loading">

@@ -111,6 +111,7 @@ function onOpenMedata(medataValue?: string, medataKey?: string) {
 
             <SourceCurrentVisitors 
                 :item="item"
+                style="font-size: 16px;"
             ></SourceCurrentVisitors>
         </div>
 
