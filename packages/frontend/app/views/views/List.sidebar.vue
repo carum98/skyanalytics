@@ -84,7 +84,9 @@ const { el: scrollContainer, items } = useScrollPagination<IView>(["/api/views",
 			</template>
 
 			<template #cell(metadata)="{ value }">
-				<MedataBadge v-if="value" :metadata="value as Record<string, string>" />
+				<MedataBadge 
+					:metadata="value as any"
+				></MedataBadge>
 			</template>
 		</SkTable>
 	</section>

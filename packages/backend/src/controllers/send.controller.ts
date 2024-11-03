@@ -18,19 +18,23 @@ export class SendController {
             req.session.metadata = body.metadata
         }
 
+        // Merge metadata from session and request
+        const metadata = {
+            ...req.session.metadata,
+            ...body.metadata
+        }
+
         if (body.event) {
             await this.eventsService.create({ 
                 name: body.event,
-                session_id
+                session_id,
+                metadata: Object.keys(metadata).length > 0 
+                    ? metadata 
+                    : undefined
             })
         }
 
         if (body.navigation) {
-            const metadata = {
-                ...req.session.metadata,
-                ...body.metadata
-            }
-
             await this.navigationService.create({
                 name: body.navigation,
                 session_id,

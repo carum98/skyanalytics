@@ -1,5 +1,5 @@
 import { RepositoryCore } from '@core/repository.core'
-import { and, between, count, countDistinct, eq } from 'drizzle-orm'
+import { and, between, count, eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { events, InsertEventsSchema, paginatedEventsSchema, selectEventsSchema, SelectEventsSchema } from '@schemas/events.schemas'
 import { PaginationSchemaType } from '@utils/pagination'
@@ -15,6 +15,7 @@ export class EventsRepository extends RepositoryCore<SelectEventsSchema, InsertE
             id: events.id,
             name: events.name,
 			created_at: events.created_at,
+            metadata: events.metadata,
 			session: {
                 os: sessions.os,
                 software: sessions.software,

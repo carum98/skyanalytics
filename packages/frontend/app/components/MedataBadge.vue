@@ -2,7 +2,7 @@
 import { useLinkPopover } from '@composables/useLinkPopover'
 
 defineProps<{
-  metadata: Record<string, string>
+  metadata: Record<string, string> | null
 }>()
 
 const { anchor, positionedElement, show, close } = useLinkPopover({ 
@@ -12,7 +12,13 @@ const { anchor, positionedElement, show, close } = useLinkPopover({
 </script>
 
 <template>
-	<span class="medata-badge" v-bind="anchor" @mouseenter="show" @mouseleave="close">
+	<span 
+		class="medata-badge" 
+		:class="{ 'disabled': !metadata }" 
+		v-bind="anchor" 
+		@mouseenter="show" 
+		@mouseleave="close"
+	>
 		<i class="icon-database"></i>
 	</span>
 	<div class="medata-info" v-bind="positionedElement">
@@ -35,6 +41,11 @@ const { anchor, positionedElement, show, close } = useLinkPopover({
 	align-items: center;
 
 	color: gray;
+
+	&.disabled {
+		cursor: not-allowed;
+		opacity: 0.3;
+	}
 }
 
 .medata-info {

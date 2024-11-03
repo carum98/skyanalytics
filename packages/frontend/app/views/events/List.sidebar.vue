@@ -4,6 +4,7 @@ import { getCurrentTimeZone, formatDate } from '@/utils'
 import { useScrollPagination } from '@composables/useScrollPagination'
 
 import SkTable from '@ui/SkTable.vue'
+import MedataBadge from '@/components/MedataBadge.vue'
 
 const columns = [
 	{
@@ -27,6 +28,11 @@ const columns = [
 	{
 		name: 'Software',
 		key: 'session.software',
+	},
+	{
+		name: 'Metadata',
+		key: 'metadata',
+		tdClass: 'text-center'
 	}
 ]
 
@@ -70,6 +76,12 @@ const { el: scrollContainer, items } = useScrollPagination<IEvent>(["/api/events
 				<p class="flex justify-center ga-05">
 					<i v-if="value" class="sprites" :class="`sprites__${value}`"></i> {{ value }}
 				</p>
+			</template>
+
+			<template #cell(metadata)="{ value }">
+				<MedataBadge 
+					:metadata="value as any"
+				></MedataBadge>
 			</template>
 		</SkTable>
 	</section>
