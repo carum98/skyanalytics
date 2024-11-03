@@ -55,6 +55,8 @@ For example, to filter the events by the `sessions` field, you can use the follo
 
 For nested fields, you can use this syntax: `?sources[code][equal]=123`. This will return the events where the `sources.code` field is equal to `123`.
 
+For filtering values inside a jsonb field, you need to concatenate `json_` to the condition. For example, to filter the events by the `metadata` field, you can use the following query parameter: `?metadata[country][json_equal]=CR`. This will return the events where the `metadata.country` field is equal to `CR`.
+
 ## Stack
 - [Express](https://github.com/expressjs/express)
 - [PostgreSQL](https://www.postgresql.org)

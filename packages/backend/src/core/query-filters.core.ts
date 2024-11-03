@@ -65,9 +65,14 @@ function parseData (table: string, key: string, data: string | object): { table_
     } else {
         const [condition, rawData] = Object.entries(data)[0] as [string, string]
 
+        const isJsonCondition = condition.includes('json_')
+
+        const table_column = isJsonCondition ? `${table}->>'${key}'` : `${table}.${key}`
+        const condition_symbol = conditions[condition.replace('json_', '')]
+
         return {
-            table_column: `${table}.${key}`,
-            condition_symbol: conditions[condition],
+            table_column,
+            condition_symbol,
             rawData
         }
     }
