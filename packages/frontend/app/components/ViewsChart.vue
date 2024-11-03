@@ -7,6 +7,7 @@ import type { DateSelectorValue } from '@components/DateSelector.vue'
 import { useFetch } from '@composables/useFetch'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Interaction, type InteractionOptions, type ChartEvent, type InteractionModeFunction } from 'chart.js'
 import { getCurrentTimeZone } from '@/utils'
+import { useSidebar } from '@composables/useSidebar'
 
 declare module 'chart.js' {
   interface InteractionModeMap {
@@ -18,6 +19,8 @@ const props = defineProps<{
     item: ISources
     filters: DateSelectorValue | undefined
 }>()
+
+const sidebar = useSidebar()
 
 // data
 let chart: Chart | null = null
@@ -73,7 +76,14 @@ function handleClick(context: ChartEvent & { chart: Chart, native: PointerEvent 
         const index = element.at(0)!.index
         const dataset = datasets.at(datasetIndex)
 
-        console.log(dataset?.data.at(index))
+        const value = Object.entries(data.value as any)[index]
+        const key = value[0]
+
+        if (dataset?.label === 'Sessions') {
+            onOpenSessions(key)
+        } else if (dataset?.label === 'Views') {
+            onOpenViews(key)
+        }
     }
 }
 
@@ -230,6 +240,58 @@ function processDateLabels(values: string[]) {
     }
 
     return values
+}
+
+function onOpenViews(date: string) {
+    const { start, end } = formatRange(date)
+
+    sidebar.push({ 
+        name: 'views.list',
+        props: { 
+            sourceCode: props.item.code,
+            query: {
+                start,
+                end
+            }
+        }
+    })
+}
+
+function onOpenSessions(date: string) {
+    const { start, end } = formatRange(date)
+
+    sidebar.push({ 
+        name: 'sessions.list',
+        props: { 
+            sourceCode: props.item.code,
+            query: {
+                start,
+                end
+            }
+        }
+    })
+}
+
+function formatRange(value: string) {
+    let start = value
+    let end = value
+
+    if (start.length === 7) {
+        start += '-01'
+        end += '-31'
+    }
+
+    if (start.length === 10) {
+        start += 'T00'
+        end += 'T23'
+    }
+
+    if (start.length === 13) {
+        start += ':00:00'
+        end += ':59:59'
+    }
+
+    return { start, end }
 }
 </script>
 

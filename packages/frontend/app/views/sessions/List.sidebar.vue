@@ -7,6 +7,7 @@ import SkTable from '@components/ui/SkTable.vue'
 
 const props = defineProps<{
 	query: Record<string, string>
+	sourceCode: string
 }>()
 
 const columns = [
@@ -30,7 +31,8 @@ const columns = [
 const { el: scrollContainer, items } = useScrollPagination<ISession>(["/api/sessions", {
 	query: {
 		...props.query,
-		per_page: '25'
+		per_page: '25',
+		['sources[code][equal]']: props.sourceCode,
 	},
 	headers: {
 		'x-timezone': getCurrentTimeZone()

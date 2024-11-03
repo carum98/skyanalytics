@@ -3,7 +3,8 @@ export default defineEventHandler(async (event) => {
 
 	const sources = await useApiFetch<ISourcesPagination>(event, '/sources', {
 		query: {
-			per_page: 15
+			per_page: 15,
+			sort_order: 'asc',
 		}
 	})
 

@@ -35,27 +35,30 @@ const { data: stat } = useFetch<IStats>(`/api/sources/${route.params.code}/stats
 function onOpenSessions(field?: string, value?: string) {
     const query = {
         [`${field}[equal]`]: value,
-        ['sources[code][equal]']: route.params.code,
         ...filters?.value || {},
     }
 
     sidebar.push({ 
         name: 'sessions.list',
-        props: { query }
+        props: { 
+            query,
+            sourceCode: route.params.code
+        }
     })
 }
 
 function onOpenViews(viewName?: string) {
     const query = {
-        per_page: 20,
         ['navigations[name][equal]']: viewName,
-        ['sources[code][equal]']: route.params.code,
         ...filters?.value || {},
     }
 
     sidebar.push({ 
         name: 'views.list',
-        props: { query }
+        props: { 
+            query,
+            sourceCode: route.params.code
+        }
     })
 }
 
@@ -71,6 +74,22 @@ function onOpenEvents(eventName?: string) {
 		name: 'events.list',
 		props: { query }
 	})
+}
+
+function onOpenMedata(medataValue?: string, medataKey?: string) {
+    const query = {
+        per_page: 20,
+        [`metadata[${medataKey}][json_equal]`]: medataValue,
+        ...filters?.value || {},
+    }
+
+    sidebar.push({ 
+        name: 'views.list',
+        props: { 
+            query,
+            sourceCode: route.params.code
+        }
+    })
 }
 </script>
 
@@ -125,7 +144,7 @@ function onOpenEvents(eventName?: string) {
 
 		<template v-if="stat?.metadata">
 			<StatCard v-for="(item, value) in stat.metadata" disable-external :title="value">
-				<CountersList disable-sprites :items="item" />
+				<CountersList disable-sprites :items="item" @row-click="onOpenMedata($event, value)" />
 			</StatCard>
 		</template>
 

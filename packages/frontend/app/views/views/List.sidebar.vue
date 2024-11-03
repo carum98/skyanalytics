@@ -38,10 +38,15 @@ const columns = [
 
 const props = defineProps<{
 	query: Record<string, string>
+	sourceCode: string
 }>()
 
 const { el: scrollContainer, items } = useScrollPagination<IView>(["/api/views", {
-	query: props.query,
+	query: {
+		...props.query,
+		['sources[code][equal]']: props.sourceCode,
+		per_page: '20'
+	},
 	headers: {
 		'x-timezone': getCurrentTimeZone()
 	}

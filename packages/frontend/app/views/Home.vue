@@ -79,7 +79,7 @@ const { data, refresh: onRefresh, loading } = useFetch<ApiStats>("/api/stats", {
 		</article>
 
 		<template v-if="loading">
-			<article v-for="i in 10" :key="i">
+			<article v-for="i in 11" :key="i">
 				<header>
 					<div class="skeleton" style="width: 35px; height: 35px;"></div>
 					<div class="skeleton" style="width: 150px; height: 40px;"></div>
@@ -106,7 +106,7 @@ const { data, refresh: onRefresh, loading } = useFetch<ApiStats>("/api/stats", {
 .home-panel {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-	grid-template-rows: min-content;
+	grid-auto-rows: min-content;
 	align-items: start;
 	gap: 1rem;
 
