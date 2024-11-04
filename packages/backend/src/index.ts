@@ -25,6 +25,8 @@ import { RefreshTokenRepository } from '@repositories/refresh_token.repository'
 import { SessionsRouter } from '@routes/sessions.routes'
 import { LocationsService } from '@services/locations.service'
 import { LocationsRouter } from '@routes/locations.routes'
+import { SummaryRepository } from '@repositories/summary.repository'
+import { SummaryService } from '@services/summary.service'
 
 const di = DepencyInjection.getInstance()
 
@@ -38,6 +40,7 @@ di.register(() => new SessionRepository(di.resolve(Database).db))
 di.register(() => new NavigationRepository(di.resolve(Database).db))
 di.register(() => new UserAccountsRepository(di.resolve(Database).db))
 di.register(() => new RefreshTokenRepository(di.resolve(Database).db))
+di.register(() => new SummaryRepository(di.resolve(Database).db))
 
 // Register Services
 di.register(() => new EventsService(di.resolve(EventsRepository)))
@@ -61,6 +64,8 @@ di.register(() => new AuthService(
 ))
 
 di.register(() => new LocationsService(di.resolve(SessionRepository)))
+
+di.register(() => new SummaryService(di.resolve(SummaryRepository)))
 
 const server = new Server()
 
