@@ -3,6 +3,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import handlebars from 'handlebars'
 import { config } from 'config/email.config'
+import juice from 'juice'
 
 type SendEmailOptions = {
 	to: string
@@ -24,11 +25,15 @@ export async function sendEmail({ to, subject, template, data }: SendEmailOption
 	const html = compiled(data)
 
 	const transporter = nodemailer.createTransport(config)
+	const inlineHtml = juice(html)
+
+	// return inlineHtml
 
 	return await transporter.sendMail({
 		from: `"SkyAnalytics" <${process.env.EMAIL_USER}>`,
 		to,
 		subject,
-		html,
+		html: inlineHtml,
+		encoding: 'utf8'
 	})
 }
