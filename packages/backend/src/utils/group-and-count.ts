@@ -16,3 +16,13 @@ function getValue(item: any, path: string) {
 
 	return keys.reduce((acc, key) => acc[key], item) as string
 }
+
+// This is a same function as groupByAndCount, but it returns the data in an array of objects
+export function groupByAndCountObject(data: any[], path: string) {
+    const value = groupByAndCount(data, path)
+
+    return Object.entries(value).map(([name, count]) => ({
+        name,
+        count
+    }))
+}

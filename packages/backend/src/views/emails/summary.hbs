@@ -33,11 +33,22 @@
 				width: 30%;
 				background-color: #f2f5fc;
 				border-radius: 15px;
+				vertical-align: top;
+			}
+
+			.footer {
+				margin: 0 auto;
+				text-align: center;
+				color: gray;
 			}
 
 			.list td:nth-child(2) {
 				width: 100%;
 				padding: 10px;
+			}
+
+			.list td:last-of-type {
+				text-align: right;
 			}
 
 			.list td:last-of-type span {
@@ -51,19 +62,14 @@
 				border-bottom: 1px solid #e0e0e0;
 			}
 
-			:root {
-				--sprite-size: 25px;
-			}
-
 			.sprite {
-				width: var(--sprite-size);
-				height: var(--sprite-size);
+				width: 25px;
+				height: 25px;
 				display: inline-block;
 				background-size: 200px;
 				background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABLCAMAAAACojjaAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAC8VBMVEVHcEwDtvk+njskKTgyp08nfqxU33Zzqp4/isTm3N38/PsYd77sHCTqR07qYGX08N8sw9fqKy39zkr08+/X2dgUdsIMTY/n6Okzwe7/yzcbdbvrPULo5+UeHh83q1YYSpMWGSLm5OXooqXnx8kldlr0UFMbdbsrOZAgQ5MNfsfg4OBHxfvd3NoyxrQWdb06w/anrcstxcanrcopO5A7w/ImLlPvImAMUpRHxfs0qFM6vO7sQED9/f39tynpKSgpnUBCw/kllERHxfvoVVEnOo4OVpj6wRbomZ7xkVTphovnsrbqZWskKTgkKTfsHSTO09c5u1Yxe0HUTEzznxttmrcZjSPPsUTqWl/9wyD+0i8Ff9ISiAcAAADmDnZBxfHgGn8ipcoxwfQ/0I0NVpn/20QSdsX/xznuJz/l4uMik0LV1dXFKjkHba37Uz3hqB8sub3IZHu/hJHDV0r6aT/vKmaQkSXm5+hE02dzbjk3yF39jT23Q8XnubwrOZAWkNf/cTMP///4fiYbHJDm5+gbdbvsHCQrOZD///8AAAD08+4kKTg0qFMAre8SiAdHxfvjOi4jk0L7wRYac+jt8PEFftYEVp4xoeoNUpj/wQcrreQKi8IWZJXh4eFDgqoNj9n/TTkbTWk+RUTN09H/3EEQEBAqe87/QUA6e6TiD2mqq6wqmdv9NEsvweNQfMd3e35C0olZpe06y2b/YjCNkZPDxL9os+8rbscthdj+lzS0ubUlMjbx4qoxkOfF2O39tzCooZVcis//eC8ojtKxPuerzvVSU1M7zZ+ZTfT/ohgxdaP42Xr7sU03NDH/6keNrtZla2b/ihlgQbWZwfBbk+F1svJ7XPAhapxboGNSYmahx6tjVtWwytsUf7QfP1Xy6cjZjYmqu85zns+GkHvFEBZ6TC/fx4Bliq/gdWnY172LmL8iMEIIarbtuLF8RdO3kyDT5/jDvZSPb1Kog1zCtHGcWYA+VZnCUXn56eJ2yYHxzsuLyG5fc0CTAAAA7HRSTlMA/sT+QBP9B/7M+5zwwsAT/tz+2Prr/vT+/t7Fh/5gSKjf0sgs/sfqmP5ggDv9V8+//cCqaVz9dernIDaqUoCCOPSwItPj5NT9wsC/8c6j26r+/fnAov/RxZjG6vXZUKL6nqi55kY3S7Lasd7e/tWu9cvXzm7y0X7p76j8j369iFzp/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////q58SPwAAA33SURBVGjezZl5WFNXGsavFrwdcGrBgKJszoAitTodFyou1AWHmbFK7eiorVu11Trd1+kyM888CUSkltDIfrUmiBiUGE0AQwIBhIpAQQERlLIJuNR9bfvXnHPukntz73HKTJKnLxjuzXmSc373+97znXMkCJzI0Jd3iPVyKDlqrpeSJ+bGa+4o8JnA0UlCjQ4k0bfNDF26k6+loTMJNylUAKCxBTFXoXP5GEm6GhlzOZec4oiBUKYQRNjzO8V6Psw9IIJ4NCmV+5nLIH48vPQ7dlDs9SiOw6TXaIwcCUlIcQAS94DwORqUSjN7vZ8fEPCuJom9CWSHTpVC2djbwJk7pTXT7SBGpTZIEqRpR4OWu7EHBGC0l2q4kITyR3/1u305ndl7s8FlqFtBghr27zAb9wdp9gtB1CazVq5p0pp0MiYmnC1MZr1e1lTK3bM+Bwj79n5BC4IsdfaYg4W28wi2g+w3gxHKjSY4UF2QHcRLq4HXNQ3wrRqtEMSs79M36Esp9h5CtGVDhOx9X/BAHnMyh0dysifv1jM52YMFCdLyE0lnB9E2COY0L2FEbqRm3ugvNfNBmOG7FASMPJ53G09zoRHaBBz7OZCkGgFHkkNqrXrxRvmqUr27QYgYFAMyzCMMVK+w5OQYNrWC+BzKBrtHZIIiY+Y88hANXKOrs6i1Go3M3SDk7OThMcOToYYHD0+eTbIgGgEIz+w2AYhaaHazRg2l50LiNhAiOJmvYEISxMQD0QmqjBBE3m5EIObSUp2bQTxmC0Bme0iCeOFA2NrOgBhr1LTaS2vkHMg+Vt8BXb16dafzQUhhPNiYiIqfssYOot0hrJc8EEpjZECM7aVGd0YEzL7JL7zAQaDLMGbWosQkCEQdJCThTb/GdooB0bXXNLkRBDg9WRVUyoGUBqmSod/RCPUCEKWGBfFqEq7udXaQJj3DoTYbNe1uBImBUQjScCCaIBiSGIJd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');
 				background-repeat: no-repeat;
-				background-position: 0 0;
-				background-color: var(--background-color);
+				background-position: 0 300px;
 				border-radius: 5px;
 			}
 
@@ -159,11 +165,11 @@
 				<td>
 					<h2>Visitors</h2>
 					<table class="list">
-						{{#each summary}}
+						{{#each data.visitors}}
 							<tr>
-								<td><div class="sprite sprites__CR"></div></td>
+								<td></td>
 								<td>{{this.name}}</td>
-								<td><span>0</span></td>
+								<td><span>{{ this.count }}</span></td>
 							</tr>
 						{{/each}}
 					</table>
@@ -172,11 +178,11 @@
 				<td>
 					<h2>Countries</h2>
 					<table class="list">
-						{{#each summary}}
+						{{#each data.country}}
 							<tr>
-								<td><div class="sprite"></div></td>
+								<td><div class="sprite sprites__{{this.name}}"></div></td>
 								<td>{{this.name}}</td>
-								<td><span>0</span></td>
+								<td><span>{{ this.count }}</span></td>
 							</tr>
 						{{/each}}
 					</table>
@@ -186,11 +192,11 @@
 				<td>
 					<h2>Operating Systems</h2>
 					<table class="list">
-						{{#each summary}}
+						{{#each data.os}}
 							<tr>
-								<td><div class="sprite sprites__edge_130.2.2"></div></td>
+								<td><div class="sprite sprites__{{this.name}}"></div></td>
 								<td>{{this.name}}</td>
-								<td><span>0</span></td>
+								<td><span>{{ this.count }}</span></td>
 							</tr>
 						{{/each}}
 					</table>
@@ -199,14 +205,21 @@
 				<td>
 					<h2>Software</h2>
 					<table class="list">
-						{{#each summary}}
+						{{#each data.software}}
 							<tr>
-								<td><div class="sprite"></div></td>
+								<td><div class="sprite sprites__{{this.name}}"></div></td>
 								<td>{{this.name}}</td>
-								<td><span>0</span></td>
+								<td><span>{{ this.count }}</span></td>
 							</tr>
 						{{/each}}
 					</table>
+				</td>
+			</tr>
+		</table>
+		<table class="footer">
+			<tr>
+				<td>
+					Data range: {{ data.dates.start }} - {{ data.dates.end }}
 				</td>
 			</tr>
 		</table>

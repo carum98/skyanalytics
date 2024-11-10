@@ -14,7 +14,7 @@ export class SummaryService {
 			subject: 'SkyAnalytics -- Summary',
 			template: 'summary',
 			data: {
-				summary: data
+				data
 			}
 		})
 	}
