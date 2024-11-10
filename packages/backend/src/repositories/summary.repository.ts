@@ -29,6 +29,7 @@ export class SummaryRepository {
 		const visitors = await this.db.selectDistinct({
 			code: sources.code,
 			name: sources.name,
+			icon_path: sources.icon_path,
 			session_id: sessions.id,
 		})
 		.from(sessions)
@@ -68,6 +69,7 @@ const formatDate = (date: Date) => {
 function visitorsParser(data: any[]) {
 	return Object.entries(Object.groupBy(data, (v) => v?.code || '')).map(([_, value]) => ({
 		name: value?.at(0)?.name || 'Unknown',
+		icon_path: value?.at(0)?.icon_path,
 		count: value?.length || 0
 	})).sort((a, b) => b.count - a.count)
 }

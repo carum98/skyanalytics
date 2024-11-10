@@ -22,7 +22,11 @@ export async function sendEmail({ to, subject, template, data }: SendEmailOption
 
 	const source = fs.readFileSync(path.resolve(__dirname, `../views/emails/${template}.hbs`), 'utf8')
 	const compiled = handlebars.compile(source)
-	const html = compiled(data)
+	const html = compiled(data, {
+		helpers: {
+			base64ImageSrc
+		}
+	})
 
 	const transporter = nodemailer.createTransport(config)
 	const inlineHtml = juice(html)
@@ -36,4 +40,11 @@ export async function sendEmail({ to, subject, template, data }: SendEmailOption
 		html: inlineHtml,
 		encoding: 'utf8'
 	})
+}
+
+const base64ImageSrc = (imagePath: string) => {
+	const bitmap = fs.readFileSync(imagePath)
+	const base64String = Buffer.from(bitmap).toString('base64')
+  
+	return new handlebars.SafeString(`data:image/png;base64,${base64String}`)
 }

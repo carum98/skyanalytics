@@ -13,8 +13,6 @@
                 color: #000000;
             }
 
-
-
 			ul {
 				list-style-type: none;
 			}
@@ -60,6 +58,11 @@
 
 			.list tr:not(:last-of-type) td {
 				border-bottom: 1px solid #e0e0e0;
+			}
+
+			.icon {
+				width: 25px;
+				height: 25px;
 			}
 
 			.sprite {
@@ -167,7 +170,11 @@
 					<table class="list">
 						{{#each data.visitors}}
 							<tr>
-								<td></td>
+								<td>
+									{{#if this.icon_path}}
+										<img class="icon" src="{{base64ImageSrc this.icon_path}}" alt="image" />
+									{{/if}}
+								</td>
 								<td>{{this.name}}</td>
 								<td><span>{{ this.count }}</span></td>
 							</tr>
@@ -219,7 +226,7 @@
 		<table class="footer">
 			<tr>
 				<td>
-					Data range: {{ data.dates.start }} - {{ data.dates.end }}
+					Range: {{ data.dates.start }} - {{ data.dates.end }}
 				</td>
 			</tr>
 		</table>
