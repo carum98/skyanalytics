@@ -57,6 +57,12 @@ For nested fields, you can use this syntax: `?sources[code][equal]=123`. This wi
 
 For filtering values inside a jsonb field, you need to concatenate `json_` to the condition. For example, to filter the events by the `metadata` field, you can use the following query parameter: `?metadata[country][json_equal]=CR`. This will return the events where the `metadata.country` field is equal to `CR`.
 
+## Send Email
+The API can send emails to the users. To set up the email service, you need to set the following environment variables: 
+- `EMAIL_USER`: The email address that will send the emails.
+- `EMAIL_PASSWORD`: The password of the email address.
+Recommend generating an app password for the email address, to avoid using the real password. This password can be generated in the email provider settings.
+
 ## Stack
 - [Express](https://github.com/expressjs/express)
 - [PostgreSQL](https://www.postgresql.org)

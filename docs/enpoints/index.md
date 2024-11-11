@@ -38,3 +38,7 @@
 - [[PUT /users/:code] - Update User](users/update.md)
 - [[DELETE /users/:code] - Remove User](users/remove.md)
 - [[GET /users/:code] - Get One User](users/getOne.md)
+
+## Settings
+- [[GET /settings/:key] - Get Settings](settings/get.md)
+- [[POST /settings/:key] - Update Settings](settings/update.md)

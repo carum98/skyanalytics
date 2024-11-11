@@ -27,6 +27,8 @@ import { LocationsService } from '@services/locations.service'
 import { LocationsRouter } from '@routes/locations.routes'
 import { SummaryRepository } from '@repositories/summary.repository'
 import { SummaryService } from '@services/summary.service'
+import { SettingsRepository } from '@repositories/settings.repository'
+import { SettingsRouter } from '@routes/settings.routes'
 
 const di = DepencyInjection.getInstance()
 
@@ -41,6 +43,7 @@ di.register(() => new NavigationRepository(di.resolve(Database).db))
 di.register(() => new UserAccountsRepository(di.resolve(Database).db))
 di.register(() => new RefreshTokenRepository(di.resolve(Database).db))
 di.register(() => new SummaryRepository(di.resolve(Database).db))
+di.register(() => new SettingsRepository(di.resolve(Database).db))
 
 // Register Services
 di.register(() => new EventsService(di.resolve(EventsRepository)))
@@ -65,7 +68,10 @@ di.register(() => new AuthService(
 
 di.register(() => new LocationsService(di.resolve(SessionRepository)))
 
-di.register(() => new SummaryService(di.resolve(SummaryRepository)))
+di.register(() => new SummaryService(
+    di.resolve(SummaryRepository),
+    di.resolve(SettingsRepository)
+))
 
 const server = new Server()
 
@@ -77,7 +83,8 @@ server.routes([
     new NavigationsRouter(di),
     new UserAccountsRouter(di),
     new SessionsRouter(di),
-    new LocationsRouter(di)
+    new LocationsRouter(di),
+    new SettingsRouter(di)
 ])
 
 server.middleware(errorMiddleware)
