@@ -12,9 +12,10 @@ export class DepencyInjection {
         return DepencyInjection.instance;
     }
     
-    public register<T>(type: () => T): void {
+    public register<T>(type: () => T): T {
         const instance = type() as T & { constructor: { name: string } }
         this.container.set(instance.constructor.name, instance)
+        return instance
     }
 
     public resolve<T>(type: new (...args: any[]) => T): T {

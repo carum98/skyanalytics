@@ -33,45 +33,28 @@ import { SettingsRouter } from '@routes/settings.routes'
 const di = DepencyInjection.getInstance()
 
 // Register the Database
-di.register(() => new Database())
+const database = di.register(() => new Database())
 
 // Register Repositories
-di.register(() => new EventsRepository(di.resolve(Database).db))
-di.register(() => new SourcesRepository(di.resolve(Database).db))
-di.register(() => new SessionRepository(di.resolve(Database).db))
-di.register(() => new NavigationRepository(di.resolve(Database).db))
-di.register(() => new UserAccountsRepository(di.resolve(Database).db))
-di.register(() => new RefreshTokenRepository(di.resolve(Database).db))
-di.register(() => new SummaryRepository(di.resolve(Database).db))
-di.register(() => new SettingsRepository(di.resolve(Database).db))
+const db = database.db
+const eventsRepository = di.register(() => new EventsRepository(db))
+const sourcesRepository = di.register(() => new SourcesRepository(db))
+const sessionRepository = di.register(() => new SessionRepository(db))
+const navigationRepository = di.register(() => new NavigationRepository(db))
+const userAccountsRepository = di.register(() => new UserAccountsRepository(db))
+const refreshTokenRepository = di.register(() => new RefreshTokenRepository(db))
+const summaryRepository = di.register(() => new SummaryRepository(db))
+const settingsRepository = di.register(() => new SettingsRepository(db))
 
 // Register Services
-di.register(() => new EventsService(di.resolve(EventsRepository)))
-di.register(() => new SessionService(
-    di.resolve(SessionRepository),
-    di.resolve(SourcesRepository)
-))
-di.register(() => new NavigationsService(di.resolve(NavigationRepository)))
-
-di.register(() => new SourcesService(
-    di.resolve(SourcesRepository), 
-    di.resolve(SessionRepository),
-    di.resolve(NavigationRepository),
-    di.resolve(EventsRepository)
-))
-
-di.register(() => new UserAccountsService(di.resolve(UserAccountsRepository)))
-di.register(() => new AuthService(
-    di.resolve(UserAccountsRepository),
-    di.resolve(RefreshTokenRepository)
-))
-
-di.register(() => new LocationsService(di.resolve(SessionRepository)))
-
-di.register(() => new SummaryService(
-    di.resolve(SummaryRepository),
-    di.resolve(SettingsRepository)
-))
+di.register(() => new EventsService(eventsRepository))
+di.register(() => new SessionService(sessionRepository, sourcesRepository))
+di.register(() => new NavigationsService(navigationRepository))
+di.register(() => new SourcesService(sourcesRepository, sessionRepository, navigationRepository, eventsRepository))
+di.register(() => new UserAccountsService(userAccountsRepository))
+di.register(() => new AuthService(userAccountsRepository, refreshTokenRepository))
+di.register(() => new LocationsService(sessionRepository))
+di.register(() => new SummaryService(summaryRepository, settingsRepository))
 
 const server = new Server()
 
