@@ -6,7 +6,6 @@ import { requestMiddleware } from '@middlewares/request.middleware'
 import { loginBodySchema, refreshTokenBodySchema } from '@schemas/_request'
 import { sessionPayload } from '@schemas/_session'
 import { AuthService } from '@services/auth.service'
-import { SummaryService } from '@services/summary.service'
 
 export class BaseRouter extends RouterCore {
     constructor(di: DepencyInjection) {
@@ -49,15 +48,5 @@ export class BaseRouter extends RouterCore {
 				})
 			]
 		})
-
-        this.post({
-            name: '/send-email',
-            handler: async (_, res) => {
-                const service = di.resolve(SummaryService)
-
-                const response = await service.sendEmail()
-                res.send(response)
-            },
-        })
     }
 }

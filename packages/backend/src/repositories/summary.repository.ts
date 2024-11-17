@@ -9,8 +9,8 @@ import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 export class SummaryRepository {
 	constructor (public readonly db: NodePgDatabase) {}
 
-	public async getData() {
-		const range = rangeDates(DateRange.last_7_days)
+	public async getData(dateRange: DateRange) {
+		const range = rangeDates(dateRange)
 		const start = new Date(range.start)
 		const end = new Date(range.end)
 

@@ -29,6 +29,9 @@ import { SummaryRepository } from '@repositories/summary.repository'
 import { SummaryService } from '@services/summary.service'
 import { SettingsRepository } from '@repositories/settings.repository'
 import { SettingsRouter } from '@routes/settings.routes'
+import { TasksScheduler } from '@core/tasks-scheduler.core'
+import { SummaryTask } from '@tasks/summary.tasks'
+import { TasksSchedulerRouter } from '@routes/task-scheduler.routes'
 
 const di = DepencyInjection.getInstance()
 
@@ -56,6 +59,14 @@ di.register(() => new AuthService(userAccountsRepository, refreshTokenRepository
 di.register(() => new LocationsService(sessionRepository))
 di.register(() => new SummaryService(summaryRepository, settingsRepository))
 
+// Tasks Scheduler
+const tasksScheduler = di.register(() => new TasksScheduler())
+
+tasksScheduler.tasks([
+    new SummaryTask(di)
+])
+
+// API Server
 const server = new Server()
 
 server.routes([
@@ -67,9 +78,12 @@ server.routes([
     new UserAccountsRouter(di),
     new SessionsRouter(di),
     new LocationsRouter(di),
-    new SettingsRouter(di)
+    new SettingsRouter(di),
+    new TasksSchedulerRouter(di)
 ])
 
 server.middleware(errorMiddleware)
 
+// Start the server and tasks scheduler
 server.listen(3000)
+tasksScheduler.start()

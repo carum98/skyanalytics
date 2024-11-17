@@ -6,7 +6,7 @@ import { config } from 'config/email.config'
 import juice from 'juice'
 
 type SendEmailOptions = {
-	to: string
+	to: string | string[]
 	subject: string
 	template: string
 	data: Record<string, any>

@@ -42,3 +42,7 @@
 ## Settings
 - [[GET /settings/:key] - Get Settings](settings/get.md)
 - [[POST /settings/:key] - Update Settings](settings/update.md)
+
+## Tasks Scheduler
+- [[GET /tasks-scheduler] - Get All Tasks](tasks-scheduler/getAll.md)
+- [[POST /tasks-scheduler/:name/run] - Run Task](tasks-scheduler/run.md)
