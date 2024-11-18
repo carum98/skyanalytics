@@ -83,7 +83,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
-          echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD }}\nDB_DATABASE=${{ secrets.DB_DATABASE }}\nDB_USER=${{ secrets.DB_USER }}\nURL_BACKEND=${{ vars.URL_BACKEND }}\nPORT_BACKEND=${{ vars.PORT_BACKEND }}\nPORT_FRONTEND=${{ vars.PORT_FRONTEND }}\nPORT_FRONTEND_NITRO=${{ vars.PORT_FRONTEND_NITRO }}\nCOMPOSE_PROFILES=active" > ~/analytics/.env
+          echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD }}\nDB_DATABASE=${{ secrets.DB_DATABASE }}\nDB_USER=${{ secrets.DB_USER }}\nEMAIL_USER=${{ vars.EMAIL_USER }}\nEMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}\nURL_BACKEND=${{ vars.URL_BACKEND }}\nPORT_BACKEND=${{ vars.PORT_BACKEND }}\nPORT_FRONTEND=${{ vars.PORT_FRONTEND }}\nPORT_FRONTEND_NITRO=${{ vars.PORT_FRONTEND_NITRO }}\nCOMPOSE_PROFILES=active" > ~/analytics/.env
 
   docker-compose-up:
     runs-on: ubuntu-latest
