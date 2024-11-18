@@ -10,9 +10,10 @@ type SendEmailOptions = {
 	subject: string
 	template: string
 	data: Record<string, any>
+	onlyHtml?: boolean
 }
 
-export async function sendEmail({ to, subject, template, data }: SendEmailOptions) {
+export async function sendEmail({ to, subject, template, data, onlyHtml }: SendEmailOptions) {
 	const isEnable = process.env.EMAIL_USER && process.env.EMAIL_PASSWORD
 
 	if (!isEnable) {
@@ -31,7 +32,7 @@ export async function sendEmail({ to, subject, template, data }: SendEmailOption
 	const transporter = nodemailer.createTransport(config)
 	const inlineHtml = juice(html)
 
-	// return inlineHtml
+	if (onlyHtml) return inlineHtml
 
 	return await transporter.sendMail({
 		from: `"SkyAnalytics" <${process.env.EMAIL_USER}>`,

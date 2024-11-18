@@ -25,5 +25,9 @@ export async function $fetch<T>(url: string, options?: FetchRequestOptions) {
         return null as unknown as T
     }
 
-    return await response.json() as T
+    if (response.headers.get('Content-Type')?.includes('application/json')) {
+        return await response.json() as T
+    } 
+
+    return await response.text() as unknown as T
 }

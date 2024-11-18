@@ -8,11 +8,15 @@ export class UserAccountsController {
     constructor(private service: UserAccountsService) {}
 
     getAll = async (req: Request, res: Response): Promise<void> => {
-        const query = req.query as unknown as PaginationSchemaType
+        const query = req.query as unknown as PaginationSchemaType & { options?: boolean }
 
-        const userAccounts = await this.service.getAll(query)
-        
-        res.json(userAccounts)
+        if (query.options) {
+            const data = await this.service.getOptions()
+            res.json({ data })
+        } else {
+            const userAccounts = await this.service.getAll(query)
+            res.json(userAccounts)
+        }
     }
 
     get = async (req: Request, res: Response): Promise<void> => {
@@ -44,5 +48,13 @@ export class UserAccountsController {
         if (data) {
             res.status(204).json()
         }
+    }
+
+    getOptions = async (req: Request, res: Response): Promise<void> => {
+        const data = await this.service.getOptions()
+
+        res.json({ data })
+
+        return
     }
 }

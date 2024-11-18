@@ -51,6 +51,11 @@ const routes: RouteRecordRaw[] = [
 				name: 'settings.users',
 				path: 'users',
 				component: () => import('@views/users/List.vue'),
+			},
+			{
+				name: 'settings.summary',
+				path: 'summary',
+				component: () => import('@views/summary/Profile.vue'),
 			}
 		]
 	},
@@ -81,9 +86,27 @@ const dialogs: DialogRecordRaw[] = [
         }
     },
 	{
+		name: 'summary.form',
+		component: () => import('@views/summary/Form.vue'),
+		rootProps: {
+            width: 300
+        }
+	},
+    {
+        name: 'summary.preview',
+        component: () => import('@views/summary/Preview.vue'),
+        rootProps: {
+            width: 1100
+        }
+    },
+	{
 		name: 'remove',
 		component: () => import('@components/DialogRemove.vue'),
-	}
+	},
+    {
+        name: 'confirm',
+        component: () => import('@components/DialogConfirm.vue'),
+    }
 ]
 
 const sidebars: SidebarRecordRaw[] = [

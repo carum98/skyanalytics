@@ -17,7 +17,8 @@ export default defineEventHandler(async (event) => {
         return useApiFetch(event, slug, {
             method,
             body,
-            headers
+            headers,
+            query
         })
     }  else if (method === 'DELETE') {
         return useApiFetch(event, slug, {

@@ -26,4 +26,8 @@ export class UserAccountsService {
     public async delete(code: string) {
         return this.userAccountsRepository.delete(code)
     }
+
+    public async getOptions() {
+        return this.userAccountsRepository.getOptions()
+    }
 }

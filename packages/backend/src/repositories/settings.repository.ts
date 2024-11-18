@@ -27,6 +27,10 @@ export class SettingsRepository {
 
 		return {
 			...data,
+			date_range: {
+				value: data.date_range,
+				name: data.date_range.replaceAll('_', ' ').replace(/^./, char => char.toUpperCase())
+			},
 			users: emails.map((email) => email.email)
 		}
 	}
@@ -55,6 +59,7 @@ export class SettingsRepository {
 			eq(settings.key, key)
 		)
 
-		return data.at(0)?.data
+		const value = data.at(0)?.data
+		return value && Object.keys(value).length ? value : undefined
 	}
 }

@@ -8,6 +8,7 @@ import { paramsCode } from '@schemas/_params'
 import { insertUserAccountsSchema } from '@schemas/user_accounts.schemas'
 import { UserAccountsService } from '@services/user_accounts.service'
 import { PaginationSchema } from '@utils/pagination'
+import { z } from 'zod'
 
 export class UserAccountsRouter extends RouterCore {
     constructor(di: DepencyInjection) {
@@ -25,7 +26,9 @@ export class UserAccountsRouter extends RouterCore {
             handler: controller.getAll,
             middlewares: [
                 requestMiddleware({
-                    query: PaginationSchema,
+                    query: PaginationSchema.merge(z.object({
+                        options: z.string().optional().transform(value => value === 'true'),
+                    }))
                 })
             ]
         })

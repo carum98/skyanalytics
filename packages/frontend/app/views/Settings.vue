@@ -9,6 +9,10 @@ import { RouterLink, RouterView } from 'vue-router'
 				<i class="icon-users"></i>
 				Users
 			</RouterLink>
+			<RouterLink :to="{ name: 'settings.summary' }">
+				<i class="icon-envelope"></i>
+				Summary
+			</RouterLink>
 		</nav>
 
 		<div class="w-100">

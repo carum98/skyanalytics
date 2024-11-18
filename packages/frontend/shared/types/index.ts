@@ -137,3 +137,12 @@ export type ApiStats =
 		metrics: IMetrics;
 		views: IView;
 	}>
+
+export type ApiSettingsSummary = {
+    enabled: boolean
+    date_range: {
+        value: string
+        name: string
+    }
+    users: string[]
+}

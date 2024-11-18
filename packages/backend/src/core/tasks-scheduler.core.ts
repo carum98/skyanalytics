@@ -25,9 +25,9 @@ export class TasksScheduler {
 		task?.run()
 	}
 
-	public call(name: string) {
+	public call(name: string, query?: Record<string, any>) {
 		const task = this.map.get(name)
-		return task?.call()
+		return task?.call(query)
 	}
 
 	public getTasks() {

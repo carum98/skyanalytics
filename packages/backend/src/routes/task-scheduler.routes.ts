@@ -24,8 +24,9 @@ export class TasksSchedulerRouter extends RouterCore {
 			name: '/:name/run',
 			handler: async (req, res) => {
 				const { name } = req.params
+				const query = req.query as Record<string, any>
 
-				const response = await tasksScheduler.call(name)
+				const response = await tasksScheduler.call(name, query)
 				res.send(response)
 			}
 		})

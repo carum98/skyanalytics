@@ -26,6 +26,7 @@ export class TasksCore implements ITaskCore {
 	public start (): void {
 		this.instance = cron.schedule(this.schedule, this.task, {
 			name: this.name,
+			timezone: 'America/Costa_Rica'
 		})
 	}
 
@@ -44,8 +45,8 @@ export class TasksCore implements ITaskCore {
 	/**
 	 * Call the callback function directly
 	 */
-	public call() {
-		return (this.task as Function)('manual')
+	public call(params?: Record<string, any>): any {
+		return (this.task as Function)(params)
 	}
 
 	public isRunning (): boolean {

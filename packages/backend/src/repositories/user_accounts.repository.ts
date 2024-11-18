@@ -80,4 +80,13 @@ export class UserAccountsRepository extends RepositoryCore<SelectUserAccountsSch
 
         return data.at(0)
     }
+
+    public async getOptions() {
+        return await this.db.select({
+            id: userAccounts.id,
+            name: userAccounts.name,
+            value: userAccounts.email,
+        })
+        .from(userAccounts)
+    }
 }

@@ -8,7 +8,7 @@ export class SummaryService {
 		private settingsRepository: SettingsRepository
 	) {}
 
-	public async sendEmail() {
+	public async sendEmail(params: Record<string, any>) {
 		const config = await this.settingsRepository.getSummaryEmail()
 
 		if (!config.enabled) {
@@ -19,7 +19,7 @@ export class SummaryService {
 			return { message: 'No users to send email' }
 		}
 
-		const data = await this.summaryRepository.getData(config.date_range)
+		const data = await this.summaryRepository.getData(config.date_range.value)
 
 		return sendEmail({
 			to: config.users,
@@ -27,7 +27,8 @@ export class SummaryService {
 			template: 'summary',
 			data: {
 				data
-			}
+			},
+			onlyHtml: params.onlyHtml
 		})
 	}
 }
