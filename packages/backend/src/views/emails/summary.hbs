@@ -65,6 +65,18 @@
 				height: 25px;
 			}
 
+			.no-avatar {
+				display: block;
+				width: 25px;
+				height: 25px;
+				border-radius: 5px;
+				background-color: #dde6fb;
+				background-size: 16px;
+				background-position: center;
+				background-repeat: no-repeat;
+				background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aCBmaWxsPSJncmF5IiBkPSJNMTAgMjBhMTAgMTAgMCAxIDEgMC0yMGExMCAxMCAwIDAgMSAwIDIwbTcuNzUtOGE4IDggMCAwIDAgMC00aC0zLjgyYTI5IDI5IDAgMCAxIDAgNHptLS44MiAyaC0zLjIyYTE0LjQgMTQuNCAwIDAgMS0uOTUgMy41MUE4LjAzIDguMDMgMCAwIDAgMTYuOTMgMTRtLTguODUtMmgzLjg0YTI0LjYgMjQuNiAwIDAgMCAwLTRIOC4wOGEyNC42IDI0LjYgMCAwIDAgMCA0bS4yNSAyYy40MSAyLjQgMS4xMyA0IDEuNjcgNHMxLjI2LTEuNiAxLjY3LTR6bS02LjA4LTJoMy44MmEyOSAyOSAwIDAgMSAwLTRIMi4yNWE4IDggMCAwIDAgMCA0bS44MiAyYTguMDMgOC4wMyAwIDAgMCA0LjE3IDMuNTFjLS40Mi0uOTYtLjc0LTIuMTYtLjk1LTMuNTF6bTEzLjg2LThhOC4wMyA4LjAzIDAgMCAwLTQuMTctMy41MWMuNDIuOTYuNzQgMi4xNi45NSAzLjUxem0tOC42IDBoMy4zNGMtLjQxLTIuNC0xLjEzLTQtMS42Ny00UzguNzQgMy42IDguMzMgNk0zLjA3IDZoMy4yMmMuMi0xLjM1LjUzLTIuNTUuOTUtMy41MUE4LjAzIDguMDMgMCAwIDAgMy4wNyA2Ii8+PC9zdmc+")
+			}
+
 			.sprite {
 				width: 25px;
 				height: 25px;
@@ -74,11 +86,13 @@
 				background-repeat: no-repeat;
 				background-position: 0 300px;
 				border-radius: 5px;
+				background-color: #dde6fb;
 			}
 
 			/* OS */
 			.sprites__Android, [class*="sprites__android_"] {
 				background-position: 0 0;
+				background-color: transparent;
 			}
 
 			.sprites__iOS, [class*="sprites__ios_"] {
@@ -133,6 +147,7 @@
 			/* Software */
 			[class*="sprites__chrome_"] {
 				background-position: 0 -25px;
+				background-color: transparent;
 			}
 
 			[class*="sprites__safari_"] {
@@ -141,6 +156,7 @@
 
 			[class*="sprites__edge_"] {
 				background-position: -50px -25px;
+				background-color: transparent;
 			}
 
 			[class*="sprites__firefox_"] {
@@ -149,6 +165,7 @@
 
 			[class*="sprites__dart_"] {
 				background-position: -100px -25px;
+				background-color: transparent;
 			}
         </style>
     </head>
@@ -173,6 +190,8 @@
 								<td>
 									{{#if this.icon_path}}
 										<img class="icon" src="{{base64ImageSrc this.icon_path}}" alt="image" />
+									{{else}}
+										<span class="no-avatar"></span>
 									{{/if}}
 								</td>
 								<td>{{this.name}}</td>

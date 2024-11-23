@@ -3,7 +3,7 @@ import { sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
 import { groupByAndCountObject } from '@utils/group-and-count'
 import { DateRange, rangeDates } from '@utils/range-dates'
-import { between, eq } from 'drizzle-orm'
+import { between, eq, sql } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
 export class SummaryRepository {
@@ -28,7 +28,7 @@ export class SummaryRepository {
 
 		const visitors = await this.db.selectDistinct({
 			code: sources.code,
-			name: sources.name,
+			name: sql`CONCAT(${sources.name}, CASE WHEN ${sources.type} = 'app' THEN ' - App' ELSE '' END)`,
 			icon_path: sources.icon_path,
 			session_id: sessions.id,
 		})
@@ -63,7 +63,7 @@ const formatDate = (date: Date) => {
 	const hours = date.getHours()
 	const minutes = date.getMinutes()
 
-	return `${month} ${day}, ${year} ${hours}:${minutes}`
+	return `${month} ${day}, ${year} ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`
 }
 
 function visitorsParser(data: any[]) {

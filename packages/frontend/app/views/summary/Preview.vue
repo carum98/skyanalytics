@@ -16,5 +16,14 @@ getData()
 </script>
 
 <template>
-	<div v-html="html"></div>
+	<div class="preview-summary" v-html="html"></div>
 </template>
+
+<style lang="css">
+.preview-summary {
+	overflow: auto;
+	* {
+		color: black;
+	}
+}
+</style>
