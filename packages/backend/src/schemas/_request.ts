@@ -4,13 +4,16 @@ import { z } from 'zod'
 export const sendBodySchema = z.object({
     event: z.string().min(3).max(100).optional(),
     navigation: z.string().min(3).max(100).optional(),
+    bug_report: z.object({
+        description: z.string().min(3).max(700),
+    }).optional(),
     metadata: z.record(z.string()).optional()
 })
-.refine((data) => !(data.event && data.navigation), {
-    message: "You cannot send 'event' and 'navigation' at the same time",
+.refine((data) => !(data.event && data.navigation && data.bug_report), {
+    message: "You cannot send 'event', 'navigation' or 'bug_report' at the same time",
     path: ['event', 'navigation'],
 })
-.refine((data) => data.event || data.navigation || data.metadata, {
+.refine((data) => data.event || data.navigation || data.metadata || data.bug_report, {
     message: "'metadata' is required if you do not send 'event' or 'navigation'",
     path: ['metadata'],
 })

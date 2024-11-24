@@ -2,11 +2,13 @@ import { Request, Response } from 'express'
 import { EventsService } from '@services/events.service'
 import { SendBodySchema } from '@schemas/_request'
 import { ViewsService } from '@services/views.service'
+import { ReportsService } from '@services/reports.service'
 
 export class SendController {
     constructor(
         private eventsService: EventsService,
-        private viewsService: ViewsService
+        private viewsService: ViewsService,
+        private reportsService: ReportsService
     ) {}
 
     public create = async (req: Request, res: Response) => {
@@ -41,6 +43,13 @@ export class SendController {
 				metadata: Object.keys(metadata).length > 0 
                     ? metadata 
                     : undefined
+            })
+        }
+
+        if (body.bug_report) {
+            await this.reportsService.create({
+                description: body.bug_report.description,
+                session_id,
             })
         }
 

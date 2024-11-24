@@ -25,6 +25,13 @@
 - [[PUT /views/:code] - Update View](views/update.md)
 - [[DELETE /views/:code] - Remove View](views/remove.md)
 
+## Reports
+- [[GET /reports] - Get Reports](reports/getAll.md)
+- [[POST /reports] - Create Report](reports/create.md)
+- [[GET /reports/:code] - Get One Report](reports/getOne.md)
+- [[PUT /reports/:code] - Update Report](reports/update.md)
+- [[DELETE /reports/:code] - Remove Report](reports/remove.md)
+
 ## Sessions
 - [[GET /sessions] - Get All Sessions](sessions/getAll.md)
 

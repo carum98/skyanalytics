@@ -32,6 +32,9 @@ import { SettingsRouter } from '@routes/settings.routes'
 import { TasksScheduler } from '@core/tasks-scheduler.core'
 import { SummaryTask } from '@tasks/summary.tasks'
 import { TasksSchedulerRouter } from '@routes/task-scheduler.routes'
+import { ReportsRepository } from '@repositories/reports.repository'
+import { ReportsService } from '@services/reports.service'
+import { ReportsRouter } from '@routes/reports.routes'
 
 const di = DepencyInjection.getInstance()
 
@@ -48,6 +51,7 @@ const userAccountsRepository = di.register(() => new UserAccountsRepository(db))
 const refreshTokenRepository = di.register(() => new RefreshTokenRepository(db))
 const summaryRepository = di.register(() => new SummaryRepository(db))
 const settingsRepository = di.register(() => new SettingsRepository(db))
+const reportsRepository = di.register(() => new ReportsRepository(db))
 
 // Register Services
 di.register(() => new EventsService(eventsRepository))
@@ -58,6 +62,7 @@ di.register(() => new UserAccountsService(userAccountsRepository))
 di.register(() => new AuthService(userAccountsRepository, refreshTokenRepository))
 di.register(() => new LocationsService(sessionRepository))
 di.register(() => new SummaryService(summaryRepository, settingsRepository))
+di.register(() => new ReportsService(reportsRepository))
 
 // Tasks Scheduler
 const tasksScheduler = di.register(() => new TasksScheduler())
@@ -79,7 +84,8 @@ server.routes([
     new SessionsRouter(di),
     new LocationsRouter(di),
     new SettingsRouter(di),
-    new TasksSchedulerRouter(di)
+    new TasksSchedulerRouter(di),
+    new ReportsRouter(di)
 ])
 
 server.middleware(errorMiddleware)
