@@ -93,6 +93,15 @@
     text-align: left;
 }
 
+.text-overflow {
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+}
+
 .tx-13 {
 	font-size: 13px;
 

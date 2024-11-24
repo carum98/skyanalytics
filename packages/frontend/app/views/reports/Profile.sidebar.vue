@@ -2,11 +2,24 @@
 import SourceAvatar from '@components/SourceAvatar.vue'
 
 import type { IReport } from '@shared/types'
-import { formatDate } from '@/utils'
 
 defineProps<{
 	item: IReport
 }>()
+
+function formatDate(dateString: string) {
+    const date = new Date(dateString)
+
+    return date.toLocaleString('en-US', {
+        month: 'long',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+		year: 'numeric',
+		weekday: 'long',
+        hour12: true
+    }).toLowerCase()
+}
 </script>
 
 <template>
@@ -38,6 +51,22 @@ defineProps<{
 			<label>Date</label>
 			<p>{{ formatDate(item.created_at) }}</p>
 		</section>
+
+		<section class="container">
+			<label>Metadata</label>
+
+			<div class="metadata">
+				<p v-for="(value, key) in item.metadata" :key="key">
+					{{ key }}: <span>{{ value }}</span>
+				</p>
+			</div>
+		</section>
+
+		<section class="container">
+			<label>Attachments</label>
+
+			<div style="height: 100px;"></div>
+		</section>
 	</div>
 </template>
 
@@ -55,6 +84,18 @@ defineProps<{
 
 		label {
 			color: gray;
+		}
+	}
+
+	.metadata {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		margin: 10px 0;
+
+		span {
+			background-color: var(--background-color);
+			padding: 3px 10px;
+			border-radius: 10px;
 		}
 	}
 }

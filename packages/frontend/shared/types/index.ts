@@ -134,6 +134,7 @@ export interface IReport {
     source: Pick<ISources, 'code' | 'name' | 'icon_path'>
     session: ISession
     status: string
+    metadata: Record<string, string>
 }
 
 export interface IReportPagination {

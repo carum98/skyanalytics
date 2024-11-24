@@ -19,6 +19,7 @@ export class ReportsRepository extends RepositoryCore<SelectReportsSchema, Inser
 			description: reports.description,
 			created_at: reports.created_at,
 			status: reports.status,
+			metadata: reports.metadata,
             session: {
                 os: sessions.os,
                 software: sessions.software,

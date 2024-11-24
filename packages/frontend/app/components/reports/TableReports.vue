@@ -65,6 +65,10 @@ function onRowClick(item: IReport) {
 		:columns="columns"
 		@on-row-click="onRowClick"
 	>
+		<template #cell(description)="{ value }">
+			<p class="text-overflow">{{ value }}</p>
+		</template>
+
 		<template #cell(source)="{ value }">
 			<SourceAvatar 
 				:size="35" 

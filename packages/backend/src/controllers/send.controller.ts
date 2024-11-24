@@ -50,6 +50,9 @@ export class SendController {
             await this.reportsService.create({
                 description: body.bug_report.description,
                 session_id,
+                metadata: Object.keys(metadata).length > 0 
+                    ? metadata 
+                    : undefined
             })
         }
 
