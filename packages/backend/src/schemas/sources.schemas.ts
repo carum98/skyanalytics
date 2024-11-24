@@ -29,10 +29,7 @@ export const insertSourcesSchema = createInsertSchema(sources)
 
 export const selectSourcesSchema = createSelectSchema(sources)
     .pick({ code: true, name: true, key: true, domain: true, icon_path: true, type: true })
-    .transform(data => ({
-        ...data,
-        icon_path: data.icon_path ? `/sources/${data.code}/icon` : null
-    }))
+    .transform(parseIconPath)
 
 export const paginateSourcesSchema = ResponsePaginationSchema(selectSourcesSchema)
 
@@ -40,3 +37,11 @@ export const paginateSourcesSchema = ResponsePaginationSchema(selectSourcesSchem
 export type InsertSourcesSchema = z.infer<typeof insertSourcesSchema>
 export type SelectSourcesSchema = z.infer<typeof selectSourcesSchema>
 export type PaginateSourcesSchema = z.infer<typeof paginateSourcesSchema>
+
+// Utils
+export function parseIconPath(data: any) {
+    return {
+        ...data,
+        icon_path: data.icon_path ? `/sources/${data.code}/icon` : null
+    }
+}

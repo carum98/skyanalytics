@@ -99,6 +99,13 @@ const dialogs: DialogRecordRaw[] = [
             width: 1100
         }
     },
+    {
+        name: 'reports.list',
+        component: () => import('@views/reports/List.vue'),
+        rootProps: {
+            width: 1100
+        }
+    },
 	{
 		name: 'remove',
 		component: () => import('@components/DialogRemove.vue'),

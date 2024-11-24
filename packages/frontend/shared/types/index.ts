@@ -126,6 +126,19 @@ export interface IUserPagination {
 	pagination: IPagination
 }
 
+export interface IReport {
+    code: string
+    description: string
+    created_at: string
+    source: Pick<ISources, 'code' | 'name' | 'icon_path'>
+    session: ISession
+}
+
+export interface IReportPagination {
+    data: IReport[]
+    pagination: IPagination
+}
+
 // Types route
 type ApiRoutes = keyof InternalApi
 type ApiResponse<T extends ApiRoutes, M extends keyof InternalApi[T]> = InternalApi[T][M]

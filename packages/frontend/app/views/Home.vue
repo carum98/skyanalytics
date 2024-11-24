@@ -6,20 +6,15 @@ import { useRouter } from 'vue-router'
 
 import SkPopover from '@ui/SkPopover.vue'
 import CompactViewsChart from '@components/CompactViewsChart.vue'
-import SourceAvatar from '@/components/SourceAvatar.vue'
-import SourceCurrentVisitors from '@/components/SourceCurrentVisitors.vue'
+import SourceAvatar from '@components/SourceAvatar.vue'
+import SourceCurrentVisitors from '@components/SourceCurrentVisitors.vue'
+import CounterReports from '@components/reports/CounterReports.vue'
 import type { ApiStats } from '@shared/types'
 
 const router = useRouter()
 const { session } = useSession()
 
 const { data, refresh: onRefresh, loading } = useFetch<ApiStats>("/api/stats", {
-	transform: (data) => ({
-		...data.map((item) => ({
-			...item,
-			icon_path: item.icon_path ? `${import.meta.env.VITE_URL_FRONTEND}/api${item.icon_path}` : null,
-		}))
-	}),
 	headers: {
 		'x-timezone': getCurrentTimeZone()
 	}
@@ -75,7 +70,10 @@ const { data, refresh: onRefresh, loading } = useFetch<ApiStats>("/api/stats", {
 
 			<CompactViewsChart :data="item.views" />
 
-			<SourceCurrentVisitors :data="item.metrics" :item="item" />
+			<div class="flex justify-center ga-1">
+				<SourceCurrentVisitors :data="item.metrics" :item="item" />
+				<CounterReports :data="item.metrics" :item="item" />
+			</div>
 		</article>
 
 		<template v-if="loading">

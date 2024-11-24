@@ -1,5 +1,5 @@
 import { RepositoryCore } from '@core/repository.core'
-import { InsertReportsSchema, paginatedReportsSchema, reports, selectReportsSchema, SelectReportsSchema } from '@schemas/reports.schemas'
+import { InsertReportsSchema, paginatedReportsSchema, reports, selectReportsSchema, SelectReportsSchema, UpdateReportsSchema } from '@schemas/reports.schemas'
 import { sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
 import { generateCode } from '@utils/code'
@@ -7,7 +7,7 @@ import { PaginationSchemaType } from '@utils/pagination'
 import { eq } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
-export class ReportsRepository extends RepositoryCore<SelectReportsSchema, InsertReportsSchema & { code: string }, InsertReportsSchema> {
+export class ReportsRepository extends RepositoryCore<SelectReportsSchema, InsertReportsSchema & { code: string }, UpdateReportsSchema> {
 	constructor(public readonly db: NodePgDatabase) {
 		const table = reports
 
@@ -15,6 +15,7 @@ export class ReportsRepository extends RepositoryCore<SelectReportsSchema, Inser
 			code: reports.code,
 			description: reports.description,
 			created_at: reports.created_at,
+			status: reports.status,
             session: {
                 os: sessions.os,
                 software: sessions.software,
@@ -23,6 +24,7 @@ export class ReportsRepository extends RepositoryCore<SelectReportsSchema, Inser
 			source: {
 				code: sources.code,
 				name: sources.name,
+				icon_path: sources.icon_path
 			}
         })
         .from(table)
@@ -62,7 +64,7 @@ export class ReportsRepository extends RepositoryCore<SelectReportsSchema, Inser
 		return selectReportsSchema.parse(data)
 	}
 
-	public async update(code: string, params: any) {
+	public async update(code: string, params: UpdateReportsSchema) {
 		const data = await this.updateCore({
 			where: eq(reports.code, code),
 			params

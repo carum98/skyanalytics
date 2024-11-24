@@ -3,7 +3,7 @@ import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
 import { authMiddleware } from '@middlewares/auth.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
-import { insertReportsSchema } from '@schemas/reports.schemas'
+import { insertReportsSchema, updateReportsSchema } from '@schemas/reports.schemas'
 import { ReportsService } from '@services/reports.service'
 import { PaginationSchema } from '@utils/pagination'
 
@@ -47,7 +47,7 @@ export class ReportsRouter extends RouterCore {
 			handler: controller.update,
 			middlewares: [
 				requestMiddleware({
-					body: insertReportsSchema.pick({ description: true }).partial()
+					body: updateReportsSchema
 				})
 			]
 		})

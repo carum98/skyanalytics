@@ -2,8 +2,6 @@
 import { computed } from 'vue'
 import { useFetch } from '@composables/useFetch'
 import type { IMetrics, ISources } from '@shared/types'
-import { useSidebar } from '@composables/useSidebar'
-import { getLast30Minutes } from '@/utils'
 
 import BadgeCounter from '@components/BadgeCounter.vue'
 
@@ -11,8 +9,6 @@ const props = defineProps<{
     data?: IMetrics
     item?: ISources
 }>()
-
-const sidebar = useSidebar()
 
 const { data } = useFetch<IMetrics>(`/api/sources/${props.item?.code}/metrics`, {
     query: {
@@ -24,26 +20,15 @@ const { data } = useFetch<IMetrics>(`/api/sources/${props.item?.code}/metrics`, 
 const value = computed(() => props.data?.visitors ?? data.value?.visitors ?? 0)
 
 function onClick() {
-    const { start, end } = getLast30Minutes()
 
-    sidebar.push({
-        name: 'sessions.list',
-        props: {
-            sourceCode: props.item?.code,
-            query: {
-                start,
-                end,
-            }
-        }
-    })
 }
 </script>
 
 <template>
     <BadgeCounter 
         :value="value" 
-        text="current visitors" 
-        color="green" 
+        text="bug reports" 
+        color="red" 
         @click.native="onClick"
     />
 </template>

@@ -1,6 +1,6 @@
 import { ReportsRepository } from '@repositories/reports.repository'
 import { HeadersTimeZone } from '@schemas/_headers'
-import { InsertReportsSchema } from '@schemas/reports.schemas'
+import { InsertReportsSchema, UpdateReportsSchema } from '@schemas/reports.schemas'
 import { PaginationSchemaType } from '@utils/pagination'
 import { parseToTimeZone } from '@utils/time-zones'
 
@@ -31,7 +31,7 @@ export class ReportsService {
 		return this.reportsRepository.create(params)
 	}
 
-	async update(code: string, params: any) {
+	async update(code: string, params: UpdateReportsSchema) {
 		return this.reportsRepository.update(code, params)
 	}
 
