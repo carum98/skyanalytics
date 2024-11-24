@@ -25,7 +25,8 @@ Status: `200 OK`
 ```json
 {
     "views": 4,
-    "visitors": 1
+    "visitors": 1,
+    "reports": 0,
 }
 ```
 

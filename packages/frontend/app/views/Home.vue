@@ -7,8 +7,7 @@ import { useRouter } from 'vue-router'
 import SkPopover from '@ui/SkPopover.vue'
 import CompactViewsChart from '@components/CompactViewsChart.vue'
 import SourceAvatar from '@components/SourceAvatar.vue'
-import SourceCurrentVisitors from '@components/SourceCurrentVisitors.vue'
-import CounterReports from '@components/reports/CounterReports.vue'
+import CountersSources from '@components/sources/CountersSources.vue'
 import type { ApiStats } from '@shared/types'
 
 const router = useRouter()
@@ -69,11 +68,11 @@ const { data, refresh: onRefresh, loading } = useFetch<ApiStats>("/api/stats", {
 			</header>
 
 			<CompactViewsChart :data="item.views" />
-
-			<div class="flex justify-center ga-1">
-				<SourceCurrentVisitors :data="item.metrics" :item="item" />
-				<CounterReports :data="item.metrics" :item="item" />
-			</div>
+			<CountersSources 
+				:data="item.metrics" 
+				:item="item"
+				style="font-size: 13px;"
+			></CountersSources>
 		</article>
 
 		<template v-if="loading">

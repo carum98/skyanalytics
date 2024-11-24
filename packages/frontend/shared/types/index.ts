@@ -87,6 +87,7 @@ export interface IPagination {
 export interface IMetrics {
     views: number
     visitors: number
+    reports: number
 }
 
 export interface IViewsStats {

@@ -4,7 +4,7 @@ import { sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
 import { generateCode } from '@utils/code'
 import { PaginationSchemaType } from '@utils/pagination'
-import { eq } from 'drizzle-orm'
+import { and, count, eq, isNull } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
 export class ReportsRepository extends RepositoryCore<SelectReportsSchema, InsertReportsSchema & { code: string }, UpdateReportsSchema> {
@@ -75,5 +75,24 @@ export class ReportsRepository extends RepositoryCore<SelectReportsSchema, Inser
 
 	public async delete(code: string) {
 		return this.deleteCore(eq(reports.code, code))
+	}
+
+	public async getMetrics(sourceCode: string) {
+		console.log('sourceCode', sourceCode)
+		const data = await this.db.select({
+			reports: count(reports.id)
+		})
+		.from(reports)
+		.leftJoin(sessions, eq(reports.session_id, sessions.id))
+		.leftJoin(sources, eq(sessions.source_id, sources.id))
+		.where(
+			and(
+				eq(reports.status, 'open'),
+				eq(sources.code, sourceCode),
+				isNull(reports.deleted_at),
+			)
+		)
+
+		return data.at(0)
 	}
 }

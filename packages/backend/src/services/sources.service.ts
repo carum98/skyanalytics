@@ -8,13 +8,15 @@ import { InsertSourcesSchema } from '@schemas/sources.schemas'
 import { PaginationSchemaType } from '@utils/pagination'
 import { rangeDates } from '@utils/range-dates'
 import { parseToUTC } from '@utils/time-zones'
+import { ReportsRepository } from '@repositories/reports.repository'
 
 export class SourcesService {
     constructor(
         private sourceRepository: SourcesRepository,
         private sessionsRepository: SessionRepository,
         private viewsRepository: ViewsRepository,
-        private eventsRepository: EventsRepository
+        private eventsRepository: EventsRepository,
+        private reportsRepository: ReportsRepository
     ) {}
 
     public async getAll(query: PaginationSchemaType) {
@@ -51,13 +53,19 @@ export class SourcesService {
         const timeZone = filters['x-timezone']
         const { start, end } = rangeDates(filters.date_range)
 
-        return this.viewsRepository.getMetrics(
-            code, 
-            {
-                start: parseToUTC(start, timeZone),
-                end: parseToUTC(end, timeZone),
-            }
-        )
+        const [views, reports] = await Promise.all([
+            this.viewsRepository.getMetrics(code, {
+                    start: parseToUTC(start, timeZone),
+                    end: parseToUTC(end, timeZone),
+                }
+            ),
+            this.reportsRepository.getMetrics(code)
+        ])
+
+        return {
+            ...views,
+            ...reports
+        }
     }
 
     public async getStats(code: string, filters: StatsFilter & HeadersTimeZone) {

@@ -30,6 +30,7 @@ const disabled = computed(() => !Boolean(props.value))
     overflow: visible;
     border-radius: 5px;
     transition: background-color 0.2s;
+    font-size: inherit;
 
     &:hover:not(:disabled) {
         cursor: pointer;

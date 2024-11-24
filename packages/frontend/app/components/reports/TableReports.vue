@@ -7,7 +7,13 @@ import { timeAgo } from '@/utils'
 import { useFetch } from '@composables/useFetch'
 import type { IReportPagination, IReport } from '@shared/types'
 
-const { data, refresh: onRefresh } = useFetch<IReportPagination>('/api/reports')
+const { query } = defineProps<{
+	query?: Record<string, string>
+}>()
+
+const { data, refresh: onRefresh } = useFetch<IReportPagination>('/api/reports', {
+	query
+})
 
 const columns = [
 	{

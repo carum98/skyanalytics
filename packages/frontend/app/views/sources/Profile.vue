@@ -3,11 +3,11 @@ import { ref, computed } from 'vue'
 
 import DateSelector, { type DateSelectorValue } from '@components/DateSelector.vue'
 import SourceAvatar from '@components/SourceAvatar.vue'
-import SourceCurrentVisitors from '@/components/SourceCurrentVisitors.vue'
 import ViewsChart from '@components/ViewsChart.vue'
 import CountersList from '@components/CountersList.vue'
 import StatCard from '@components/StatCard.vue'
-import SkMap from '@/components/ui/SkMap.vue'
+import SkMap from '@components/ui/SkMap.vue'
+import CountersSources from '@components/sources/CountersSources.vue'
 
 import { useFetch } from '@composables/useFetch'
 import type { ApiStats, IStats } from '@shared/types'
@@ -109,10 +109,10 @@ function onOpenMedata(medataValue?: string, medataKey?: string) {
                 <small class="text-gray">{{ item.domain || 'not domain' }}</small>
             </div>
 
-            <SourceCurrentVisitors 
-                :item="item"
+            <CountersSources 
+                :item="item" 
                 style="font-size: 16px;"
-            ></SourceCurrentVisitors>
+            ></CountersSources>
         </div>
 
         <DateSelector v-model="filters" />
