@@ -1,4 +1,4 @@
-import { navigations } from '@schemas/navigations.schemas'
+import { views } from '@schemas/views.schemas'
 import { sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
 import { groupByAndCountObject } from '@utils/group-and-count'
@@ -21,9 +21,9 @@ export class SummaryRepository {
             software: sessions.software,
         })
         .from(sessions)
-		.leftJoin(navigations, eq(sessions.id, navigations.session_id))
+		.leftJoin(views, eq(sessions.id, views.session_id))
 		.where(
-			between(navigations.created_at, start, end)
+			between(views.created_at, start, end)
 		)
 
 		const visitors = await this.db.selectDistinct({
@@ -33,11 +33,11 @@ export class SummaryRepository {
 			session_id: sessions.id,
 		})
 		.from(sessions)
-		.leftJoin(navigations, eq(sessions.id, navigations.session_id))
+		.leftJoin(views, eq(sessions.id, views.session_id))
 		.leftJoin(sources, eq(sessions.source_id, sources.id))
 		.groupBy(sources.id, sessions.id)
 		.where(
-			between(navigations.created_at, start, end)
+			between(views.created_at, start, end)
 		)
 
 

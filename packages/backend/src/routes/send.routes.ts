@@ -6,7 +6,7 @@ import { EventsService } from '@services/events.service'
 import { SessionService } from '@services/sessions.service'
 import { SendController } from '@controllers/send.controller'
 import { sendBodySchema } from '@schemas/_request'
-import { NavigationsService } from '@services/navigations.service'
+import { ViewsService } from '@services/views.service'
 import { headersSourceSchema, headerXRealIPSchema } from '@schemas/_headers'
 
 export class SendRouter extends RouterCore {
@@ -17,7 +17,7 @@ export class SendRouter extends RouterCore {
 
         const controller = new SendController(
             di.resolve(EventsService),
-            di.resolve(NavigationsService)
+            di.resolve(ViewsService)
         )
 
         this.post({

@@ -1,4 +1,4 @@
-# Get All Navigations
+# Get All Views
 This endpoint returns all views in the database.
 
 ## Request

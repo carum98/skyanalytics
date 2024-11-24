@@ -1,5 +1,5 @@
 # SkyAnalytics Frontend
-Frontend for SkyAnalytics, shows the statistics of the events and navigations.
+Frontend for SkyAnalytics, shows the statistics of the events and views.
 
 ## Environment Variables
 | Name | Description |

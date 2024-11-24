@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
-import { NavigationsService } from '@services/navigations.service'
+import { ViewsService } from '@services/views.service'
 import { PaginationSchemaType } from '@utils/pagination'
-import { InsertNavigationsSchema } from '@schemas/navigations.schemas'
+import { InsertViewsSchema } from '@schemas/views.schemas'
 import { HeadersTimeZone } from '@schemas/_headers'
 import { FilterSessions } from '@schemas/_query'
 
-export class NavigationController {
-    constructor(private service: NavigationsService) {}
+export class ViewsController {
+    constructor(private service: ViewsService) {}
 
     public getAll = async (req: Request, res: Response) => {
         const headers = req.headers as unknown as HeadersTimeZone
@@ -34,7 +34,7 @@ export class NavigationController {
         const params = { 
             ...req.body,
             session_id
-         } as InsertNavigationsSchema
+         } as InsertViewsSchema
 
         const event = await this.service.create(params)
 

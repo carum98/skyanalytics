@@ -13,9 +13,9 @@ import { SourcesRepository } from '@repositories/sources.repository'
 import { SourcesService } from '@services/sources.service'
 import { SessionService } from '@services/sessions.service'
 import { SessionRepository } from '@repositories/sessions.repository'
-import { NavigationRepository } from '@repositories/navigations.repository'
-import { NavigationsService } from '@services/navigations.service'
-import { NavigationsRouter } from '@routes/navigations.routes'
+import { ViewsRepository } from '@repositories/views.repository'
+import { ViewsService } from '@services/views.service'
+import { ViewsRouter } from '@routes/views.routes'
 import { UserAccountsRouter } from '@routes/user_accounts.routes'
 import { UserAccountsRepository } from '@repositories/user_accounts.repository'
 import { UserAccountsService } from '@services/user_accounts.service'
@@ -43,7 +43,7 @@ const db = database.db
 const eventsRepository = di.register(() => new EventsRepository(db))
 const sourcesRepository = di.register(() => new SourcesRepository(db))
 const sessionRepository = di.register(() => new SessionRepository(db))
-const navigationRepository = di.register(() => new NavigationRepository(db))
+const navigationRepository = di.register(() => new ViewsRepository(db))
 const userAccountsRepository = di.register(() => new UserAccountsRepository(db))
 const refreshTokenRepository = di.register(() => new RefreshTokenRepository(db))
 const summaryRepository = di.register(() => new SummaryRepository(db))
@@ -52,7 +52,7 @@ const settingsRepository = di.register(() => new SettingsRepository(db))
 // Register Services
 di.register(() => new EventsService(eventsRepository))
 di.register(() => new SessionService(sessionRepository, sourcesRepository))
-di.register(() => new NavigationsService(navigationRepository))
+di.register(() => new ViewsService(navigationRepository))
 di.register(() => new SourcesService(sourcesRepository, sessionRepository, navigationRepository, eventsRepository))
 di.register(() => new UserAccountsService(userAccountsRepository))
 di.register(() => new AuthService(userAccountsRepository, refreshTokenRepository))
@@ -74,7 +74,7 @@ server.routes([
     new EventsRouter(di),
     new SendRouter(di),
     new SourcesRouter(di),
-    new NavigationsRouter(di),
+    new ViewsRouter(di),
     new UserAccountsRouter(di),
     new SessionsRouter(di),
     new LocationsRouter(di),

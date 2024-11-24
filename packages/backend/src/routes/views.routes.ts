@@ -1,24 +1,24 @@
-import { NavigationController } from '@controllers/navigations.controller'
+import { ViewsController } from '@controllers/views.controller'
 import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
 import { authMiddleware } from '@middlewares/auth.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { sessionMiddleware } from '@middlewares/session.middleware'
 import { headersSourceSchema, headerXRealIPSchema } from '@schemas/_headers'
-import { insertNavigationsSchema } from '@schemas/navigations.schemas'
-import { NavigationsService } from '@services/navigations.service'
+import { insertViewsSchema } from '@schemas/views.schemas'
+import { ViewsService } from '@services/views.service'
 import { SessionService } from '@services/sessions.service'
 import { PaginationSchema } from '@utils/pagination'
 
-export class NavigationsRouter extends RouterCore {
+export class ViewsRouter extends RouterCore {
     constructor(di: DepencyInjection) {
         super({
             path: '/views',
             middlewares: [authMiddleware]
         })
 
-        const service = di.resolve(NavigationsService)
-        const controller = new NavigationController(service)
+        const service = di.resolve(ViewsService)
+        const controller = new ViewsController(service)
 
         this.get({
             name: '/',
@@ -36,7 +36,7 @@ export class NavigationsRouter extends RouterCore {
             middlewares: [
                 requestMiddleware({
                     headers: headerXRealIPSchema.merge(headersSourceSchema),
-                    body: insertNavigationsSchema.pick({ name: true })
+                    body: insertViewsSchema.pick({ name: true })
                 }),
                 sessionMiddleware(di.resolve(SessionService)),
             ]
@@ -52,7 +52,7 @@ export class NavigationsRouter extends RouterCore {
             handler: controller.update,
             middlewares: [
                 requestMiddleware({
-                    body: insertNavigationsSchema.partial()
+                    body: insertViewsSchema.partial()
                 })
             ]
         })

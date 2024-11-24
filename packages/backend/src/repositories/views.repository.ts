@@ -1,6 +1,6 @@
 import { RepositoryCore } from '@core/repository.core'
 import { FilterSessions, MetricsFilter, StatsFilter } from '@schemas/_query'
-import { InsertNavigationsSchema, navigations, paginatedNavigationsSchema, selectNavigationsSchema, SelectNavigationsSchema } from '@schemas/navigations.schemas'
+import { InsertViewsSchema, views, paginatedViewsSchema, selectViewsSchema, SelectViewsSchema } from '@schemas/views.schemas'
 import { sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
 import { groupByAndCount } from '@utils/group-and-count'
@@ -10,15 +10,15 @@ import { DateRange } from '@utils/range-dates'
 import { and, between, count, countDistinct, eq, isNotNull } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
 
-export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema, InsertNavigationsSchema, InsertNavigationsSchema>{
+export class ViewsRepository extends RepositoryCore<SelectViewsSchema, InsertViewsSchema, InsertViewsSchema>{
     constructor(public readonly db: NodePgDatabase) {
-        const table = navigations
+        const table = views
 
         const select = db.select({
-            id: navigations.id,
-            name: navigations.name,
-            created_at: navigations.created_at,
-			metadata: navigations.metadata,
+            id: views.id,
+            name: views.name,
+            created_at: views.created_at,
+			metadata: views.metadata,
             session: {
                 os: sessions.os,
                 software: sessions.software,
@@ -26,7 +26,7 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
             },
         })
         .from(table)
-        .leftJoin(sessions, eq(navigations.session_id, sessions.id))
+        .leftJoin(sessions, eq(views.session_id, sessions.id))
         .leftJoin(sources, eq(sessions.source_id, sources.id))
 
         super({ db, table, select })
@@ -36,40 +36,40 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
         const data = await this.getAllCore({
             query: query,
             where: query.start && query.end
-                ? between(navigations.created_at, new Date(query.start), new Date(query.end))
+                ? between(views.created_at, new Date(query.start), new Date(query.end))
                 : undefined,
         })
 
-        return paginatedNavigationsSchema.parse(data)
+        return paginatedViewsSchema.parse(data)
     }
 
     public async get(id: number) {
         const data = await this.getOneCore({
-            where: eq(navigations.id, id)
+            where: eq(views.id, id)
         })
 
-        return selectNavigationsSchema.parse(data)
+        return selectViewsSchema.parse(data)
     }
 
-    public async create(params: InsertNavigationsSchema) {
+    public async create(params: InsertViewsSchema) {
         const data = await this.insertCore({
             params
         })
 
-        return selectNavigationsSchema.parse(data)
+        return selectViewsSchema.parse(data)
     }
 
     public async update(id: number, params: any) {
         const data = await this.updateCore({
-            where: eq(navigations.id, id),
+            where: eq(views.id, id),
             params
         })
 
-        return selectNavigationsSchema.parse(data)
+        return selectViewsSchema.parse(data)
     }
 
     public async delete(id: number) {
-        return this.deleteCore(eq(navigations.id, id))
+        return this.deleteCore(eq(views.id, id))
     }
 
     public async getMetrics(code: string, filters: Omit<MetricsFilter, 'date_range'>) {
@@ -77,12 +77,12 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
             views: count(),
             visitors: countDistinct(sessions.uuid),
         })
-        .from(navigations)
-        .leftJoin(sessions, eq(navigations.session_id, sessions.id))
+        .from(views)
+        .leftJoin(sessions, eq(views.session_id, sessions.id))
         .leftJoin(sources, eq(sessions.source_id, sources.id))
         .where(and(
             eq(sources.code, code),
-            between(navigations.created_at, new Date(filters.start), new Date(filters.end))
+            between(views.created_at, new Date(filters.start), new Date(filters.end))
         ))
 
         return data.at(0)
@@ -90,19 +90,19 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
 
     public async getStats(code: string, filters: StatsFilter) {
         const data = await this.db.select({
-            name: navigations.name,
-            count: count(navigations.name)
+            name: views.name,
+            count: count(views.name)
         })
-        .from(navigations)
-        .leftJoin(sessions, eq(navigations.session_id, sessions.id))
+        .from(views)
+        .leftJoin(sessions, eq(views.session_id, sessions.id))
         .leftJoin(sources, eq(sessions.source_id, sources.id))
         .where(
             and(
                 eq(sources.code, code),
-                between(navigations.created_at, new Date(filters.start), new Date(filters.end))
+                between(views.created_at, new Date(filters.start), new Date(filters.end))
             )
         )
-        .groupBy(navigations.name)
+        .groupBy(views.name)
 
         return {
             navigations: Object.fromEntries(data.map(item => [item.name, item.count]))
@@ -111,16 +111,16 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
 
     public async getViews(code: string, dateRange: DateRange, filters: Omit<MetricsFilter, 'date_range'>, timezone: string) {
         const data = await this.db.select({
-            navigations_id: navigations.id,
-            created_at: navigations.created_at,
+            views_id: views.id,
+            created_at: views.created_at,
             session_id: sessions.id,
         })
-        .from(navigations)
-        .leftJoin(sessions, eq(navigations.session_id, sessions.id))
+        .from(views)
+        .leftJoin(sessions, eq(views.session_id, sessions.id))
         .leftJoin(sources, eq(sessions.source_id, sources.id))
         .where(and(
             eq(sources.code, code),
-            between(navigations.created_at, new Date(filters.start), new Date(filters.end))
+            between(views.created_at, new Date(filters.start), new Date(filters.end))
         ))
 
         return groupByRangeDates(data, dateRange, filters, timezone)
@@ -128,16 +128,16 @@ export class NavigationRepository extends RepositoryCore<SelectNavigationsSchema
 
 	public async getStatsMetadata(code: string, filters: StatsFilter) {
 		const data = await this.db.select({
-			metadata: navigations.metadata,
+			metadata: views.metadata,
         })
-        .from(navigations)
-        .leftJoin(sessions, eq(navigations.session_id, sessions.id))
+        .from(views)
+        .leftJoin(sessions, eq(views.session_id, sessions.id))
         .leftJoin(sources, eq(sessions.source_id, sources.id))
         .where(
             and(
                 eq(sources.code, code),
-                between(navigations.created_at, new Date(filters.start), new Date(filters.end)),
-				isNotNull(navigations.metadata)
+                between(views.created_at, new Date(filters.start), new Date(filters.end)),
+				isNotNull(views.metadata)
             )
         )
 

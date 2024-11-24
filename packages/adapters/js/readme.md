@@ -29,7 +29,7 @@ analytics.event({ name: 'event_name' });
 ```
 
 ### Metadata
-You can add metadata to your `navigations`.
+You can add metadata to your `view`.
 ```javascript
 analytics.navigation({ name: 'page_name', metadata: { key1: 'value1', key2: 'value2' } });
 ```

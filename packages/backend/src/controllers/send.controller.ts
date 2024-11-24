@@ -1,12 +1,12 @@
 import { Request, Response } from 'express'
 import { EventsService } from '@services/events.service'
 import { SendBodySchema } from '@schemas/_request'
-import { NavigationsService } from '@services/navigations.service'
+import { ViewsService } from '@services/views.service'
 
 export class SendController {
     constructor(
         private eventsService: EventsService,
-        private navigationService: NavigationsService
+        private viewsService: ViewsService
     ) {}
 
     public create = async (req: Request, res: Response) => {
@@ -35,7 +35,7 @@ export class SendController {
         }
 
         if (body.navigation) {
-            await this.navigationService.create({
+            await this.viewsService.create({
                 name: body.navigation,
                 session_id,
 				metadata: Object.keys(metadata).length > 0 

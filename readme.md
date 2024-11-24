@@ -3,7 +3,7 @@ SkyAnalytics is a service that allows you to track the behavior of your users.
 
 ## Features
 * Track events
-* Track navigations
+* Track views
 
 ## Monorepo
 This project is a monorepo, it is divided into the following packages:

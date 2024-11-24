@@ -7,11 +7,11 @@ SkyAnalytics exposes an API that allows you to interact with the service. The fo
 [Read more](/docs/enpoints/index.md)
 
 ## Send Events
-To send events to SkyAnalytics, you must use the following endpoint [[POST /send]](/docs/enpoints/send.md) and send the events, this endpoint allows you to send events, navigations or metadata.
+To send events to SkyAnalytics, you must use the following endpoint [[POST /send]](/docs/enpoints/send.md) and send the events, this endpoint allows you to send events, views or metadata.
 
 This endpoint requires the `X-SkyAnalytics-Key` header, this Key is provided when you create a new [POST /sources](/docs/enpoints/sources/create.md) and is unique to each source. If you do not send this header, the request will be rejected. This key is used to identify the source that is sending the events.
 
-The events and navigations can have metadata, this metadata can be global or specific to the event or navigation. If you send only metadata, it will be set as global metadata and all next events/navigations will inherit it. If you send metadata with event or navigation, it will be merged with global metadata.
+The events and views can have metadata, this metadata can be global or specific to the event or navigation. If you send only metadata, it will be set as global metadata and all next events/views will inherit it. If you send metadata with event or navigation, it will be merged with global metadata.
 
 ## Geolocation
 The API can determine the geolocation of the user based on the IP address, through the [[POST /send]](/docs/enpoints/send.md) endpoint. The backend determines the geolocation of the users looking up the IP address in the [GeoLite2](https://dev.maxmind.com/geoip/geoip2/geolite2/) database using [MaxMind](https://github.com/runk/node-maxmind).

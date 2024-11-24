@@ -1,5 +1,5 @@
 import { EventsRepository } from '@repositories/events.repositories'
-import { NavigationRepository } from '@repositories/navigations.repository'
+import { ViewsRepository } from '@repositories/views.repository'
 import { SessionRepository } from '@repositories/sessions.repository'
 import { SourcesRepository } from '@repositories/sources.repository'
 import { HeadersTimeZone } from '@schemas/_headers'
@@ -13,7 +13,7 @@ export class SourcesService {
     constructor(
         private sourceRepository: SourcesRepository,
         private sessionsRepository: SessionRepository,
-        private navigationsRepository: NavigationRepository,
+        private viewsRepository: ViewsRepository,
         private eventsRepository: EventsRepository
     ) {}
 
@@ -51,7 +51,7 @@ export class SourcesService {
         const timeZone = filters['x-timezone']
         const { start, end } = rangeDates(filters.date_range)
 
-        return this.navigationsRepository.getMetrics(
+        return this.viewsRepository.getMetrics(
             code, 
             {
                 start: parseToUTC(start, timeZone),
@@ -85,7 +85,7 @@ export class SourcesService {
 
         if (filters.stats.includes('navigations')) {
             promises.push(
-                this.navigationsRepository.getStats(code, filters)
+                this.viewsRepository.getStats(code, filters)
             )
         }
 
@@ -97,7 +97,7 @@ export class SourcesService {
 
 		if (filters.stats.includes('metadata')) {
 			promises.push(
-				this.navigationsRepository.getStatsMetadata(code, filters)
+				this.viewsRepository.getStatsMetadata(code, filters)
 			)
 		}
 
@@ -124,7 +124,7 @@ export class SourcesService {
             filters.end = end
         } 
 
-        return this.navigationsRepository.getViews(
+        return this.viewsRepository.getViews(
             code, 
             filters.date_range, 
             filters,

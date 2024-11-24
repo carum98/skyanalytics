@@ -1,13 +1,13 @@
-import { NavigationRepository } from '@repositories/navigations.repository'
+import { ViewsRepository } from '@repositories/views.repository'
 import { HeadersTimeZone } from '@schemas/_headers'
 import { FilterSessions } from '@schemas/_query'
-import { InsertNavigationsSchema } from '@schemas/navigations.schemas'
+import { InsertViewsSchema } from '@schemas/views.schemas'
 import { PaginationSchemaType } from '@utils/pagination'
 import { rangeDates } from '@utils/range-dates'
 import { parseToUTC } from '@utils/time-zones'
 
-export class NavigationsService {
-    constructor(private navigationRepository: NavigationRepository) {}
+export class ViewsService {
+    constructor(private viewsRepository: ViewsRepository) {}
 
     public async getAll(query: PaginationSchemaType & FilterSessions & HeadersTimeZone) {
         const timeZone = query['x-timezone']
@@ -24,22 +24,22 @@ export class NavigationsService {
             query.end = end
         } 
 
-        return this.navigationRepository.getAll(query)
+        return this.viewsRepository.getAll(query)
     }
 
     public async get(id: number) {
-        return this.navigationRepository.get(id)
+        return this.viewsRepository.get(id)
     }
 
-    public async create(params: InsertNavigationsSchema) {
-        return this.navigationRepository.create(params)
+    public async create(params: InsertViewsSchema) {
+        return this.viewsRepository.create(params)
     }
 
     public async update(id: number, params: any) {
-        return this.navigationRepository.update(id, params)
+        return this.viewsRepository.update(id, params)
     }
 
     public async delete(id: number) {
-        return this.navigationRepository.delete(id)
+        return this.viewsRepository.delete(id)
     }
 }

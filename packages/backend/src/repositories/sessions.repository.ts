@@ -1,6 +1,6 @@
 import { RepositoryCore } from '@core/repository.core'
 import { FilterSessions, StatsFilter } from '@schemas/_query'
-import { navigations } from '@schemas/navigations.schemas'
+import { views } from '@schemas/views.schemas'
 import { InsertSessionsSchema, paginateSessionsSchema, SelectSessionsSchema, sessions } from '@schemas/sessions.schemas'
 import { sources } from '@schemas/sources.schemas'
 import { groupByAndCount } from '@utils/group-and-count'
@@ -22,7 +22,7 @@ export class SessionRepository extends RepositoryCore<SelectSessionsSchema, Inse
         })
         .from(table)
         .leftJoin(sources, eq(sessions.source_id, sources.id))
-        .leftJoin(navigations, eq(sessions.id, navigations.session_id))
+        .leftJoin(views, eq(sessions.id, views.session_id))
 
         super({ db, table, select })
     }
@@ -31,7 +31,7 @@ export class SessionRepository extends RepositoryCore<SelectSessionsSchema, Inse
         const data = await this.getAllCore({
             query: query,
             where: query.start && query.end
-                ? between(navigations.created_at, new Date(query.start), new Date(query.end))
+                ? between(views.created_at, new Date(query.start), new Date(query.end))
                 : undefined,
         })
 
@@ -64,11 +64,11 @@ export class SessionRepository extends RepositoryCore<SelectSessionsSchema, Inse
         })
         .from(sessions)
         .leftJoin(sources, eq(sessions.source_id, sources.id))
-        .leftJoin(navigations, eq(sessions.id, navigations.session_id))
+        .leftJoin(views, eq(sessions.id, views.session_id))
         .where(
             and(
                 eq(sources.code, code),
-                between(navigations.created_at, new Date(filters.start), new Date(filters.end))
+                between(views.created_at, new Date(filters.start), new Date(filters.end))
             )
         )
 
@@ -96,11 +96,11 @@ export class SessionRepository extends RepositoryCore<SelectSessionsSchema, Inse
         })
         .from(sessions)
         .leftJoin(sources, eq(sessions.source_id, sources.id))
-        .leftJoin(navigations, eq(sessions.id, navigations.session_id))
+        .leftJoin(views, eq(sessions.id, views.session_id))
         .where(
             and(
                 isNotNull(sessions.location),
-                between(navigations.created_at, new Date(filters.start), new Date(filters.end))
+                between(views.created_at, new Date(filters.start), new Date(filters.end))
             )
         )
 

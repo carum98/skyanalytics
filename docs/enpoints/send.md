@@ -1,4 +1,4 @@
-# Send Events or Navigations
+# Send Events or View
 
 ## Request
 - Method: `POST`

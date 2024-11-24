@@ -19,11 +19,11 @@
 - [[PUT /events/:code] - Update Event](events/update.md)
 - [[DELETE /events/:code] - Remove Event](events/remove.md)
 
-## Navigations
-- [[GET /views] - Get Navigations](views/getAll.md)
-- [[POST /views] - Create Navigation](views/create.md)
-- [[PUT /views/:code] - Update Navigation](views/update.md)
-- [[DELETE /views/:code] - Remove Navigation](views/remove.md)
+## Views
+- [[GET /views] - Get Views](views/getAll.md)
+- [[POST /views] - Create View](views/create.md)
+- [[PUT /views/:code] - Update View](views/update.md)
+- [[DELETE /views/:code] - Remove View](views/remove.md)
 
 ## Sessions
 - [[GET /sessions] - Get All Sessions](sessions/getAll.md)

@@ -4,7 +4,7 @@ import { createInsertSchema, createSelectSchema } from 'drizzle-zod'
 import { z } from 'zod'
 import { ResponsePaginationSchema } from '@utils/pagination'
 
-export const navigations = pgTable('navigations', {
+export const views = pgTable('navigations', {
     id: serial('id').primaryKey(),
     name: varchar('name', { length: 100 }),
     session_id: integer('session_id').references(() => sessions.id),
@@ -17,22 +17,22 @@ export const navigations = pgTable('navigations', {
 }))
 
 // Schemas
-export const insertNavigationsSchema = createInsertSchema(navigations)
+export const insertViewsSchema = createInsertSchema(views)
     .pick({ name: true, session_id: true })
     .required()
 	.extend({
 		metadata: z.record(z.string()).optional()
 	})
 
-export const selectNavigationsSchema = createSelectSchema(navigations)
+export const selectViewsSchema = createSelectSchema(views)
     .pick({ id: true, name: true, metadata: true, created_at: true })
     .extend({
         session: selectSessionsSchema.pick({ os: true, software: true, country: true })
     })
 
-export const paginatedNavigationsSchema = ResponsePaginationSchema(selectNavigationsSchema)
+export const paginatedViewsSchema = ResponsePaginationSchema(selectViewsSchema)
 
 // Types
-export type InsertNavigationsSchema = z.infer<typeof insertNavigationsSchema>
-export type SelectNavigationsSchema = z.infer<typeof selectNavigationsSchema>
-export type PaginatedNavigationsSchema = z.infer<typeof paginatedNavigationsSchema>
+export type InsertViewsSchema = z.infer<typeof insertViewsSchema>
+export type SelectViewsSchema = z.infer<typeof selectViewsSchema>
+export type PaginatedViewsSchema = z.infer<typeof paginatedViewsSchema>
