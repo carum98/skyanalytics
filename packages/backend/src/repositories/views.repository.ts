@@ -123,7 +123,16 @@ export class ViewsRepository extends RepositoryCore<SelectViewsSchema, InsertVie
             between(views.created_at, new Date(filters.start), new Date(filters.end))
         ))
 
-        return groupByRangeDates(data, dateRange, filters, timezone)
+        return groupByRangeDates(
+            data, 
+            dateRange, 
+            filters, 
+            timezone,
+            (items) => ({
+                views: items?.length || 0,
+                sessions: new Set(items?.map(item => item.session_id)).size
+            })
+        )
     }
 
 	public async getStatsMetadata(code: string, filters: StatsFilter) {

@@ -1,4 +1,5 @@
 import { HeadersTimeZone } from '@schemas/_headers'
+import { FilterSessions } from '@schemas/_query'
 import { ReportsService } from '@services/reports.service'
 import { PaginationSchemaType } from '@utils/pagination'
 import { Request, Response } from 'express'
@@ -8,7 +9,7 @@ export class ReportsController {
 
 	public getAll = async (req: Request, res: Response) => {
 		const headers = req.headers as unknown as HeadersTimeZone
-		const query = req.query as unknown as PaginationSchemaType
+		const query = req.query as unknown as PaginationSchemaType & FilterSessions
 
 		const reports = await this.service.getAll({
             ...query,

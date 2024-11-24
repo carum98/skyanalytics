@@ -27,7 +27,7 @@ export interface IPagination {
 }
 
 export interface IView {
-	[key: string]: { views: number, sessions: number }
+	[key: string]: { views: number, sessions: number, reports: number }
 }
 
 export interface ISources {

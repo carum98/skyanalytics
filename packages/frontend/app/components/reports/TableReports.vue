@@ -3,7 +3,7 @@ import SkTable from '@ui/SkTable.vue'
 import SkPopover from '@ui/SkPopover.vue'
 import SourceAvatar from '@components/SourceAvatar.vue'
 
-import { timeAgo } from '@/utils'
+import { getCurrentTimeZone, timeAgo } from '@/utils'
 import { useFetch } from '@composables/useFetch'
 import type { IReportPagination, IReport } from '@shared/types'
 
@@ -12,7 +12,10 @@ const { query } = defineProps<{
 }>()
 
 const { data, refresh: onRefresh } = useFetch<IReportPagination>('/api/reports', {
-	query
+	query,
+	headers: {
+		'x-timezone': getCurrentTimeZone()
+	}
 })
 
 const columns = [

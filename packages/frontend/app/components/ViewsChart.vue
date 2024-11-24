@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref, computed, watch } from 'vue'
 
-import type { ISources } from '@shared/types'
+import type { ISources, IView } from '@shared/types'
 import type { DateSelectorValue } from '@components/DateSelector.vue'
 
 import { useFetch } from '@composables/useFetch'
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip, Interaction, type InteractionOptions, type ChartEvent, type InteractionModeFunction } from 'chart.js'
 import { getCurrentTimeZone } from '@/utils'
 import { useSidebar } from '@composables/useSidebar'
+import { useDialog } from '@composables/useDialog'
 
 declare module 'chart.js' {
   interface InteractionModeMap {
@@ -21,6 +22,7 @@ const props = defineProps<{
 }>()
 
 const sidebar = useSidebar()
+const dialog = useDialog()
 
 // data
 let chart: Chart | null = null
@@ -40,10 +42,17 @@ const datasets = [
         borderColor: 'green',
         backgroundColor: 'rgba(0, 128, 0, 0.3)',
         borderRadius: 10
+    },
+    {
+        label: 'Bug Reports',
+        data: [],
+        borderColor: 'red',
+        backgroundColor: 'rgba(255, 0, 0, 0.3)',
+        borderRadius: 10
     }
 ]
 
-const { data } = useFetch<{ [key: string]: { views: number, sessions: number } }>(`/api/sources/${props.item.code}/views`, {
+const { data } = useFetch<IView>(`/api/sources/${props.item.code}/views`, {
     query: computed(() => props.filters),
     headers: {
         'x-timezone': getCurrentTimeZone()
@@ -60,6 +69,7 @@ watch(data, (value) => {
     chart.data.labels! = labels
     chart.data.datasets[0].data! = data.map(item => item.sessions)
     chart.data.datasets[1].data! = data.map(item => item.views)
+    chart.data.datasets[2].data! = data.map(item => item.reports)
 
     chart.update()
 })
@@ -83,6 +93,8 @@ function handleClick(context: ChartEvent & { chart: Chart, native: PointerEvent 
             onOpenSessions(key)
         } else if (dataset?.label === 'Views') {
             onOpenViews(key)
+        } else if (dataset?.label === 'Bug Reports') {
+            onOpenReports(key)
         }
     }
 }
@@ -262,6 +274,21 @@ function onOpenSessions(date: string) {
 
     sidebar.push({ 
         name: 'sessions.list',
+        props: { 
+            sourceCode: props.item.code,
+            query: {
+                start,
+                end
+            }
+        }
+    })
+}
+
+function onOpenReports(date: string) {
+    const { start, end } = formatRange(date)
+
+    dialog.push({ 
+        name: 'reports.list',
         props: { 
             sourceCode: props.item.code,
             query: {

@@ -41,6 +41,13 @@ onMounted(() => {
                 },
                 tension: 0.3,
                 pointRadius: 0
+            },{
+                label: 'Bug Reports',
+                data: [],
+                fill: true,
+                tension: 0.3,
+                pointRadius: 0,
+                backgroundColor: 'rgba(255, 0, 0, 0.2)',
             }]
         },
         options: {
@@ -76,10 +83,12 @@ onMounted(() => {
     })
 
 	const labels = Object.keys(props.data)
-    const data = Object.values(props.data).map(item => item.sessions)
+    const sessions = Object.values(props.data).map(item => item.sessions)
+    const bugReports = Object.values(props.data).map(item => item.reports)
 
     chart?.data.labels?.push(...labels)
-    chart?.data.datasets[0].data?.push(...data)
+    chart?.data.datasets[0].data?.push(...sessions)
+    chart?.data.datasets[1].data?.push(...bugReports)
     chart?.update()
 })
 

@@ -132,11 +132,29 @@ export class SourcesService {
             filters.end = end
         } 
 
-        return this.viewsRepository.getViews(
-            code, 
-            filters.date_range, 
-            filters,
-            timeZone
-        )
+        const [views, reports] = await Promise.all([
+            this.viewsRepository.getViews(
+                code, 
+                filters.date_range, 
+                filters,
+                timeZone
+            ),
+            this.reportsRepository.getByDays(
+                code, 
+                filters.date_range, 
+                filters, 
+                timeZone
+            )
+        ])
+
+        // Join views and reports.
+        const data = Object.entries(views).map(([date, view]) => {
+            return [date, {
+                ...view,
+                reports: reports[date].reports || 0
+            }]
+        })
+
+        return Object.fromEntries(data)
     }
 }
