@@ -133,6 +133,7 @@ export interface IReport {
     created_at: string
     source: Pick<ISources, 'code' | 'name' | 'icon_path'>
     session: ISession
+    status: string
 }
 
 export interface IReportPagination {

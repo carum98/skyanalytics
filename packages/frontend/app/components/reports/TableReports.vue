@@ -6,6 +6,9 @@ import SourceAvatar from '@components/SourceAvatar.vue'
 import { getCurrentTimeZone, timeAgo } from '@/utils'
 import { useFetch } from '@composables/useFetch'
 import type { IReportPagination, IReport } from '@shared/types'
+import { useSidebar } from '@/composables/useSidebar'
+
+const sidebar = useSidebar()
 
 const { query } = defineProps<{
 	query?: Record<string, string>
@@ -32,7 +35,7 @@ const columns = [
 		tdClass: 'flex align-center ga-1',
 	},
 	{
-		name: 'Created',
+		name: 'Date',
 		key: 'created_at',
 		thClass: 'text-left'
 	},
@@ -46,6 +49,13 @@ const columns = [
 		width: '100px'
 	}
 ]
+
+function onRowClick(item: IReport) {
+	sidebar.push({
+		name: 'reports.profile',
+		props: { item }
+	})
+}
 </script>
 
 <template>
@@ -53,6 +63,7 @@ const columns = [
 		v-if="data"
 		:data="data.data"
 		:columns="columns"
+		@on-row-click="onRowClick"
 	>
 		<template #cell(source)="{ value }">
 			<SourceAvatar 

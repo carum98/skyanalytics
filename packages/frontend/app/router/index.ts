@@ -134,6 +134,10 @@ const sidebars: SidebarRecordRaw[] = [
         rootProps: {
             width: 1100
         }
+    },
+    {
+        name: 'reports.profile',
+        component: () => import('@views/reports/Profile.sidebar.vue'),
     }
 ]
 

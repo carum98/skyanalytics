@@ -1,4 +1,6 @@
 <script setup lang="ts" generic="T">
+import { getCurrentInstance } from 'vue'
+
 type Column = {
     name: string
     key: string
@@ -12,6 +14,10 @@ defineProps<{
     columns: Array<Column>
 }>()
 
+defineEmits<{
+    onRowClick: [T]
+}>()
+
 function rowContent(row: T, column: string) {
     if (column.includes('.')) {
         const [parent, child] = column.split('.')
@@ -21,6 +27,8 @@ function rowContent(row: T, column: string) {
 
     return (row as Record<string, unknown>)[column]
 }
+
+const hasRowClick = !!getCurrentInstance()?.vnode?.props?.onOnRowClick
 </script>
 
 <template>
@@ -37,8 +45,8 @@ function rowContent(row: T, column: string) {
                 </th>
             </tr>
         </thead>
-        <tbody>
-            <tr v-for="row in data">
+        <tbody :class="{ 'table-hover': hasRowClick }">
+            <tr v-for="row in data" @click="$emit('onRowClick', row)">
                 <td v-for="column in columns" :key="column.key" :class="column.tdClass">
                     <slot
                         :name="`cell(${column.key})`"
@@ -113,6 +121,11 @@ function rowContent(row: T, column: string) {
     & .table-empty td {
         height: 200px;
         text-align: center;
+    }
+
+    & .table-hover tr:hover {
+        cursor: pointer;
+        background-color: rgba(var(--table-color-rgb), 0.5);
     }
 }
 
