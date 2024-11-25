@@ -1,4 +1,4 @@
-import { settings, SettingsKey, SummaryEmailSchema, selectSettingsSchema } from '@schemas/settings.schemas'
+import { settings, SettingsKey, SummaryEmailSchema, selectSettingsSchema, BugReportEmailSchema } from '@schemas/settings.schemas'
 import { userAccounts } from '@schemas/user_accounts.schemas'
 import { eq, inArray } from 'drizzle-orm'
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
@@ -9,6 +9,8 @@ export class SettingsRepository {
 	public async get(key: SettingsKey) {
 		if (key === 'email_summary') {
 			return this.getSummaryEmail()
+		} else if (key === 'email_bug_report') {
+			return this.getBugReportEmail()
 		}
 
 		return this.getSettings(key)
@@ -31,6 +33,23 @@ export class SettingsRepository {
 				value: data.date_range,
 				name: data.date_range.replaceAll('_', ' ').replace(/^./, char => char.toUpperCase())
 			},
+			users: emails.map((email) => email.email)
+		}
+	}
+
+	public async getBugReportEmail() {
+		const jsonConfig = await this.getSettings('email_bug_report')
+
+		const data = BugReportEmailSchema.parse(jsonConfig)
+
+		const emails = data.users.length ? await this.db.select({
+			email: userAccounts.email
+		})
+		.from(userAccounts)
+		.where(inArray(userAccounts.id, data.users)) : []
+
+		return {
+			...data,
 			users: emails.map((email) => email.email)
 		}
 	}

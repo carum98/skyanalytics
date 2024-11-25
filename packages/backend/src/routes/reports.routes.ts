@@ -56,5 +56,10 @@ export class ReportsRouter extends RouterCore {
 			name: '/:code',
 			handler: controller.delete
 		})
+
+		this.get({
+			name: '/:code/send-email',
+			handler: controller.sendEmail
+		})
 	}
 }

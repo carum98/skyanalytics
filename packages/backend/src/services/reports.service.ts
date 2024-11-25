@@ -1,13 +1,20 @@
 import { ReportsRepository } from '@repositories/reports.repository'
+import { SettingsRepository } from '@repositories/settings.repository'
+import { SourcesRepository } from '@repositories/sources.repository'
 import { HeadersTimeZone } from '@schemas/_headers'
 import { FilterSessions } from '@schemas/_query'
-import { InsertReportsSchema, UpdateReportsSchema } from '@schemas/reports.schemas'
+import { InsertReportsSchema, SelectReportsSchema, UpdateReportsSchema } from '@schemas/reports.schemas'
+import { sendEmail } from '@utils/emails'
 import { PaginationSchemaType } from '@utils/pagination'
 import { rangeDates } from '@utils/range-dates'
 import { parseToTimeZone, parseToUTC } from '@utils/time-zones'
 
 export class ReportsService {
-	constructor(private reportsRepository: ReportsRepository) {}
+	constructor(
+		private reportsRepository: ReportsRepository,
+		private settingsRepository: SettingsRepository,
+		private sourceRepository: SourcesRepository,
+	) {}
 
 	async getAll(query: PaginationSchemaType & FilterSessions & HeadersTimeZone) {
 		const timeZone = query['x-timezone'] || 'UTC-0'
@@ -52,4 +59,42 @@ export class ReportsService {
 	async delete(code: string) {
 		return this.reportsRepository.delete(code)
 	}
+
+	async sendEmail(report: SelectReportsSchema, onlyHtml?: boolean) {
+		const config = await this.settingsRepository.getBugReportEmail()
+
+		if (!config.enabled) {
+			return { message: 'Emails are disabled' }
+		}
+
+		const icon_path = await this.sourceRepository.getIconPath(report.source.code)
+
+		return sendEmail({
+			to: config.users,
+			subject: `SkyAnalytics -- Bug Report #${report.code}`,
+			template: 'bug-report',
+			data: {
+				report: {
+					...report,
+					icon_path,
+					created_at: formatDate(report.created_at, 'America/Costa_Rica')
+				}
+			},
+			onlyHtml
+		})
+	}
+}
+
+function formatDate(date: Date, timeZone: string) {
+	const value = parseToTimeZone(date, timeZone)
+
+    return new Date(value).toLocaleString('en-US', {
+        month: 'long',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+		year: 'numeric',
+		weekday: 'long',
+        hour12: true
+    })
 }

@@ -1,8 +1,165 @@
 <html>
 	<head>
-		<title>Bug Report</title>
+        <style type="text/css">
+			*, *::before, *::after {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+            body {
+                font-family: 'Poppins', 'Arial', sans-serif;
+                color: #000000;
+            }
+
+			ul {
+				list-style-type: none;
+			}
+
+			.header, .footer {
+				margin: auto;
+				margin-top: 10px;
+			}
+
+			.header table {
+				margin: 0 auto;
+			}
+
+			.header td {
+				padding: 0 5px;
+			}
+
+			.main {
+				margin: 0 auto;
+				border-spacing: 20px;
+				width: 50%;
+			}
+
+			.main > tr > td {
+				padding: 20px;
+				width: 30%;
+				background-color: #f2f5fc;
+				border-radius: 15px;
+				vertical-align: top;
+			}
+
+			.main h2 {
+				font-size: 1.2rem;
+				margin-bottom: 10px;
+			}
+
+			.main span {
+				background-color: #c9c9c9;
+				color: white;
+				padding: 5px 10px;
+				border-radius: 10px;
+			}
+
+			.icon {
+				width: 30px;
+				height: 30px;
+			}
+
+			.no-avatar {
+				display: block;
+				width: 30px;
+				height: 30px;
+				border-radius: 5px;
+				background-color: #dde6fb;
+				background-size: 16px;
+				background-position: center;
+				background-repeat: no-repeat;
+				background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgdmlld0JveD0iMCAwIDIwIDIwIj48cGF0aCBmaWxsPSJncmF5IiBkPSJNMTAgMjBhMTAgMTAgMCAxIDEgMC0yMGExMCAxMCAwIDAgMSAwIDIwbTcuNzUtOGE4IDggMCAwIDAgMC00aC0zLjgyYTI5IDI5IDAgMCAxIDAgNHptLS44MiAyaC0zLjIyYTE0LjQgMTQuNCAwIDAgMS0uOTUgMy41MUE4LjAzIDguMDMgMCAwIDAgMTYuOTMgMTRtLTguODUtMmgzLjg0YTI0LjYgMjQuNiAwIDAgMCAwLTRIOC4wOGEyNC42IDI0LjYgMCAwIDAgMCA0bS4yNSAyYy40MSAyLjQgMS4xMyA0IDEuNjcgNHMxLjI2LTEuNiAxLjY3LTR6bS02LjA4LTJoMy44MmEyOSAyOSAwIDAgMSAwLTRIMi4yNWE4IDggMCAwIDAgMCA0bS44MiAyYTguMDMgOC4wMyAwIDAgMCA0LjE3IDMuNTFjLS40Mi0uOTYtLjc0LTIuMTYtLjk1LTMuNTF6bTEzLjg2LThhOC4wMyA4LjAzIDAgMCAwLTQuMTctMy41MWMuNDIuOTYuNzQgMi4xNi45NSAzLjUxem0tOC42IDBoMy4zNGMtLjQxLTIuNC0xLjEzLTQtMS42Ny00UzguNzQgMy42IDguMzMgNk0zLjA3IDZoMy4yMmMuMi0xLjM1LjUzLTIuNTUuOTUtMy41MUE4LjAzIDguMDMgMCAwIDAgMy4wNyA2Ii8+PC9zdmc+")
+			}
+
+			.code-badge {
+				background-color: #0160be;
+				color: #fff;
+				padding: 5px 10px;
+				border-radius: 10px;
+				margin-left: 20px;
+			}
+
+			.anchor-button {
+				background-color: #0160be;
+				color: #fff;
+				padding: 10px 20px;
+				border-radius: 10px;
+				text-decoration: none;
+			}
+		</style>
 	</head>
 	<body>
-		<h1>Bug Report</h1>
+		<table class="header">
+			<tr>
+				<td>
+					<img width="45" height="45" src='data:image/avif;base64,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'/>
+				</td>
+				<td>
+					<h1>SkyAnalytics</h1>
+				</td>
+			</tr>
+		</table>
+
+		<table class="header">
+			<tr>
+				<td>
+					{{#if report.icon_path}}
+						<img class="icon" src="{{base64ImageSrc report.icon_path}}" alt="image" />
+					{{else}}
+						<span class="no-avatar"></span>
+					{{/if}}
+				</td>
+				<td>
+					<p>{{ report.source.name }}</p>
+				</td>
+				<td>
+					<span class="code-badge">#{{ report.code }}</span>
+				</td>
+			</tr>
+		</table>
+
+		<table class="main">
+			<tr>
+				<td>
+					<h2>Description</h2>
+					<p style="min-height: 100px;">{{ report.description }}</p>
+				</td>				
+			</tr>
+			<tr>
+				<td>
+					<h2>Date</h2>
+					<p>{{ report.created_at }}</p>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<h2>Report By</h2>
+					<div>
+						<span>{{ report.user.name }}</span>
+						<span>{{ report.user.contact }}</span>
+					</div>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<h2>Metadata</h2>
+					<div>
+						{{#each report.metadata}}
+							<span>{{this}}</span>
+						{{/each}}
+					</div>
+				</td>
+			</tr>
+		</table>
+
+		<table class="footer">
+			<tr>
+				<td>
+					<a class="anchor-button" href="https://www.google.com">View Report</a>
+				</td>
+			</tr>
+		</table>
 	</body>
 </html>

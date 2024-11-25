@@ -3,7 +3,7 @@ import { json, pgEnum, pgTable, serial, timestamp } from 'drizzle-orm/pg-core'
 import { createInsertSchema } from 'drizzle-zod'
 import { z } from 'zod'
 
-export const settingsKeys = ['email_summary'] as const
+export const settingsKeys = ['email_summary', 'email_bug_report'] as const
 
 export const settingsKeysEnum = pgEnum('settings_keys', settingsKeys)
 export const SettingsKeySchema = z.enum(settingsKeys)
@@ -39,5 +39,13 @@ export const SummaryEmailSchema = z.object({
 }).default({
 	enabled: false,
 	date_range: DateRange.last_7_days,
+	users: []
+})
+
+export const BugReportEmailSchema = z.object({
+	enabled: z.boolean(),
+	users: z.array(z.number())
+}).default({
+	enabled: false,
 	users: []
 })

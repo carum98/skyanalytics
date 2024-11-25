@@ -47,7 +47,7 @@ export class SendController {
         }
 
         if (body.bug_report) {
-            await this.reportsService.create({
+            const data = await this.reportsService.create({
                 description: body.bug_report.description,
                 user: body.bug_report.user,
                 session_id,
@@ -55,6 +55,8 @@ export class SendController {
                     ? metadata 
                     : undefined
             })
+
+            this.reportsService.sendEmail(data)
         }
 
 		res.status(201).send()

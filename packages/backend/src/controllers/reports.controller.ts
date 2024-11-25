@@ -46,4 +46,11 @@ export class ReportsController {
             res.status(204).json()
         }
 	}
+
+	public sendEmail = async (req: Request, res: Response) => {
+		const { code } = req.params
+		const report = await this.service.get(code)
+		const response = await this.service.sendEmail(report, true)
+		res.send(response)
+	}
 }

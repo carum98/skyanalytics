@@ -62,7 +62,7 @@ di.register(() => new UserAccountsService(userAccountsRepository))
 di.register(() => new AuthService(userAccountsRepository, refreshTokenRepository))
 di.register(() => new LocationsService(sessionRepository))
 di.register(() => new SummaryService(summaryRepository, settingsRepository))
-di.register(() => new ReportsService(reportsRepository))
+di.register(() => new ReportsService(reportsRepository, settingsRepository, sourcesRepository))
 
 // Tasks Scheduler
 const tasksScheduler = di.register(() => new TasksScheduler())
