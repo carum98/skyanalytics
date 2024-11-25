@@ -53,7 +53,8 @@ const columns = [
 function onRowClick(item: IReport) {
 	sidebar.push({
 		name: 'reports.profile',
-		props: { item }
+		props: { item },
+		listeners: { onRefresh }
 	})
 }
 </script>
@@ -120,6 +121,11 @@ function onRowClick(item: IReport) {
 
 	&.status-open {
 		color: green;
+		background-color: color-mix(in lab, black 70%, currentColor);
+	}
+
+	&.status-closed {
+		color: var(--primary-color);
 		background-color: color-mix(in lab, black 70%, currentColor);
 	}
 

@@ -135,6 +135,7 @@ export interface IReport {
     session: ISession
     status: string
     metadata: Record<string, string>
+    user: Record<string, string>
 }
 
 export interface IReportPagination {

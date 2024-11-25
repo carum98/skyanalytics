@@ -1,5 +1,6 @@
 import { router } from '@/router'
 import { render, createApp, defineComponent, h, type App } from 'vue'
+import { dialogPlugin } from '@/plugins/dialogs.plugin'
 
 export type ProgrammaticallyOptions = {
     component: () => Promise<any>
@@ -50,7 +51,9 @@ export function programmaticallyComponent(
             ]),
         })
 
-        app = createApp(instance).use(router)
+        app = createApp(instance)
+            .use(dialogPlugin)
+            .use(router)
         
         app.mount(root)
     }

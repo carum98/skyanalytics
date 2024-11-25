@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import SourceAvatar from '@components/SourceAvatar.vue'
-
+import { $fetch } from '@/utils/fetch';
 import type { IReport } from '@shared/types'
 
-defineProps<{
+const props = defineProps<{
 	item: IReport
+}>()
+
+const emits = defineEmits<{
+    close: []
+    refresh: []
 }>()
 
 function formatDate(dateString: string) {
@@ -19,6 +24,21 @@ function formatDate(dateString: string) {
 		weekday: 'long',
         hour12: true
     }).toLowerCase()
+}
+
+async function send() {
+	try {
+		await $fetch(`/api/reports/${props.item.code}`, {
+			method: 'PUT',
+			body: JSON.stringify({ status: 'closed' }),
+			headers: { 'Content-Type': 'application/json' }
+		})
+
+		emits('refresh')
+		emits('close')
+	} catch (error) {
+		console.error(error)
+	}
 }
 </script>
 
@@ -53,6 +73,16 @@ function formatDate(dateString: string) {
 		</section>
 
 		<section class="container">
+			<label>User</label>
+
+			<div class="metadata">
+				<p v-for="(value, key) in item.user" :key="key">
+					<span>{{ value }}</span>
+				</p>
+			</div>
+		</section>
+
+		<section class="container">
 			<label>Metadata</label>
 
 			<div class="metadata">
@@ -67,6 +97,14 @@ function formatDate(dateString: string) {
 
 			<div style="height: 100px;"></div>
 		</section>
+
+		<button 
+			v-if="item?.status === 'open'" 
+			class="sk-button-fab" 
+			v-dialog="{ name: 'confirm', props: { text: 'Close Bug Report' }, listeners: { onConfirm: send } }"
+		>
+			<i class="icon-check"></i>
+		</button>
 	</div>
 </template>
 
