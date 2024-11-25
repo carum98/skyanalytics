@@ -9,6 +9,9 @@ Create a new report.
 | Field | Type | Required |
 | ----- | ---- | -------- |
 | description | string | true |
+| user | object | true |
+| user.name | string | true |
+| user.contact | string | true |
 | session_id | string | true |
 
 ## Response

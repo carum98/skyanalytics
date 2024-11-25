@@ -40,6 +40,10 @@
 {
   "bug_report": {
     "description": "The button is not working",
+    "user": {
+      "name": "John Doe",
+      "contact": "correo@correo.com"
+    }
   }
 }
 ```

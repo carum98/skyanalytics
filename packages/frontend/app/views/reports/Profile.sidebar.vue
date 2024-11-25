@@ -73,9 +73,9 @@ async function send() {
 		</section>
 
 		<section class="container">
-			<label>User</label>
+			<label>Report By</label>
 
-			<div class="metadata">
+			<div class="flex ga-1" style="margin: 10px 0;">
 				<p v-for="(value, key) in item.user" :key="key">
 					<span>{{ value }}</span>
 				</p>
@@ -129,12 +129,12 @@ async function send() {
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		margin: 10px 0;
+	}
 
-		span {
-			background-color: var(--background-color);
-			padding: 3px 10px;
-			border-radius: 10px;
-		}
+	section:not(:first-child) span {
+		background-color: var(--background-color);
+		padding: 3px 10px;
+		border-radius: 10px;
 	}
 }
 </style>

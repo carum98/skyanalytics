@@ -13,9 +13,10 @@ export const statusEnum = pgEnum('status', status)
 export const reports = pgTable('reports', {
 	id: serial('id').primaryKey(),
 	code: varchar('code', { length: 6 }).notNull().unique(),
-	description: varchar('description', { length: 700 }),
-	session_id: integer('session_id').references(() => sessions.id),
+	description: varchar('description', { length: 700 }).notNull(),
+	session_id: integer('session_id').references(() => sessions.id).notNull(),
 	status: statusEnum('status').notNull().default(status[0]),
+	user: json('user').$type<{ name: string, contact: string }>().notNull(),
 	metadata: json('metadata'),
 	created_at: timestamp("created_at").notNull().defaultNow(),
 	updated_at: timestamp("updated_at").notNull().$onUpdate(() => new Date()),
@@ -28,6 +29,12 @@ export const reports = pgTable('reports', {
 // Schemas
 export const insertReportsSchema = createInsertSchema(reports)
 	.pick({ description: true, session_id: true })
+	.extend({
+		user: z.object({
+			name: z.string(),
+			contact: z.string()
+		})
+	})
 	.required()
 	.extend({
 		metadata: z.record(z.string()).optional()
@@ -38,7 +45,7 @@ export const updateReportsSchema = createInsertSchema(reports)
 	.partial()
 
 export const selectReportsSchema = createSelectSchema(reports)
-	.pick({ code: true, description: true, status: true, created_at: true, metadata: true })
+	.pick({ code: true, description: true, status: true, created_at: true, user: true, metadata: true })
 	.extend({
         session: selectSessionsSchema.pick({ os: true, software: true, country: true }),
 		source: createSelectSchema(sources).pick({ code: true, name: true, icon_path: true }).transform(parseIconPath)

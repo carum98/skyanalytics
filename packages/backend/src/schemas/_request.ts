@@ -6,6 +6,10 @@ export const sendBodySchema = z.object({
     navigation: z.string().min(3).max(100).optional(),
     bug_report: z.object({
         description: z.string().min(3).max(700),
+        user: z.object({
+			name: z.string().min(3).max(50),
+			contact: z.string().min(3).max(50)
+		})
     }).optional(),
     metadata: z.record(z.string()).optional()
 })

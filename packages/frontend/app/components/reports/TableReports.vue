@@ -10,8 +10,9 @@ import { useSidebar } from '@/composables/useSidebar'
 
 const sidebar = useSidebar()
 
-const { query } = defineProps<{
+const { query, hideSource } = defineProps<{
 	query?: Record<string, string>
+	hideSource?: boolean
 }>()
 
 const { data, refresh: onRefresh } = useFetch<IReportPagination>('/api/reports', {
@@ -26,7 +27,7 @@ const columns = [
 		name: 'Description',
 		key: 'description',
 		thClass: 'text-left',
-		width: '30%'
+		width: '40%'
 	},
 	{
 		name: 'Project',
@@ -37,16 +38,24 @@ const columns = [
 	{
 		name: 'Date',
 		key: 'created_at',
-		thClass: 'text-left'
+		thClass: 'text-center',
+		tdClass: 'text-center',
+		width: '170px'
+	},
+	{
+		name: 'Reported By',
+		key: 'user.name',
+		width: '200px'
 	},
 	{
 		name: 'Status',
 		key: 'status',
+		width: '100px'
 	},
 	{
 		name: '',
 		key: 'actions',
-		width: '100px'
+		width: '30px'
 	}
 ]
 
@@ -56,6 +65,11 @@ function onRowClick(item: IReport) {
 		props: { item },
 		listeners: { onRefresh }
 	})
+}
+
+if (hideSource) {
+	const sourceIndex = columns.findIndex(column => column.key === 'source')
+	columns.splice(sourceIndex, 1)
 }
 </script>
 
@@ -89,14 +103,18 @@ function onRowClick(item: IReport) {
 			</div>
 		</template>
 
+		<template #cell(user.name)="{ value }">
+			<div class="flex justify-center">
+				<span class="badge-role">{{ value }}</span>
+			</div>
+		</template>
+
 		<template #cell(actions)="{ item }">
 			<SkPopover position="bottom" :key="item.code">
 				<template #target="{ props }">
-					<div class="flex">
-						<button @click.stop class="sk-dropdown__button mx-auto" v-bind="props">
-							<i class="icon-ellipsis-vertical"></i>
-						</button>
-					</div>
+					<button @click.stop class="sk-dropdown__button" v-bind="props">
+						<i class="icon-ellipsis-vertical"></i>
+					</button>
 				</template>
 				<template #popover="{ props }">
 					<div class="sk-dropdown__options" v-bind="props">

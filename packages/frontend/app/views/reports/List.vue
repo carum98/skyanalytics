@@ -2,19 +2,18 @@
 import TableReports from '@components/reports/TableReports.vue'
 
 const props = defineProps<{
-	query: Record<string, string>
+	query?: Record<string, string>
 	sourceCode: string
 }>()
 
 </script>
 
 <template>
-	<section>
-		<TableReports
-			:query="{
-				...props.query,
-				['sources[code][equal]']: props.sourceCode
-			}"
-		></TableReports>
-	</section>
+	<TableReports
+		hide-source
+		:query="{
+			...props.query,
+			['sources[code][equal]']: props.sourceCode
+		}"
+	></TableReports>
 </template>
