@@ -52,11 +52,11 @@ const columns = [
 		key: 'status',
 		width: '100px'
 	},
-	{
-		name: '',
-		key: 'actions',
-		width: '30px'
-	}
+	// {
+	// 	name: '',
+	// 	key: 'actions',
+	// 	width: '30px'
+	// }
 ]
 
 function onRowClick(item: IReport) {
