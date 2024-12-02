@@ -7,7 +7,7 @@ ARG VITE_ANALYTICS_KEY=
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm install -D typescript
+RUN npm install typescript@5.4.5 -E -D
 RUN npm install && npm cache clean --force
 
 COPY . .
