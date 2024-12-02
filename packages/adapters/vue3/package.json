@@ -1,6 +1,6 @@
 {
   "name": "@skyanalytics/vue3",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "author": "Carlos Eduardo Umaña Acevedo <cumana3098@gmail.com>",
@@ -23,7 +23,7 @@
     "dist"
   ],
   "dependencies": {
-    "@skyanalytics/js": "1.1.0"
+    "@skyanalytics/js": "1.1.1"
   },
   "devDependencies": {
     "vue": "3.5.4",

@@ -12,6 +12,16 @@ export interface SkyAnalyticsPayloadNavigation {
 	metadata?: Record<string, string>
 }
 
+export interface SkyAnalyticsPayloadBugReport {
+    bug_report: {
+        description: string
+        user: {
+            name: string
+            contact: string
+        }
+    }
+}
+
 export interface SkyAnalyticsPayloadMetadata {
     metadata: Record<string, string>
 }

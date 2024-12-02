@@ -48,6 +48,10 @@ export function useAnalytics() {
         analytics?.navigation({ name, metadata })
     }
 
+    function bugReport(description: string, user: { name: string, contact: string }, metadata?: Record<string, string>) {
+        analytics?.bugReport({ description, user }, metadata)
+    }
+
     function metadata(data: Record<string, string>) {
         analytics?.metadata(data)
     }
@@ -55,6 +59,7 @@ export function useAnalytics() {
     return {
         event,
         navigate,
-        metadata
+        metadata,
+        bugReport,
     }
 }

@@ -1,4 +1,4 @@
-import { SkyAnalyticsOptions, SkyAnalyticsPayloadEvent, SkyAnalyticsPayloadMetadata, SkyAnalyticsPayloadNavigation } from './types'
+import { SkyAnalyticsOptions, SkyAnalyticsPayloadBugReport, SkyAnalyticsPayloadEvent, SkyAnalyticsPayloadMetadata, SkyAnalyticsPayloadNavigation } from './types'
 
 export class SkyAnalytics {
     private options: SkyAnalyticsOptions | undefined
@@ -11,7 +11,7 @@ export class SkyAnalytics {
         return Boolean(this.options)
     }
 
-    private send(payload: SkyAnalyticsPayloadEvent | SkyAnalyticsPayloadNavigation | SkyAnalyticsPayloadMetadata) {
+    private send(payload: SkyAnalyticsPayloadEvent | SkyAnalyticsPayloadNavigation | SkyAnalyticsPayloadMetadata | SkyAnalyticsPayloadBugReport) {
         if (!this.isInitialized) {
             throw new Error('SkyAnalytics not initialized')
         }
@@ -39,6 +39,19 @@ export class SkyAnalytics {
         return this.send({
             navigation: payload.name,
 			metadata: payload.metadata
+        })
+    }
+
+    bugReport(payload: { description: string, user: { name: string, contact: string } }, metadata?: Record<string, string>) {
+        return this.send({
+            bug_report: {
+                description: payload.description,
+                user: {
+                    name: payload.user.name,
+                    contact: payload.user.contact,
+                },
+            },
+            metadata,
         })
     }
 
