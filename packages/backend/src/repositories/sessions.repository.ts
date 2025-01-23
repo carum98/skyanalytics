@@ -41,6 +41,7 @@ export class SessionRepository extends RepositoryCore<SelectSessionsSchema, Inse
     public async create(params: InsertSessionsSchema) {
         const data = await this.db.insert(sessions)
             .values(params)
+            .onConflictDoNothing() // Ignore if the session already exists
             .returning()
 
         return data.at(0)
