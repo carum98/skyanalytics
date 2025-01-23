@@ -23,6 +23,7 @@ services:
       context: ./packages/backend
       dockerfile: Dockerfile
     container_name: skyanalytics-backend
+    restart: on-failure:5
     ports:
       - ${PORT_BACKEND}:3000
     volumes:
