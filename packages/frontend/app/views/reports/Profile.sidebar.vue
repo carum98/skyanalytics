@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import SourceAvatar from '@components/SourceAvatar.vue'
+import ReportFiles from '@components/ReportFiles.vue'
 import { $fetch } from '@/utils/fetch';
 import type { IReport } from '@shared/types'
 
@@ -95,7 +96,9 @@ async function send() {
 		<section class="container">
 			<label>Attachments</label>
 
-			<div style="height: 100px;"></div>
+			<div style="height: 100px;">
+				<ReportFiles :item="item" />
+			</div>
 		</section>
 
 		<button 

@@ -143,6 +143,11 @@ export interface IReportPagination {
     pagination: IPagination
 }
 
+export interface IReportFile {
+    file: string
+    size: number
+}
+
 // Types route
 type ApiRoutes = keyof InternalApi
 type ApiResponse<T extends ApiRoutes, M extends keyof InternalApi[T]> = InternalApi[T][M]
