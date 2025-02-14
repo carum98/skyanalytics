@@ -13,6 +13,7 @@ Create a new report.
 | user.name | string | true |
 | user.contact | string | true |
 | session_id | string | true |
+| files | array | false |
 
 ## Response
 Status: `200 OK`

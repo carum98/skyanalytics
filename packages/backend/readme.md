@@ -1,6 +1,12 @@
 # SkyAnalytics Backend
 API REST for SkyAnalytics, a service that allows you to track the behavior of your users.
 
+## Stack
+- [Express](https://github.com/expressjs/express)
+- [PostgreSQL](https://www.postgresql.org)
+- [Drizzle](https://github.com/drizzle-team/drizzle-orm)
+- [Zod](https://github.com/colinhacks/zod)
+
 ## Endpoints
 SkyAnalytics exposes an API that allows you to interact with the service. The following are the available endpoints:
 
@@ -63,8 +69,10 @@ The API can send emails to the users. To set up the email service, you need to s
 - `EMAIL_PASSWORD`: The password of the email address.
 Recommend generating an app password for the email address, to avoid using the real password. This password can be generated in the email provider settings.
 
-## Stack
-- [Express](https://github.com/expressjs/express)
-- [PostgreSQL](https://www.postgresql.org)
-- [Drizzle](https://github.com/drizzle-team/drizzle-orm)
-- [Zod](https://github.com/colinhacks/zod)
+## File Upload
+The API supports file uploads to reports, the files are stored in [R2 storage](https://developers.cloudflare.com/r2/). To set up the file upload service, you need to set the following environment variables:
+- `R2_ACCESS_KEY`: The access key ID of the R2 storage.
+- `R2_SECRET_KEY`: The secret of the R2 storage.
+- `R2_BUCKET_NAME`: The bucket name of the R2 storage.
+- `R2_REGION`: The region of the R2 storage.
+- `R2_ENDPOINT`: The endpoint of the R2 storage.

@@ -31,6 +31,8 @@
 - [[GET /reports/:code] - Get One Report](reports/getOne.md)
 - [[PUT /reports/:code] - Update Report](reports/update.md)
 - [[DELETE /reports/:code] - Remove Report](reports/remove.md)
+- [[POST /reports/:code/send-email] - Send Email](reports/sendEmail.md)
+- [[POST /reports/:code/files] - Show Files](reports/showFiles.md)
 
 ## Sessions
 - [[GET /sessions] - Get All Sessions](sessions/getAll.md)
