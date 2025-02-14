@@ -27,13 +27,20 @@ export const reports = pgTable('reports', {
 }))
 
 // Schemas
-export const insertReportsSchema = createInsertSchema(reports)
+export const insertReportsSchema = createInsertSchema(reports, {
+		session_id: z.coerce.number(),
+	})
 	.pick({ description: true, session_id: true })
 	.extend({
-		user: z.object({
-			name: z.string(),
-			contact: z.string()
-		})
+		user: z
+		.string()
+		.transform((value) => JSON.parse(value))
+		.pipe(
+			z.object({
+				name: z.string(),
+				contact: z.string()
+			})
+		)
 	})
 	.required()
 	.extend({

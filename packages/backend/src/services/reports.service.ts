@@ -1,3 +1,5 @@
+import { S3Storage } from '@core/storage.core'
+import { readFile, removeFile } from '@middlewares/multer.middleware'
 import { ReportsRepository } from '@repositories/reports.repository'
 import { SettingsRepository } from '@repositories/settings.repository'
 import { SourcesRepository } from '@repositories/sources.repository'
@@ -10,11 +12,15 @@ import { rangeDates } from '@utils/range-dates'
 import { parseToTimeZone, parseToUTC } from '@utils/time-zones'
 
 export class ReportsService {
+	private readonly _storage: S3Storage;
+
 	constructor(
 		private reportsRepository: ReportsRepository,
 		private settingsRepository: SettingsRepository,
 		private sourceRepository: SourcesRepository,
-	) {}
+	) {
+		this._storage = new S3Storage('reports')
+	}
 
 	async getAll(query: PaginationSchemaType & FilterSessions & HeadersTimeZone) {
 		const timeZone = query['x-timezone'] || 'UTC-0'
@@ -48,8 +54,14 @@ export class ReportsService {
 		return this.reportsRepository.get(code)
 	}
 
-	async create(params: InsertReportsSchema) {
-		return this.reportsRepository.create(params)
+	async create(params: InsertReportsSchema, attachments?: Express.Multer.File[]) {
+		const report = await this.reportsRepository.create(params)
+
+		if (attachments) {
+			await Promise.all(attachments.map((file) => this.uploadAttachment(report.code, file)))
+		}
+
+		return report
 	}
 
 	async update(code: string, params: UpdateReportsSchema) {
@@ -82,6 +94,12 @@ export class ReportsService {
 			},
 			onlyHtml
 		})
+	}
+
+	private async uploadAttachment(code: string, file: Express.Multer.File) {
+		const buffer = await readFile(file)
+		await this._storage.upload(`${code}/${file.originalname}`, buffer, file.mimetype)
+		await removeFile(file)
 	}
 }
 

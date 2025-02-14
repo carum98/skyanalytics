@@ -27,7 +27,9 @@ export class ReportsController {
 
 	public create = async (req: Request, res: Response) => {
 		const { body } = req
-		const report = await this.service.create(body)
+		const attachments = req.files as Express.Multer.File[]
+
+		const report = await this.service.create(body, attachments)
 		res.json(report)
 	}
 

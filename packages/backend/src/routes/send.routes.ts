@@ -9,6 +9,7 @@ import { sendBodySchema } from '@schemas/_request'
 import { ViewsService } from '@services/views.service'
 import { headersSourceSchema, headerXRealIPSchema } from '@schemas/_headers'
 import { ReportsService } from '@services/reports.service'
+import { multerArrayMiddleware } from '@middlewares/multer.middleware'
 
 export class SendRouter extends RouterCore {
     constructor(di: DepencyInjection) {
@@ -26,6 +27,7 @@ export class SendRouter extends RouterCore {
             name: '/',
             handler: controller.create,
             middlewares: [
+                multerArrayMiddleware('attachments', 5),
                 requestMiddleware({
                     headers: headerXRealIPSchema.merge(headersSourceSchema),
                     body: sendBodySchema,

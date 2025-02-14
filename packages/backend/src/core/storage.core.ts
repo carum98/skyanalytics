@@ -8,12 +8,12 @@ export class S3Storage {
 		this._s3 = new S3Client(config)
 	}
 	
-	public async upload(key: string, file: Express.Multer.File) {
+	public async upload(key: string, buffer: Buffer, mimetype: string) {
 		const command = new PutObjectCommand({
 			Bucket: process.env.R2_BUCKET_NAME,
 			Key: `${this.folder}/${key}`,
-			Body: file.buffer,
-			ContentType: file.mimetype,
+			Body: buffer,
+			ContentType: mimetype,
 		})
 
 		return await this._s3.send(command)

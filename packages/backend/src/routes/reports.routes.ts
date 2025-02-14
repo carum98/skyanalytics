@@ -2,6 +2,7 @@ import { ReportsController } from '@controllers/reports.controller'
 import { DepencyInjection } from '@core/di.core'
 import { RouterCore } from '@core/router.core'
 import { authMiddleware } from '@middlewares/auth.middleware'
+import { multerArrayMiddleware } from '@middlewares/multer.middleware'
 import { requestMiddleware } from '@middlewares/request.middleware'
 import { insertReportsSchema, updateReportsSchema } from '@schemas/reports.schemas'
 import { ReportsService } from '@services/reports.service'
@@ -31,6 +32,7 @@ export class ReportsRouter extends RouterCore {
 			name: '/',
 			handler: controller.create,
 			middlewares: [
+				multerArrayMiddleware('attachments', 5),
 				requestMiddleware({
 					body: insertReportsSchema
 				}),
