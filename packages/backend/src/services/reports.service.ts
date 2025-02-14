@@ -58,7 +58,7 @@ export class ReportsService {
 		const report = await this.reportsRepository.create(params)
 
 		if (attachments) {
-			await Promise.all(attachments.map((file) => this.uploadAttachment(report.code, file)))
+			await Promise.all(attachments.map((file) => this.uploadFiles(report.code, file)))
 		}
 
 		return report
@@ -96,7 +96,16 @@ export class ReportsService {
 		})
 	}
 
-	private async uploadAttachment(code: string, file: Express.Multer.File) {
+	async getFiles(code: string) {
+		const data = await this._storage.list(code)
+
+		return data.Contents?.map((file) => ({
+			file: file.Key?.split('/').pop(),
+			size: file.Size,
+		}))
+	}
+
+	private async uploadFiles(code: string, file: Express.Multer.File) {
 		const buffer = await readFile(file)
 		await this._storage.upload(`${code}/${file.originalname}`, buffer, file.mimetype)
 		await removeFile(file)

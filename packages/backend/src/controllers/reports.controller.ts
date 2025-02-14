@@ -55,4 +55,15 @@ export class ReportsController {
 		const response = await this.service.sendEmail(report, true)
 		res.send(response)
 	}
+
+	public getFiles = async (req: Request, res: Response) => {
+		const { code } = req.params
+		const files = await this.service.getFiles(code)
+
+		if (files?.length) {
+			res.json(files)
+		} else {
+			res.status(404).json({ message: 'No files found' })
+		}
+	}
 }

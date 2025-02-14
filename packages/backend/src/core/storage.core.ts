@@ -1,4 +1,4 @@
-import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand, GetObjectCommand, DeleteObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3'
 import config from 'config/storage.config'
 
 export class S3Storage {
@@ -32,6 +32,15 @@ export class S3Storage {
 		const command = new DeleteObjectCommand({
 			Bucket: process.env.R2_BUCKET_NAME,
 			Key: `${this.folder}/${key}`
+		})
+
+		return await this._s3.send(command)
+	}
+
+	public async list(folder: string) {
+		const command = new ListObjectsV2Command({
+			Bucket: process.env.R2_BUCKET_NAME,
+			Prefix: `${this.folder}/${folder}/`
 		})
 
 		return await this._s3.send(command)
