@@ -144,8 +144,9 @@ export interface IReportPagination {
 }
 
 export interface IReportFile {
-    file: string
+    name: string
     size: number
+    type: string
 }
 
 // Types route

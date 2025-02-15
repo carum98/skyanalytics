@@ -106,6 +106,13 @@ const dialogs: DialogRecordRaw[] = [
             width: 1100
         }
     },
+    {
+        name: 'files.preview',
+        component: () => import('@components/files/Preview.vue'),
+        rootProps: {
+            width: 800
+        }
+    },
 	{
 		name: 'remove',
 		component: () => import('@components/DialogRemove.vue'),

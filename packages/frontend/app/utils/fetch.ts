@@ -29,5 +29,13 @@ export async function $fetch<T>(url: string, options?: FetchRequestOptions) {
         return await response.json() as T
     } 
 
+    if (response.headers.get('Content-Type')?.includes('application/octet-stream')) {
+        return await response.blob() as unknown as T
+    }
+
+    if (response.headers.get('Content-Type')?.includes('image')) {
+        return await response.blob() as unknown as T
+    }
+
     return await response.text() as unknown as T
 }

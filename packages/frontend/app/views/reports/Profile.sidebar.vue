@@ -94,10 +94,10 @@ async function send() {
 		</section>
 
 		<section class="container">
-			<label>Attachments</label>
+			<label>Files</label>
 
-			<div style="height: 100px;">
-				<ReportFiles :item="item" />
+			<div>
+				<ReportFiles :report="item" />
 			</div>
 		</section>
 
