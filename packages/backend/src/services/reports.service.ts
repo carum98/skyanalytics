@@ -99,10 +99,24 @@ export class ReportsService {
 	async getFiles(code: string) {
 		const data = await this._storage.list(code)
 
-		return data.Contents?.map((file) => ({
-			file: file.Key?.split('/').pop(),
-			size: file.Size,
-		}))
+		return data.Contents?.map((file) => {
+			const filename = file.Key?.split('/').pop() || ''
+
+			return {
+				name: filename,
+				size: file.Size,
+				type: fileType(filename),
+			}
+		})
+	}
+
+	async getFile(code: string, key: string) {
+		const data = await this._storage.get(`${code}/${key}`)
+
+		return {
+			buffer: data.Body,
+			mimetype: data.ContentType,
+		}
 	}
 
 	private async uploadFiles(code: string, file: Express.Multer.File) {
@@ -125,3 +139,19 @@ function formatDate(date: Date, timeZone: string) {
         hour12: true
     })
 }
+
+function fileType(key: string): string {
+	const extension = key.split('.').pop()?.toLowerCase();
+	switch (extension) {
+	  case 'jpg':
+	  case 'jpeg':
+	  case 'png':
+		return 'image';
+	  case 'txt':
+	  case 'log':
+		return 'text';
+	  default:
+		return 'file';
+	}
+}
+  

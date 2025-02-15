@@ -3,6 +3,7 @@ import { FilterSessions } from '@schemas/_query'
 import { ReportsService } from '@services/reports.service'
 import { PaginationSchemaType } from '@utils/pagination'
 import { Request, Response } from 'express'
+import { Readable } from 'node:stream'
 
 export class ReportsController {
 	constructor(private service: ReportsService) {}
@@ -65,5 +66,20 @@ export class ReportsController {
 		} else {
 			res.status(404).json({ message: 'No files found' })
 		}
+	}
+
+	public getFile = async (req: Request, res: Response) => {
+		const { code, key } = req.params
+
+		const data = await this.service.getFile(code, key)
+
+		res.setHeader('Content-Type', data.mimetype || 'application/octet-stream')
+		res.setHeader('Cache-Control', 'public, max-age=3600')
+
+		if (data.buffer instanceof Readable) {
+			data.buffer.pipe(res)
+		} else {
+			res.status(500).json({ error: 'Formato de imagen no reconocido.' });
+		}	
 	}
 }
