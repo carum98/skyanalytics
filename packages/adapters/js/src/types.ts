@@ -18,7 +18,8 @@ export interface SkyAnalyticsPayloadBugReport {
         user: {
             name: string
             contact: string
-        }
+        },
+        files?: File[]
     }
 }
 

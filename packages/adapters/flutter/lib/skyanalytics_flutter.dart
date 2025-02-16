@@ -85,6 +85,27 @@ class SkyAnalytics {
     });
   }
 
+  /// Send bug report with the given
+  Future<void> bugReport({
+    required String description,
+    required String name,
+    required String contact,
+    Map<String, dynamic>? metadata,
+    List<File>? files,
+  }) async {
+    await _send({
+      'bugReport': {
+        'description': description,
+        'user': {
+          'name': name,
+          'contact': contact,
+        },
+        'files': files,
+      },
+      'metadata': metadata,
+    }, formData: true);
+  }
+
   /// Clears the metadata.
   Future<void> clearMetadata() async {
     await _send({
@@ -93,7 +114,9 @@ class SkyAnalytics {
   }
 
   /// Sends the given [params] to the SkyAnalytics API.
-  Future<void> _send(Map<String, dynamic> params) async {
+  Future<void> _send(Map<String, dynamic> params, {
+    bool formData = false,
+  }) async {
     if (!isEnable) {
       return;
     }
@@ -114,12 +137,48 @@ class SkyAnalytics {
       HttpClientRequest request = await client.postUrl(uri);
 
       request.headers.set('User-Agent', userAgent);
-      request.headers.set('Content-Type', 'application/json');
       request.headers.set('X-SkyAnalytics-Key', sourceKey);
 
       cookieManager.setCookies(request);
 
-      request.write(json.encode(params));
+      if (formData) {
+        final boundary = '----SkyAnalyticsBoundary${DateTime.now().millisecondsSinceEpoch}';
+        request.headers.set(HttpHeaders.contentTypeHeader, 'multipart/form-data; boundary=$boundary');
+
+        final buffer = StringBuffer();
+        final List<int> bodyBytes = [];
+
+        for (var entry in params.entries) {
+          if (entry.value is File) {
+            File file = entry.value;
+            final fileBytes = await file.readAsBytes();
+            final fileName = file.path.split('/').last;
+
+            buffer.writeln('--$boundary');
+            buffer.writeln('Content-Disposition: form-data; name="${entry.key}"; filename="$fileName"');
+            buffer.writeln('Content-Type: application/octet-stream');
+            buffer.writeln();
+
+            bodyBytes.addAll(utf8.encode(buffer.toString()));
+            bodyBytes.addAll(fileBytes);
+            bodyBytes.addAll(utf8.encode('\r\n'));
+            buffer.clear();
+          } else {
+            buffer.writeln('--$boundary');
+            buffer.writeln('Content-Disposition: form-data; name="${entry.key}"');
+            buffer.writeln();
+            buffer.writeln(entry.value);
+          }
+        }
+
+        buffer.writeln('--$boundary--');
+        bodyBytes.addAll(utf8.encode(buffer.toString()));
+
+        request.add(bodyBytes);
+      } else {
+        request.headers.set('Content-Type', 'application/json');
+        request.write(json.encode(params));
+      }
 
       final response = await request.close();
       await response.transform(utf8.decoder).join();

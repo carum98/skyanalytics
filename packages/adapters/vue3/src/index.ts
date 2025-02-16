@@ -48,8 +48,8 @@ export function useAnalytics() {
         analytics?.navigation({ name, metadata })
     }
 
-    function bugReport(description: string, user: { name: string, contact: string }, metadata?: Record<string, string>) {
-        analytics?.bugReport({ description, user }, metadata)
+    function bugReport(description: string, user: { name: string, contact: string }, metadata?: Record<string, string>, files?: File[]) {
+        analytics?.bugReport({ description, user }, metadata, files)
     }
 
     function metadata(data: Record<string, string>) {

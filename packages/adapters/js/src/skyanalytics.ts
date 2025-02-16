@@ -1,5 +1,7 @@
 import { SkyAnalyticsOptions, SkyAnalyticsPayloadBugReport, SkyAnalyticsPayloadEvent, SkyAnalyticsPayloadMetadata, SkyAnalyticsPayloadNavigation } from './types'
 
+type Payload = SkyAnalyticsPayloadEvent | SkyAnalyticsPayloadNavigation | SkyAnalyticsPayloadMetadata | SkyAnalyticsPayloadBugReport
+
 export class SkyAnalytics {
     private options: SkyAnalyticsOptions | undefined
 
@@ -11,20 +13,24 @@ export class SkyAnalytics {
         return Boolean(this.options)
     }
 
-    private send(payload: SkyAnalyticsPayloadEvent | SkyAnalyticsPayloadNavigation | SkyAnalyticsPayloadMetadata | SkyAnalyticsPayloadBugReport) {
+    private send(payload: Payload, { transformToFormData = false } = {}) {
         if (!this.isInitialized) {
             throw new Error('SkyAnalytics not initialized')
         }
 
         const { host, key } = this.options as SkyAnalyticsOptions
 
+        const body = transformToFormData 
+            ? this.formDataTranform(payload)
+            : JSON.stringify(payload)
+
         return fetch(`${host}/send`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': transformToFormData ? 'multipart/form-data' : 'application/json',
                 'X-SkyAnalytics-Key': key,
             },
-            body: JSON.stringify(payload),
+            body: body,
             credentials: 'include',
         })
     }
@@ -42,7 +48,7 @@ export class SkyAnalytics {
         })
     }
 
-    bugReport(payload: { description: string, user: { name: string, contact: string } }, metadata?: Record<string, string>) {
+    bugReport(payload: { description: string, user: { name: string, contact: string } }, metadata?: Record<string, string>, files?: File[]) {
         return this.send({
             bug_report: {
                 description: payload.description,
@@ -50,14 +56,25 @@ export class SkyAnalytics {
                     name: payload.user.name,
                     contact: payload.user.contact,
                 },
+                files,
             },
             metadata,
-        })
+        }, { transformToFormData: files && files.length > 0 })
     }
 
     metadata(payload: Record<string, string>) {
         return this.send({
             metadata: payload,
         })
+    }
+
+    private formDataTranform(payload: Payload) {
+        const formData = new FormData()
+
+        for (const [key, value] of Object.entries(payload)) {
+            formData.append(key, value)
+        }
+
+        return formData
     }
 }
