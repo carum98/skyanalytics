@@ -13,6 +13,10 @@ import { RouterLink, RouterView } from 'vue-router'
 				<i class="icon-envelope"></i>
 				Summary
 			</RouterLink>
+			<RouterLink :to="{ name: 'settings.bug-report' }">
+				<i class="icon-bug"></i>
+				Bug Report
+			</RouterLink>
 		</nav>
 
 		<div class="w-100">

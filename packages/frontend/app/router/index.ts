@@ -56,7 +56,12 @@ const routes: RouteRecordRaw[] = [
 				name: 'settings.summary',
 				path: 'summary',
 				component: () => import('@views/summary/Profile.vue'),
-			}
+			},
+            {
+                name: 'settings.bug-report',
+                path: 'bug-reports',
+                component: () => import('@views/reports/Settings.vue'),
+            }
 		]
 	},
     {
@@ -112,6 +117,13 @@ const dialogs: DialogRecordRaw[] = [
         rootProps: {
             width: 800
         }
+    },
+    {
+        name: 'bug-report.form-settings',
+		component: () => import('@views/reports/SettingsForm.vue'),
+		rootProps: {
+            width: 300
+        } 
     },
 	{
 		name: 'remove',

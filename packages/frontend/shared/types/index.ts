@@ -169,3 +169,8 @@ export type ApiSettingsSummary = {
     }
     users: string[]
 }
+
+export type ApiSettingsBugReport = {
+    enabled: boolean
+    users: string[]
+}
