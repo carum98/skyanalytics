@@ -11,3 +11,8 @@
 * Fix send cookies.
 * Add `enabled` and `showLogs` parameters.
 * Add `metadata` method to send global metadata.
+
+## 0.0.4 (2025-02-20)
+
+* Add `bugReport` method to send bug reports.
+

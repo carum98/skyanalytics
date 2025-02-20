@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'dart:math';
 
 part 'skyanalytics_navigator_observer.dart';
 
@@ -86,24 +87,29 @@ class SkyAnalytics {
   }
 
   /// Send bug report with the given
+  ///
+  /// Throws an exception if the request fails.
+  ///
   Future<void> bugReport({
     required String description,
     required String name,
     required String contact,
-    Map<String, dynamic>? metadata,
     List<File>? files,
   }) async {
-    await _send({
-      'bugReport': {
-        'description': description,
-        'user': {
-          'name': name,
-          'contact': contact,
-        },
+    await _send(
+      {
+        'bug_report': jsonEncode({
+          'description': description,
+          'user': {
+            'name': name,
+            'contact': contact,
+          },
+        }),
         'files': files,
       },
-      'metadata': metadata,
-    }, formData: true);
+      formData: true,
+      throwOnError: true,
+    );
   }
 
   /// Clears the metadata.
@@ -114,8 +120,10 @@ class SkyAnalytics {
   }
 
   /// Sends the given [params] to the SkyAnalytics API.
-  Future<void> _send(Map<String, dynamic> params, {
+  Future<void> _send(
+    Map<String, dynamic> params, {
     bool formData = false,
+    bool throwOnError = false,
   }) async {
     if (!isEnable) {
       return;
@@ -131,8 +139,7 @@ class SkyAnalytics {
       String operatingSystem = Platform.operatingSystem;
       String operatingSystemVersion = Platform.operatingSystemVersion;
 
-      final userAgent =
-          '($operatingSystem $operatingSystemVersion) ${client.userAgent}';
+      final userAgent = '($operatingSystem $operatingSystemVersion) ${client.userAgent}';
 
       HttpClientRequest request = await client.postUrl(uri);
 
@@ -142,39 +149,55 @@ class SkyAnalytics {
       cookieManager.setCookies(request);
 
       if (formData) {
-        final boundary = '----SkyAnalyticsBoundary${DateTime.now().millisecondsSinceEpoch}';
-        request.headers.set(HttpHeaders.contentTypeHeader, 'multipart/form-data; boundary=$boundary');
+        final boundary = '----DartFormBoundary${Random().nextInt(1000000)}';
+        final requestBody = <int>[];
 
-        final buffer = StringBuffer();
-        final List<int> bodyBytes = [];
+        void addTextField(String name, String value) {
+          requestBody.addAll(utf8.encode('--$boundary\r\n'));
+          requestBody.addAll(utf8.encode('Content-Disposition: form-data; name="$name"\r\n\r\n'));
+          requestBody.addAll(utf8.encode('$value\r\n'));
+        }
 
-        for (var entry in params.entries) {
-          if (entry.value is File) {
-            File file = entry.value;
-            final fileBytes = await file.readAsBytes();
+        String? lookupMimeType(String fileName) {
+          if (fileName.endsWith('.txt')) return 'text/plain';
+          return null;
+        }
+
+        Future<void> addFileField(String fieldName, List<File> files) async {
+          for (var file in files) {
+            if (!await file.exists()) continue;
+
             final fileName = file.path.split('/').last;
+            final mimeType = lookupMimeType(fileName) ?? 'application/octet-stream';
 
-            buffer.writeln('--$boundary');
-            buffer.writeln('Content-Disposition: form-data; name="${entry.key}"; filename="$fileName"');
-            buffer.writeln('Content-Type: application/octet-stream');
-            buffer.writeln();
-
-            bodyBytes.addAll(utf8.encode(buffer.toString()));
-            bodyBytes.addAll(fileBytes);
-            bodyBytes.addAll(utf8.encode('\r\n'));
-            buffer.clear();
-          } else {
-            buffer.writeln('--$boundary');
-            buffer.writeln('Content-Disposition: form-data; name="${entry.key}"');
-            buffer.writeln();
-            buffer.writeln(entry.value);
+            requestBody.addAll(utf8.encode('--$boundary\r\n'));
+            requestBody.addAll(utf8.encode(
+                'Content-Disposition: form-data; name="$fieldName"; filename="$fileName"\r\n'));
+            requestBody.addAll(utf8.encode('Content-Type: $mimeType\r\n\r\n'));
+            requestBody.addAll(await file.readAsBytes());
+            requestBody.addAll(utf8.encode('\r\n'));
           }
         }
 
-        buffer.writeln('--$boundary--');
-        bodyBytes.addAll(utf8.encode(buffer.toString()));
+        for (var entry in params.entries) {
+          if (entry.value is Map) {
+            for (var subEntry in entry.value.entries) {
+              addTextField('${entry.key}[${subEntry.key}]', subEntry.value.toString());
+            }
+          } else if (entry.value is List<File>) {
+            await addFileField(entry.key, entry.value);
+          } else {
+            addTextField(entry.key, entry.value.toString());
+          }
+        }
 
-        request.add(bodyBytes);
+        // Finalizar el formulario
+        requestBody.addAll(utf8.encode('--$boundary--\r\n'));
+
+        request.headers
+            .set(HttpHeaders.contentTypeHeader, 'multipart/form-data; boundary=$boundary');
+        request.headers.set(HttpHeaders.contentLengthHeader, requestBody.length);
+        request.add(requestBody);
       } else {
         request.headers.set('Content-Type', 'application/json');
         request.write(json.encode(params));
@@ -183,10 +206,18 @@ class SkyAnalytics {
       final response = await request.close();
       await response.transform(utf8.decoder).join();
 
+      if (response.statusCode != 201) {
+        throw Exception('Failed to send data to SkyAnalytics: ${response.statusCode}');
+      }
+
       cookieManager.updateCookies(response);
     } catch (e) {
       if (kDebugMode) {
         print('Error: $e');
+      }
+
+      if (throwOnError) {
+        rethrow;
       }
     }
   }
@@ -219,8 +250,7 @@ class CookieManager {
   /// Sets the cookies for the given [request].
   void setCookies(HttpClientRequest request) {
     if (cookies.isNotEmpty) {
-      var cookieHeader =
-          cookies.entries.map((e) => '${e.key}=${e.value}').join('; ');
+      var cookieHeader = cookies.entries.map((e) => '${e.key}=${e.value}').join('; ');
       request.headers.set(HttpHeaders.cookieHeader, cookieHeader);
     }
   }

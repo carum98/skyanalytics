@@ -27,6 +27,11 @@ skyAnalytics.metadata({
     'key1': 'value1',
     'key2': 'value2',
 });
+skyAnalytics.bugReport(
+    description: 'This is a bug report',
+    name: 'Carlos',
+    contact: 'email@gmail.com',
+);
 ```
 
 ### NavigatorObserver
