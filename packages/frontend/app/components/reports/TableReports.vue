@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SkTable from '@ui/SkTable.vue'
 import SkPopover from '@ui/SkPopover.vue'
+import SkPagination from '@ui/SkPagination.vue'
 import SourceAvatar from '@components/SourceAvatar.vue'
 
 import { getCurrentTimeZone, timeAgo } from '@/utils'
@@ -8,7 +9,10 @@ import { useFetch } from '@composables/useFetch'
 import type { IReportPagination, IReport } from '@shared/types'
 import { useSidebar } from '@/composables/useSidebar'
 
+import { computed, ref } from 'vue'
+
 const sidebar = useSidebar()
+const page = ref(1)
 
 const { query, hideSource } = defineProps<{
 	query?: Record<string, string>
@@ -16,7 +20,10 @@ const { query, hideSource } = defineProps<{
 }>()
 
 const { data, refresh: onRefresh } = useFetch<IReportPagination>('/api/reports', {
-	query,
+	query: {
+		...query,
+		page: computed(() => page.value.toString()),
+	},
 	headers: {
 		'x-timezone': getCurrentTimeZone()
 	}
@@ -127,6 +134,10 @@ if (hideSource) {
 			</SkPopover>
 		</template>
 	</SkTable>
+	<SkPagination 
+		:total_pages="data?.pagination.total_pages" 
+		v-model:page="page" 
+	></SkPagination>
 </template>
 
 <style lang="css">

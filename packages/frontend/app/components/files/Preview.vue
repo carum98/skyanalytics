@@ -74,9 +74,9 @@ onMounted(() => {
 				Download
 			</button>
 		</div>
-		<div v-else>
+		<p v-else>
 			{{ data }}
-		</div>
+		</p>
 	</div>
 </template>
 
@@ -88,6 +88,12 @@ onMounted(() => {
 		display: flex;
 		justify-content: center;
 		align-items: center;
+	}
+
+	p {
+		white-space: pre-wrap;
+		overflow: scroll;
+		max-height: 80vh;
 	}
 }
 </style>
