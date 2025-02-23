@@ -54,11 +54,11 @@ export class ReportsService {
 		return this.reportsRepository.get(code)
 	}
 
-	async create(params: InsertReportsSchema, attachments?: Express.Multer.File[]) {
+	async create(params: InsertReportsSchema, files?: Express.Multer.File[]) {
 		const report = await this.reportsRepository.create(params)
 
-		if (attachments) {
-			await Promise.all(attachments.map((file) => this.uploadFiles(report.code, file)))
+		if (files) {
+			await Promise.all(files.map((file) => this.uploadFiles(report.code, file)))
 		}
 
 		return report

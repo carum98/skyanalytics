@@ -3,6 +3,7 @@ import path from 'node:path'
 import fs from 'node:fs/promises'
 
 const uploadsFolder = path.resolve(__dirname, '..', '..', 'uploads')
+const tmpFolder = path.resolve(__dirname, '..', '..', 'uploads', 'tmp')
 
 const upload = multer({ 
     storage: multer.diskStorage({
@@ -15,11 +16,25 @@ const upload = multer({
     })
 })
 
+const tmpUpload = multer({
+    storage: multer.diskStorage({
+        destination: (_req, _file, cb) => {
+            cb(null, tmpFolder)
+        },
+        filename: function(_req, file, cb) {
+            const ext = path.extname(file.originalname)
+            const name = path.basename(file.originalname, ext)
+            const random = Math.floor(Math.random() * 1000)
+            cb(null, `${name}-${random}${ext}`)
+        }
+    })
+})
+
 export const multerSingleMiddleware = (fileName: string) => upload.single(fileName)
 
 export const multerNoneMiddleware = () => upload.none()
 
-export const multerArrayMiddleware = (fileName: string, maxCount: number) => upload.array(fileName, maxCount)
+export const multerArrayMiddleware = (fileName: string, maxCount: number) => tmpUpload.array(fileName, maxCount)
 
 // Helpers
 export async function readFile(file: Express.Multer.File) {

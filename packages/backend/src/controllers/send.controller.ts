@@ -47,7 +47,7 @@ export class SendController {
         }
 
         if (body.bug_report) {
-            const attachments = req.files as Express.Multer.File[]
+            const files = req.files as Express.Multer.File[]
 
             const data = await this.reportsService.create({
                 description: body.bug_report.description,
@@ -56,7 +56,7 @@ export class SendController {
                 metadata: Object.keys(metadata).length > 0 
                     ? metadata 
                     : undefined
-            }, attachments)
+            }, files)
 
             this.reportsService.sendEmail(data)
         }

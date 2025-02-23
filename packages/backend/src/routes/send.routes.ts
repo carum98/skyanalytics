@@ -27,7 +27,7 @@ export class SendRouter extends RouterCore {
             name: '/',
             handler: controller.create,
             middlewares: [
-                multerArrayMiddleware('attachments', 5),
+                multerArrayMiddleware('files', 10),
                 requestMiddleware({
                     headers: headerXRealIPSchema.merge(headersSourceSchema),
                     body: sendBodySchema,
