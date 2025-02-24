@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:archive/archive.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -174,5 +175,30 @@ class LoggerReader {
   static Future<Directory> _directory(String path) async {
     final directory = await getApplicationDocumentsDirectory();
     return Directory('${directory.path}/logger$path');
+  }
+
+  /// Generate Zip file of logs
+  ///
+  static Future<File> zipLogs() async {
+    final directory = await getApplicationDocumentsDirectory();
+    final loggerDirectory = Directory('${directory.path}/logger');
+    final zipFile = File('${directory.path}/logs.zip');
+
+    if (await zipFile.exists()) {
+      await zipFile.delete();
+    }
+
+    final archive = Archive();
+
+    for (var file in loggerDirectory.listSync(recursive: true)) {
+      if (file is File) {
+        final bytes = file.readAsBytesSync();
+        final relativePath = file.path.replaceFirst('${directory.path}/', '');
+        archive.addFile(ArchiveFile(relativePath, bytes.length, bytes));
+      }
+    }
+
+    final zipBytes = ZipEncoder().encode(archive);
+    return zipFile.writeAsBytes(zipBytes);
   }
 }

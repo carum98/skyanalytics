@@ -1,7 +1,7 @@
 [![pub package](https://img.shields.io/pub/v/skylogger.svg)](https://pub.dev/packages/skylogger)
 
 # SkyLogger Flutter
-SkyLogger Flutter is an adapter for [SkyAnalytics](https://github.com/carum98/skyanalytics)
+SkyLogger Flutter is a logger to [SkyAnalytics](https://github.com/carum98/skyanalytics)
 
 ## Installation
 Add the following to your `pubspec.yaml` file:
@@ -31,4 +31,10 @@ Navigator.push(
 	context,
 	MaterialPageRoute(builder: (_) => const SkyLoggerViewer()),
 ),
+```
+
+## Exporting logs
+To export the logs as a ZIP file, you can use the `LoggerReader.zipLogs()` method
+```dart
+final zipFile = await LoggerReader.zipLogs();
 ```
