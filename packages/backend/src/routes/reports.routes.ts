@@ -65,6 +65,11 @@ export class ReportsRouter extends RouterCore {
 		})
 
 		this.get({
+			name: '/:code/logs',
+			handler: controller.getLogs
+		})
+
+		this.get({
 			name: '/:code/files',
 			handler: controller.getFiles
 		})

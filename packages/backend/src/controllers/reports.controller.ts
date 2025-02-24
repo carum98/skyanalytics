@@ -68,6 +68,17 @@ export class ReportsController {
 		}
 	}
 
+	public getLogs = async (req: Request, res: Response) => {
+		const { code } = req.params
+		const logs = await this.service.getLogs(code)
+
+		if (logs !== undefined) {
+			res.json(logs)
+		} else {
+			res.status(404).json({ message: 'No logs found' })
+		}
+	}
+
 	public getFile = async (req: Request, res: Response) => {
 		const { code, key } = req.params
 

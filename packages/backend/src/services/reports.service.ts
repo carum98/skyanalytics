@@ -10,6 +10,8 @@ import { sendEmail } from '@utils/emails'
 import { PaginationSchemaType } from '@utils/pagination'
 import { rangeDates } from '@utils/range-dates'
 import { parseToTimeZone, parseToUTC } from '@utils/time-zones'
+import AdmZip from 'adm-zip'
+import { Readable } from 'stream'
 
 export class ReportsService {
 	private readonly _storage: S3Storage;
@@ -119,6 +121,19 @@ export class ReportsService {
 		}
 	}
 
+	async getLogs(code: string): Promise<{} | undefined> {
+		const data = await this._storage.get(`${code}/logs.zip`)
+		if (!data.Body) return
+
+		const buffer = await streamToBuffer(data.Body as Readable)
+
+		// Unzip the buffer
+		const zip = new AdmZip(buffer)
+		const zipEntries = zip.getEntries()
+
+		return processLogs(zipEntries)
+	}
+
 	private async uploadFiles(code: string, file: Express.Multer.File) {
 		const buffer = await readFile(file)
 		await this._storage.upload(`${code}/${file.originalname}`, buffer, file.mimetype)
@@ -154,4 +169,61 @@ function fileType(key: string): string {
 		return 'file';
 	}
 }
-  
+
+async function streamToBuffer(stream: Readable): Promise<Buffer> {
+  const chunks: Uint8Array[] = [];
+  for await (const chunk of stream) {
+    chunks.push(chunk);
+  }
+  return Buffer.concat(chunks);
+}
+
+function processLogs(logs: AdmZip.IZipEntry[]) {
+	const folders = Object.groupBy(logs, (log) => log.entryName.split('/')?.at(1) || 'root')
+
+	return Object.fromEntries(Object.entries(folders).map(([folder, logs]) => {
+		const data = Object.entries(logs!).map(([key, log]) => {
+			const buffer = log.getData()
+			const content = buffer.toString('utf8')
+
+			return {
+				date: log.name.split('.').at(0),
+				logs: logsContent(content),
+			}
+		})
+
+		return [
+			folder,
+			data
+		]
+	}))
+}
+
+/**
+ * @example
+ * ```string
+ * [2025-02-23T02:47:15.670210Z] [error] [tracker] Error while the tracker service is running - DataSyncServiceStatus.error\n\nauthorized\"\n}\n\n
+ * ```
+ * ```json
+ * [
+ * 	{
+ * 		"time": "02:47:15.670210Z",
+ * 		"message": "Error while the tracker service is running - DataSyncServiceStatus.error\n\nauthorized\"\n}",
+ * 		"type": "error"
+ * 	}
+ * ]
+ * ```
+ */
+function logsContent(content: String) {
+	const logs = content.split('\n\n[')
+
+	return logs.map((log) => {
+		const [date, type] = log.replaceAll('[', '').replaceAll(']', '').split(' ')
+
+		return {
+			time: date.split('T').at(1)?.replace('Z', ''),
+			message: log.slice(log.lastIndexOf(']') + 2, log.length).trim(),
+			type: type,
+		}
+	})
+}

@@ -149,6 +149,15 @@ export interface IReportFile {
     type: string
 }
 
+export interface ILog {
+    date: string
+    logs: {
+        time: string
+        message: string
+        type: string
+    }[]
+}
+
 // Types route
 type ApiRoutes = keyof InternalApi
 type ApiResponse<T extends ApiRoutes, M extends keyof InternalApi[T]> = InternalApi[T][M]

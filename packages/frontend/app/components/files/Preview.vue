@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { $fetch } from '@/utils/fetch'
 import type { IReport, IReportFile } from '@shared/types'
+import Logs from '@components/files/Logs.vue'
 import { onMounted, ref, useTemplateRef } from 'vue'
 
 const { file, report } = defineProps<{
@@ -66,6 +67,9 @@ onMounted(() => {
 			ref="img"
 			width="100%"
 		/>
+		<div v-else-if="file.name === 'logs.zip'">
+			<Logs :report />
+		</div>
 		<div v-else-if="file.type === 'file'">
 			<button 
 				@click="dowloadFile"
