@@ -83,7 +83,23 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         password: ${{ secrets.SSH_PASSWORD }}
         script: |
-          echo -e "DB_PASSWORD=${{ secrets.DB_PASSWORD }}\nDB_DATABASE=${{ secrets.DB_DATABASE }}\nDB_USER=${{ secrets.DB_USER }}\nEMAIL_USER=${{ vars.EMAIL_USER }}\nEMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}\nURL_BACKEND=${{ vars.URL_BACKEND }}\nPORT_BACKEND=${{ vars.PORT_BACKEND }}\nPORT_FRONTEND=${{ vars.PORT_FRONTEND }}\nPORT_FRONTEND_NITRO=${{ vars.PORT_FRONTEND_NITRO }}\nCOMPOSE_PROFILES=active" > ~/analytics/.env
+          cat <<EOF > ~/analytics/.env
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          DB_DATABASE=${{ secrets.DB_DATABASE }}
+          DB_USER=${{ secrets.DB_USER }}
+          EMAIL_USER=${{ vars.EMAIL_USER }}
+          EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
+          R2_ACCESS_KEY=${{ secrets.R2_ACCESS_KEY }}
+          R2_SECRET_KEY=${{ secrets.R2_SECRET_KEY }}
+          R2_BUCKET_NAME=${{ vars.R2_BUCKET_NAME }}
+          R2_REGION=${{ secrets.R2_REGION }}
+          R2_ENDPOINT=${{ secrets.R2_ENDPOINT }}
+          URL_BACKEND=${{ vars.URL_BACKEND }}
+          PORT_BACKEND=${{ vars.PORT_BACKEND }}
+          PORT_FRONTEND=${{ vars.PORT_FRONTEND }}
+          PORT_FRONTEND_NITRO=${{ vars.PORT_FRONTEND_NITRO }}
+          COMPOSE_PROFILES=active
+          EOF
 
   docker-compose-up:
     runs-on: ubuntu-latest

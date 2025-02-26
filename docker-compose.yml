@@ -38,6 +38,11 @@ services:
       - DB_USER=${DB_USER}
       - EMAIL_USER=${EMAIL_USER}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - R2_ACCESS_KEY=${R2_ACCESS_KEY}
+      - R2_SECRET_KEY=${R2_SECRET_KEY}
+      - R2_BUCKET_NAME=${R2_BUCKET_NAME}
+      - R2_REGION=${R2_REGION}
+      - R2_ENDPOINT=${R2_ENDPOINT}
   
   db:
     image: postgres:16-alpine
