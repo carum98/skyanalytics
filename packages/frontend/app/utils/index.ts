@@ -21,7 +21,7 @@ export function formatDate(dateString: string) {
 // return `12 minutes ago`
 export function timeAgo(dateString: string | Date) {
     const date = new Date(dateString)
-    const now = new Date()
+    const now = toLocalDate(new Date())
 
     const seconds = Math.floor((now.getTime() - date.getTime()) / 1000)
     let interval = Math.floor(seconds / 31536000)
@@ -65,4 +65,18 @@ export function getLast30Minutes() {
         start: format(new Date(now.getTime() - 30 * 60 * 1000)),
         end: format(now),
     }
+}
+
+function toLocalDate(date: Date): Date {
+    const offset = date.getTimezoneOffset()
+    const newDate = new Date(date.getTime() - (offset * 60 * 1000))
+
+    return newDate
+}
+
+export function toUTCDate(date: Date): Date {
+    const offset = date.getTimezoneOffset()
+    const newDate = new Date(date.getTime() + (offset * 60 * 1000))
+
+    return newDate
 }

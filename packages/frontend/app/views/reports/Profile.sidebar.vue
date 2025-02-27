@@ -3,6 +3,7 @@ import SourceAvatar from '@components/SourceAvatar.vue'
 import ReportFiles from '@components/ReportFiles.vue'
 import { $fetch } from '@/utils/fetch';
 import type { IReport } from '@shared/types'
+import { toUTCDate } from '@/utils'
 
 const props = defineProps<{
 	item: IReport
@@ -14,7 +15,7 @@ const emits = defineEmits<{
 }>()
 
 function formatDate(dateString: string) {
-    const date = new Date(dateString)
+    const date = toUTCDate(new Date(dateString))
 
     return date.toLocaleString('en-US', {
         month: 'long',

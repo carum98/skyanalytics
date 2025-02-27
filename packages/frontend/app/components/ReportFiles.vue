@@ -28,7 +28,11 @@ function formatSize(size: number) {
 			:key="item.name"
 			v-dialog="{ name: 'files.preview', props: { report: report, file: item } }"
 		>
-			<p class="text-overflow">{{ item.name }}</p>
+			<p class="text-overflow">
+				<i v-if="item.name.includes('.db')" class="icon-database"></i>
+				<i v-else-if="item.name.includes('logs.zip')" class="icon-bug"></i>
+				{{ item.name }}
+			</p>
 			<small>{{ formatSize(item.size) }}</small>
 		</button>
 	</div>

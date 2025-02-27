@@ -78,9 +78,7 @@ onMounted(() => {
 				Download
 			</button>
 		</div>
-		<p v-else>
-			{{ data }}
-		</p>
+		<pre v-else>{{ data }}</pre>
 	</div>
 </template>
 
@@ -94,7 +92,7 @@ onMounted(() => {
 		align-items: center;
 	}
 
-	p {
+	pre {
 		white-space: pre-wrap;
 		overflow: scroll;
 		max-height: 80vh;
