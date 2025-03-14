@@ -11,24 +11,24 @@
     "start": "serve -s dist -p 8080 & node .output/server/index.mjs"
   },
   "dependencies": {
-    "@skyanalytics/vue3": "1.0.2",
-    "chart.js": "4.4.4",
+    "@skyanalytics/vue3": "1.1.2",
+    "chart.js": "4.4.8",
     "leaflet": "1.9.4",
     "leaflet.heat": "0.2.0",
     "leaflet.markercluster": "1.5.3",
-    "vue": "3.5.4",
-    "vue-router": "4.4.4"
+    "vue": "3.5.13",
+    "vue-router": "4.5.0"
   },
   "devDependencies": {
     "@tsconfig/node22": "22.0.0",
-    "@types/leaflet": "1.9.12",
-    "@types/leaflet.markercluster": "1.5.4",
-    "@types/node": "22.5.4",
-    "@vitejs/plugin-vue": "5.1.3",
-    "@vue/tsconfig": "0.5.1",
-    "nitropack": "2.9.7",
-    "vite": "5.3.1",
-    "vite-plugin-vue-devtools": "7.3.1",
-    "vue-tsc": "2.1.6"
+    "@types/leaflet": "1.9.16",
+    "@types/leaflet.markercluster": "1.5.5",
+    "@types/node": "22.5.5",
+    "@vitejs/plugin-vue": "5.2.1",
+    "@vue/tsconfig": "0.7.0",
+    "nitropack": "2.11.6",
+    "vite": "6.2.1",
+    "vite-plugin-vue-devtools": "7.7.2",
+    "vue-tsc": "2.2.8"
   }
 }

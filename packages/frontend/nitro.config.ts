@@ -1,6 +1,7 @@
 export default defineNitroConfig({
     preset: 'node-server',
     srcDir: "server",
+    compatibilityDate: '2025-03-08',
     routeRules: {
         '/api/**': { 
             cors: true,
