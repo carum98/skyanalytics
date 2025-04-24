@@ -10,8 +10,8 @@ export const sendBodySchema = z.object({
 			z.object({
                 description: z.string().min(3).max(700),
                 user: z.object({
-                    name: z.string().min(3).max(50),
-                    contact: z.string().min(3).max(50)
+                    name: z.string().max(50),
+                    contact: z.string().max(50)
                 })
 			})
 		)
