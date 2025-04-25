@@ -160,6 +160,7 @@ class SkyAnalytics {
 
         String? lookupMimeType(String fileName) {
           if (fileName.endsWith('.txt')) return 'text/plain';
+          if (fileName.endsWith('.zip')) return 'application/zip';
           return null;
         }
 

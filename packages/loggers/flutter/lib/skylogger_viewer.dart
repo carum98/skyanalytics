@@ -15,6 +15,10 @@ class SkyLoggerViewer extends StatelessWidget {
           if (!snapshot.hasData) return const SizedBox();
           final folders = snapshot.data!;
 
+          if (folders.isEmpty) {
+            return const Center(child: Text('No logs available'));
+          }
+
           return _Grid(
             items: folders,
             onTap: (item) => _LogsPage(folder: item),
@@ -118,7 +122,8 @@ class _Grid<T> extends StatelessWidget {
               );
             },
             child: Center(
-              child: Text(item.toString(), style: const TextStyle(fontSize: 15)),
+              child:
+                  Text(item.toString(), style: const TextStyle(fontSize: 15)),
             ),
           ),
         );

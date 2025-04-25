@@ -145,6 +145,11 @@ class LoggerReader {
   ///
   static Future<List<String>> folders() async {
     final directory = await _directory('');
+
+    if (!await directory.exists()) {
+      return [];
+    }
+
     final modules = await directory.list().toList();
 
     return modules.map((e) {
@@ -158,7 +163,16 @@ class LoggerReader {
     final directory = await _directory('/$folder');
     final files = await directory.list().toList();
 
-    return files.map((file) => file.path.split('/').last).toList();
+    final names = files.map((file) => file.path.split('/').last).toList();
+
+    /// Sort the files by names
+    names.sort((a, b) {
+      final dateA = DateTime.parse(a.split('.').first);
+      final dateB = DateTime.parse(b.split('.').first);
+      return dateB.compareTo(dateA);
+    });
+
+    return names;
   }
 
   /// Read a log file content
@@ -179,9 +193,14 @@ class LoggerReader {
 
   /// Generate Zip file of logs
   ///
-  static Future<File> zipLogs() async {
+  static Future<File?> zipLogs() async {
     final directory = await getApplicationDocumentsDirectory();
     final loggerDirectory = Directory('${directory.path}/logger');
+
+    if (!await loggerDirectory.exists()) {
+      return null;
+    }
+
     final zipFile = File('${directory.path}/logs.zip');
 
     if (await zipFile.exists()) {
