@@ -1,3 +1,7 @@
+## 0.0.4
+
+* Expose the `zipFile` function to generate ZIP files from directorie
+
 ## 0.0.3
 
 * Send zip MimeType in the request

@@ -28,8 +28,8 @@ SkyLogger.debug('This is a debug', folder: 'admin');
 To view the logs, you can use the `SkyLoggerViewer` widget
 ```dart
 Navigator.push(
-	context,
-	MaterialPageRoute(builder: (_) => const SkyLoggerViewer()),
+  context,
+  MaterialPageRoute(builder: (_) => const SkyLoggerViewer()),
 ),
 ```
 
@@ -37,4 +37,11 @@ Navigator.push(
 To export the logs as a ZIP file, you can use the `LoggerReader.zipLogs()` method
 ```dart
 final zipFile = await LoggerReader.zipLogs();
+```
+
+## Create ZIP file
+To create a ZIP file from directory, you can use the `LoggerReader.zipFile` method
+```dart
+final directory = Directory('path/to/logs');
+final zipFile = await LoggerReader.zipFile(directory, zipFileName: 'logs');
 ```

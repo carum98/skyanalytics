@@ -201,7 +201,14 @@ class LoggerReader {
       return null;
     }
 
-    final zipFile = File('${directory.path}/logs.zip');
+    return zipFile(loggerDirectory, zipFileName: 'logs');
+  }
+
+  /// Create a zip file from a directory
+  ///
+  static Future<File> zipFile(Directory directory, {required String zipFileName}) async {
+    final appDirectory = await getApplicationDocumentsDirectory();
+    final zipFile = File('${appDirectory.path}/$zipFileName.zip');
 
     if (await zipFile.exists()) {
       await zipFile.delete();
@@ -209,10 +216,10 @@ class LoggerReader {
 
     final archive = Archive();
 
-    for (var file in loggerDirectory.listSync(recursive: true)) {
+    for (var file in directory.listSync(recursive: true)) {
       if (file is File) {
         final bytes = file.readAsBytesSync();
-        final relativePath = file.path.replaceFirst('${directory.path}/', '');
+        final relativePath = file.path.replaceFirst('${appDirectory.path}/', '');
         archive.addFile(ArchiveFile(relativePath, bytes.length, bytes));
       }
     }

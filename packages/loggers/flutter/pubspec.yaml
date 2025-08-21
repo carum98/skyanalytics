@@ -1,6 +1,6 @@
 name: 'skylogger'
 description: 'SkyLogger Flutter is a logger for [SkyAnalytics]'
-version: 0.0.3
+version: 0.0.4
 homepage: https://github.com/carum98/skyanalytics/tree/main/packages/loggers/flutter
 issue_tracker: https://github.com/carum98/skyanalytics/issues
 documentation: https://github.com/carum98/skyanalytics/tree/main/packages/loggers/flutter#readme
