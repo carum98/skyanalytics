@@ -89,7 +89,7 @@ jobs:
           DB_USER=${{ secrets.DB_USER }}
           EMAIL_USER=${{ vars.EMAIL_USER }}
           EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}
-          REPORT_FRONTEND_URL=${{ vars.vars.URL_FRONTEND }}/bug-report }}
+          REPORT_FRONTEND_URL=${{ vars.URL_FRONTEND }}/bug-report
           R2_ACCESS_KEY=${{ secrets.R2_ACCESS_KEY }}
           R2_SECRET_KEY=${{ secrets.R2_SECRET_KEY }}
           R2_BUCKET_NAME=${{ vars.R2_BUCKET_NAME }}
