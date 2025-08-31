@@ -90,6 +90,7 @@ export class ReportsService {
 			data: {
 				report: {
 					...report,
+					report_url: `${process.env.REPORT_FRONTEND_URL}?code=${report.code}`,
 					icon_path,
 					created_at: formatDate(report.created_at, 'America/Costa_Rica')
 				}

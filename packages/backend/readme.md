@@ -68,6 +68,7 @@ The API can send emails to the users. To set up the email service, you need to s
 - `EMAIL_USER`: The email address that will send the emails.
 - `EMAIL_PASSWORD`: The password of the email address.
 Recommend generating an app password for the email address, to avoid using the real password. This password can be generated in the email provider settings.
+- `REPORT_FRONTEND_URL`: The frontend URL for the report. Use this URL to link to the report in the email.
 
 ## File Upload
 The API supports file uploads to reports, the files are stored in [R2 storage](https://developers.cloudflare.com/r2/). To set up the file upload service, you need to set the following environment variables:

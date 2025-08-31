@@ -136,8 +136,12 @@
 				<td>
 					<h2>Report By</h2>
 					<div>
-						<span>{{ report.user.name }}</span>
-						<span>{{ report.user.contact }}</span>
+						{{#if report.user.name}}
+							<span>{{ report.user.name }}</span>
+						{{/if}}
+						{{#if report.user.contact}}
+							<span>{{ report.user.contact }}</span>
+						{{/if}}
 					</div>
 				</td>
 			</tr>
@@ -157,7 +161,7 @@
 		<table class="footer">
 			<tr>
 				<td>
-					<a class="anchor-button" href="https://www.google.com">View Report</a>
+					<a class="anchor-button" href="{{report.report_url}}">View Report</a>
 				</td>
 			</tr>
 		</table>
