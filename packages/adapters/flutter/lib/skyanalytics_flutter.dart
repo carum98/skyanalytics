@@ -65,6 +65,7 @@ class SkyAnalytics {
   }) async {
     await _send({
       'event': name,
+      if (parameters != null) 'metadata': parameters,
     });
   }
 

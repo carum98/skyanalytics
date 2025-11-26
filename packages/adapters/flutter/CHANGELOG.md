@@ -16,3 +16,5 @@
 
 * Add `bugReport` method to send bug reports.
 
+## 0.0.5 (2025-11-25)
+* Add support to add parameters to `logEvent` method.
