@@ -40,7 +40,7 @@ export function groupByRangeDates<T extends { created_at: Date }, E>(
 }
 
 function trimDate(date: string, date_range: DateRange) {
-    if (date_range.includes('month')) {
+    if (date_range.includes('month') || date_range.includes('year')) {
         return new Date(date).toISOString().split('T')[0].slice(0, 7)
     }
 
@@ -52,7 +52,7 @@ function trimDate(date: string, date_range: DateRange) {
 }
 
 function completeDate(date: string, date_range: DateRange) {
-    if (date_range.includes('month')) {
+    if (date_range.includes('month') || date_range.includes('year')) {
         return date + '-01'
     }
 
@@ -64,7 +64,7 @@ function completeDate(date: string, date_range: DateRange) {
 }
 
 function dateIncrement(date: Date, date_range: DateRange) {
-    if (date_range.includes('month')) {
+    if (date_range.includes('month') || date_range.includes('year')) {
         return date.setMonth(date.getMonth() + 1)
     }
 
