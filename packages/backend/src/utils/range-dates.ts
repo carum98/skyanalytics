@@ -11,6 +11,8 @@ export enum DateRange {
     last_month = 'last_month',
     last_2_months = 'last_2_months',
     last_3_months = 'last_3_months',
+    last_year = 'last_year',
+    current_year = 'current_year'
 }
 
 export function rangeDates(date_range: DateRange) {
@@ -62,6 +64,17 @@ export function rangeDates(date_range: DateRange) {
             start.setMonth(start.getMonth() - 3)
             start.setDate(1)
             end.setDate(0)
+            break
+        case DateRange.last_year:
+            start.setFullYear(start.getFullYear() - 1)
+            start.setMonth(0)
+            start.setDate(1)
+            end.setMonth(0)
+            end.setDate(0)
+            break
+        case DateRange.current_year:
+            start.setMonth(0)
+            start.setDate(1)
             break
         default:
             throw new Error('Invalid date range')

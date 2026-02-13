@@ -23,6 +23,8 @@ const options: Option[] = [
     { name: 'Last 30 days', value: DateRange.last_30_days },
     { name: 'Last 2 months', value: DateRange.last_2_months },
     { name: 'Last 3 months', value: DateRange.last_3_months },
+    { name: 'Last year', value: DateRange.last_year },
+    { name: 'Current year', value: DateRange.current_year },
 ]
 
 // let initial = range24hours()
