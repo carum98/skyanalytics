@@ -7,6 +7,8 @@ export enum DateRange {
     last_month = 'last_month',
     last_2_months = 'last_2_months',
     last_3_months = 'last_3_months',
+    last_year = 'last_year',
+    current_year = 'current_year'
 }
 
 export function range24hours() {
@@ -52,6 +54,14 @@ export function nextDate(start: Date, end: Date, date_range: DateRange) {
             start.setMonth(start.getMonth() + 3)
             end.setMonth(end.getMonth() + 3)
             break
+        case DateRange.last_year:
+            start.setFullYear(start.getFullYear() + 1)
+            end.setFullYear(end.getFullYear() + 1)
+            break
+        case DateRange.current_year:
+            start.setFullYear(start.getFullYear() + 1)
+            end.setFullYear(end.getFullYear() + 1)
+            break
     }
 
     return { 
@@ -90,6 +100,14 @@ export function previousDate(start: Date, end: Date, date_range: DateRange) {
         case DateRange.last_3_months:
             start.setMonth(start.getMonth() - 3)
             end.setMonth(end.getMonth() - 3)
+            break
+        case DateRange.last_year:
+            start.setFullYear(start.getFullYear() - 1)
+            end.setFullYear(end.getFullYear() - 1)
+            break
+        case DateRange.current_year:
+            start.setFullYear(start.getFullYear() - 1)
+            end.setFullYear(end.getFullYear() - 1)
             break
     }
 
@@ -153,6 +171,22 @@ export function rangeDates(date_range: DateRange) {
             start.setMonth(start.getMonth() - 3)
             start.setDate(1)
             end.setDate(0)
+            break
+        case DateRange.last_year:
+            start.setFullYear(start.getFullYear() - 1)
+            start.setMonth(0)
+            start.setDate(1)
+            end.setFullYear(end.getFullYear() - 1)
+            end.setMonth(11)
+            end.setDate(31)
+            break
+        case DateRange.current_year:
+            start.setFullYear(start.getFullYear())
+            start.setMonth(0)
+            start.setDate(1)
+            end.setFullYear(end.getFullYear())
+            end.setMonth(11)
+            end.setDate(31)
             break
         default:
             throw new Error('Invalid date range')
