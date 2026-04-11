@@ -15,6 +15,7 @@ export const events = pgTable('events', {
     metadata: json('metadata'),
 }, (table) => ({
     session_id: index('events_session_id').on(table.session_id),
+    created_at_idx: index('events_created_at').on(table.created_at),
 }))
 
 // Schemas

@@ -20,6 +20,7 @@ export const sessions = pgTable('sessions', {
     created_at: timestamp("created_at").notNull().defaultNow(),
 }, (table) => ({
     source_id: index('sessions_source_id').on(table.source_id),
+    created_at_idx: index('sessions_created_at').on(table.created_at),
 }))
 
 // Schemas

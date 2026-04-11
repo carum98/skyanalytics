@@ -43,6 +43,13 @@
       "when": 1733110813438,
       "tag": "0005_first_silver_surfer",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1775875969095,
+      "tag": "0006_curved_thunderbolt_ross",
+      "breakpoints": true
     }
   ]
 }

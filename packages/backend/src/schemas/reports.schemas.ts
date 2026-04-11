@@ -24,6 +24,7 @@ export const reports = pgTable('reports', {
 }, (table) => ({
 	code: uniqueIndex('reports_code').on(table.code),
 	session_id: index('reports_session_id').on(table.session_id),
+	created_at_idx: index('reports_created_at').on(table.created_at),
 }))
 
 // Schemas

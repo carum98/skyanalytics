@@ -14,6 +14,7 @@ export const views = pgTable('navigations', {
 	metadata: json('metadata'),
 }, (table) => ({
     parent_id: index('navigation_session_id').on(table.session_id),
+    created_at_idx: index('navigation_created_at').on(table.created_at),
 }))
 
 // Schemas
