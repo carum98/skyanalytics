@@ -1,10 +1,28 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+
 const props = defineProps<{
 	total_pages?: number
 }>()
 
 const page = defineModel<number>('page', {
 	required: true,
+})
+
+// First, last and current ±1; null marks a gap rendered as "…"
+const pages = computed(() => {
+	const total = props.total_pages ?? 0
+	const result: (number | null)[] = []
+
+	for (let i = 1; i <= total; i++) {
+		if (i === 1 || i === total || Math.abs(i - page.value) <= 1) {
+			result.push(i)
+		} else if (result.at(-1) !== null) {
+			result.push(null)
+		}
+	}
+
+	return result
 })
 
 function onPageChange(newPage: number) {
@@ -30,13 +48,16 @@ function onNext() {
 			<i class="icon-chevron-left"></i>
 		</button>
 		
-		<button 
-			v-for="i in total_pages" 
-			:key="i" @click="onPageChange(i)" 
-			:class="{ active: i === page }"
-		>
-			{{ i }}
-		</button>
+		<template v-for="(i, index) in pages" :key="i ?? `gap-${index}`">
+			<span v-if="i === null">…</span>
+			<button
+				v-else
+				@click="onPageChange(i)"
+				:class="{ active: i === page }"
+			>
+				{{ i }}
+			</button>
+		</template>
 
 		<button @click="onNext" :disabled="page === total_pages">
 			<i class="icon-chevron-right"></i>
